@@ -25,10 +25,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    myopenglwidget.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    myopenglwidget.h
 
 FORMS += \
         mainwindow.ui
+
+LIBS += -lopengl32
+
+QT += opengl
