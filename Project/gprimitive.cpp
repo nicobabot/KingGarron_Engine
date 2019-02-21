@@ -1,42 +1,30 @@
-#include "myopenglwidget.h"
 #include "gprimitive.h"
 #include <QPainter>
-#pragma comment(lib, "OpenGL32.lib")
 
-
-MyOpenGLWidget::MyOpenGLWidget(QWidget *parent)
-    : QOpenGLWidget(parent)
+GPrimitive::GPrimitive(QWidget *parent) : QWidget(parent)
 {
-
+    setAutoFillBackground(true);
 }
 
-void MyOpenGLWidget::initializeGL()
-{
-
+QSize GPrimitive::sizeHint() const{
+    return QSize(256,256);
 }
 
-void MyOpenGLWidget::resizeGL(int width, int height)
-{
-
+QSize GPrimitive::minimumSizeHint() const{
+    return QSize(64,64);
 }
 
-void MyOpenGLWidget::paintGL()
+void GPrimitive::paintEvent(QPaintEvent *)
 {
-
-    glClearColor(1.0f, 0.0f, 0.0f,1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    //GPrimitive test = new GPrimitive();
-
-
-   /* QColor blueColor = QColor::fromRgb(127,190,220);
+    QColor blueColor = QColor::fromRgb(127,190,220);
     QColor whiteColor = QColor::fromRgb(255,255,255);
     QColor blackColor = QColor::fromRgb(0,0,0);
 
-    QPainter painter(this);
+    QPainter painter;
     QBrush brush;
     QPen pen;
 
+    painter.begin(this);
     brush.setColor(blueColor);
     brush.setStyle(Qt::BrushStyle::SolidPattern);
     pen.setStyle(Qt::PenStyle::NoPen);
@@ -58,5 +46,6 @@ void MyOpenGLWidget::paintGL()
     int x = rect().width() / 2 - r;
     int y = rect().height() / 2 - r;
     QRect circleRect(x,y,w,h);
-    painter.drawEllipse(circleRect);*/
+    painter.drawEllipse(circleRect);
+    painter.end();
 }
