@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+class gObject;
+
 namespace Ui {
 class MainWindow;
 }
@@ -16,7 +18,8 @@ public:
     ~MainWindow();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::MainWindow* ui = nullptr;
+    QVector<gObject*> ScenegObjectVector;
 };
 
 #endif // MAINWINDOW_H
