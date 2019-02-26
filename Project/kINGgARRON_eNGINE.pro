@@ -28,13 +28,15 @@ SOURCES += \
         mainwindow.cpp \
     myopenglwidget.cpp \
     inspector.cpp \
-    gprimitive.cpp
+    gprimitive.cpp \
+    gobject.cpp
 
 HEADERS += \
         mainwindow.h \
     myopenglwidget.h \
     inspector.h \
-    gprimitive.h
+    gprimitive.h \
+    gobject.h
 
 FORMS += \
         mainwindow.ui \
