@@ -18,5 +18,8 @@ QSize gObject::minimumSizeHint() const
 
 void gObject::paintEvent(QPaintEvent *)
 {
-
+    for (gComponent* component : gComponentVector)
+    {
+        //TODO call component paint method
+    }
 }
