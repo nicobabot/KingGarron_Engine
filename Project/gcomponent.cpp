@@ -1,4 +1,5 @@
 #include "gcomponent.h"
+#include"gobject.h"
 #include <QPainter>
 
 gComponent::gComponent(QWidget *parent) : QWidget(parent)

@@ -1,23 +1,16 @@
 #ifndef GCOMPONENT_H
 #define GCOMPONENT_H
 
-#include <QObject>
-#include <QWidget>
+class QWidget;
+class gObject;
 
-class gComponent : public QWidget
+class gComponent
 {
     Q_OBJECT
 public:
-    explicit gComponent(QWidget *parent = nullptr);
-    QSize sizeHint() const override;
-    QSize minimumSizeHint() const override;
-
-signals:
-
-public slots:
-
-private:
-    void paintEvent(QPaintEvent *event) override;
+    gComponent(gObject *parent = nullptr);
+public:
+    gObject *parent = nullptr;
 };
 
 #endif // GCOMPONENT_H
