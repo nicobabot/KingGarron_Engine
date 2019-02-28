@@ -1,21 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <author/>
- <comment/>
- <exportmacro/>
  <class>Inspector</class>
- <widget name="Inspector" class="QWidget">
+ <widget class="QWidget" name="Inspector">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>386</width>
+    <height>640</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <widget class="QDockWidget" name="Inspector_2">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>721</width>
+     <height>651</height>
+    </rect>
+   </property>
+   <property name="windowTitle">
+    <string>Inspector</string>
+   </property>
+   <widget class="QWidget" name="dockWidgetContents"/>
+  </widget>
  </widget>
- <pixmapfunction/>
+ <resources/>
  <connections/>
 </ui>

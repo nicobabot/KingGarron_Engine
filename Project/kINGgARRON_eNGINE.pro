@@ -30,7 +30,8 @@ SOURCES += \
     gprimitive.cpp \
     gcomponent.cpp \
     gobject.cpp \
-    inspector.cpp
+    inspectorwidget.cpp \
+    gtransformwidget.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -38,12 +39,13 @@ HEADERS += \
     gprimitive.h \
     gcomponent.h \
     gobject.h \
-    inspector.h
+    inspectorwidget.h \
+    gtransformwidget.h
 
 
 FORMS += \
         mainwindow.ui \
-    inspector.ui
+    gtransformwidget.ui
 
 LIBS += -lopengl32
 
