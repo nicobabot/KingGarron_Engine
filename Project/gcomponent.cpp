@@ -1,21 +1,10 @@
 #include "gcomponent.h"
 #include"gobject.h"
 #include <QPainter>
+#include "gobject.h"
 
-gComponent::gComponent(QWidget *parent) : QWidget(parent)
+gComponent::gComponent(gObject *parent)
 {
-    setAutoFillBackground(true);
+    this->parent = parent;
 }
 
-QSize gComponent::sizeHint() const{
-    return QSize(256,256);
-}
-
-QSize gComponent::minimumSizeHint() const{
-    return QSize(64,64);
-}
-
-void gComponent::paintEvent(QPaintEvent *)
-{
-
-}

@@ -1,14 +1,14 @@
 #include "inspector.h"
 #include "ui_inspector.h"
 
-inspector::inspector(QWidget *parent) :
+Inspector::Inspector(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::inspector)
+    ui(new Ui::Inspector)
 {
     ui->setupUi(this);
 }
 
-inspector::~inspector()
+Inspector::~Inspector()
 {
     delete ui;
 }

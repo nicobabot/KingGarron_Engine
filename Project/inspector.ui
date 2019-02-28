@@ -1,32 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>inspector</class>
- <widget class="QWidget" name="inspector">
+ <author/>
+ <comment/>
+ <exportmacro/>
+ <class>Inspector</class>
+ <widget name="Inspector" class="QWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>388</width>
-    <height>583</height>
+    <width>400</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QGroupBox" name="groupBox">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>0</y>
-     <width>351</width>
-     <height>171</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>GroupBox</string>
-   </property>
-  </widget>
  </widget>
- <resources/>
+ <pixmapfunction/>
  <connections/>
 </ui>

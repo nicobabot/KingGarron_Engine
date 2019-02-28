@@ -4,19 +4,19 @@
 #include <QWidget>
 
 namespace Ui {
-class inspector;
+class Inspector;
 }
 
-class inspector : public QWidget
+class Inspector : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit inspector(QWidget *parent = 0);
-    ~inspector();
+    explicit Inspector(QWidget *parent = 0);
+    ~Inspector();
 
 private:
-    Ui::inspector *ui;
+    Ui::Inspector *ui;
 };
 
 #endif // INSPECTOR_H
