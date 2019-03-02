@@ -16,7 +16,7 @@ signals:
 public slots:
 
 public:
-        GTransformWidget *transform;
+        GTransformWidget *transform = nullptr;
 };
 
 #endif // INSPECTORWIDGET_H
