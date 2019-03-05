@@ -4,6 +4,7 @@
 #include <QWidget>
 
 class GTransformWidget;
+class GRenderWidget;
 
 class InspectorWidget : public QWidget
 {
@@ -17,6 +18,7 @@ public slots:
 
 public:
         GTransformWidget *transform = nullptr;
+        GRenderWidget *render_widget = nullptr;
 };
 
 #endif // INSPECTORWIDGET_H
