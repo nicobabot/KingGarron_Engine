@@ -32,7 +32,8 @@ SOURCES += \
     gobject.cpp \
     inspectorwidget.cpp \
     gtransformwidget.cpp \
-    grenderwidget.cpp
+    grenderwidget.cpp \
+    gcomponenttransform.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -42,7 +43,8 @@ HEADERS += \
     gobject.h \
     inspectorwidget.h \
     gtransformwidget.h \
-    grenderwidget.h
+    grenderwidget.h \
+    gcomponenttransform.h
 
 
 FORMS += \
