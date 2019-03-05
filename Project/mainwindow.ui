@@ -128,21 +128,13 @@
    <widget class="QWidget" name="dockWidgetContents_6">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="gObject" name="widget" native="true"/>
+      <widget class="QWidget" name="widget" native="true"/>
      </item>
     </layout>
    </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <customwidgets>
-  <customwidget>
-   <class>gObject</class>
-   <extends>QWidget</extends>
-   <header>gobject.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

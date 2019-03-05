@@ -24,7 +24,7 @@ void MainWindow::HierarchyAdd()
     std::string name = "Object_";
     name += std::to_string(objectNum++);
     ui->HierarchyList->addItem(QString(name.c_str()));
-    scenegObjectVector.append(new gObject());
+    scenegObjectVector.append(new gObject(QString(name.c_str()), true));
 }
 
 void MainWindow::HierarchyRemove()
