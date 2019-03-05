@@ -15,7 +15,6 @@ public:
     QVector3D position;
     QVector3D scale;
     QQuaternion rotation;
-
 };
 
 #endif // GCOMPONENTTRANSFORM_H

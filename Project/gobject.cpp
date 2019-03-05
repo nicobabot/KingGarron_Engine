@@ -1,5 +1,6 @@
 #include "gobject.h"
 #include "gcomponent.h"
+#include "gcomponentrender.h"
 
 gObject::gObject(QWidget *parent) : QWidget(parent)
 {
@@ -20,6 +21,7 @@ void gObject::paintEvent(QPaintEvent *)
 {
     for (gComponent* component : gComponentVector)
     {
-        //TODO call component paint method
+        if(component->compType == gComponentType::COMP_RENDER)
+            ((gComponentRender*)component)->gPaintObject(this, rect());
     }
 }

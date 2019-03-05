@@ -128,7 +128,7 @@
    <widget class="QWidget" name="dockWidgetContents_6">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="GPrimitive" name="widget" native="true"/>
+      <widget class="gObject" name="widget" native="true"/>
      </item>
     </layout>
    </widget>
@@ -137,9 +137,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>GPrimitive</class>
+   <class>gObject</class>
    <extends>QWidget</extends>
-   <header>gprimitive.h</header>
+   <header>gobject.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

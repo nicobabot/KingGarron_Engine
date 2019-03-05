@@ -33,7 +33,8 @@ SOURCES += \
     inspectorwidget.cpp \
     gtransformwidget.cpp \
     grenderwidget.cpp \
-    gcomponenttransform.cpp
+    gcomponenttransform.cpp \
+    gcomponentrender.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -44,13 +45,14 @@ HEADERS += \
     inspectorwidget.h \
     gtransformwidget.h \
     grenderwidget.h \
-    gcomponenttransform.h
+    gcomponenttransform.h \
+    gcomponentrender.h
 
 
 FORMS += \
         mainwindow.ui \
     gtransformwidget.ui \
-    grenderwidget.ui
+    grenderwidget.ui \
 
 LIBS += -lopengl32
 
