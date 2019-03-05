@@ -2,12 +2,14 @@
 #include "gcomponent.h"
 #include "gcomponentrender.h"
 #include "gcomponenttransform.h"
+#include "gscene.h"
 
 
 gObject::gObject(QString name, bool active, QWidget *parent) : QWidget(parent), name(name), active(active)
 {
     setAutoFillBackground(true);
     AddComponentTransform();
+    AddComponentRenderShape();
 }
 
 gObject::~gObject()
@@ -17,16 +19,6 @@ gObject::~gObject()
     gComponentVector.clear();
 }
 
-QSize gObject::sizeHint() const
-{
-    return QSize(256,256);
-}
-
-QSize gObject::minimumSizeHint() const
-{
-    return QSize(64,64);
-}
-
 void gObject::AddComponentTransform()
 {
     gComponentVector.push_back(new gComponentTransform());
@@ -34,14 +26,14 @@ void gObject::AddComponentTransform()
 
 void gObject::AddComponentRenderShape()
 {
-    //gComponentVector.push_back(new gComponentRenderShape());
+    gComponentVector.push_back(new gComponentRender());
 }
 
-void gObject::paintEvent(QPaintEvent *)
+void gObject::PaintGGObject(GScene* obj, QRect rect)
 {
     for (gComponent* component : gComponentVector)
     {
         if(component->compType == gComponentType::COMP_RENDER)
-            ((gComponentRender*)component)->gPaintObject(this, rect());
+            ((gComponentRender*)component)->gPaintObject(obj, rect);
     }
 }

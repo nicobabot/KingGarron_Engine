@@ -3,6 +3,8 @@
 #include "gcomponent.h"
 #include "qrect.h"
 
+class GScene;
+
 enum gShape{
     SPHERE,
     CUBE
@@ -13,7 +15,7 @@ class gComponentRender : public gComponent
 public:
     gComponentRender();
     gComponentRender(gShape newShape, float newsize);
-    void gPaintObject(gObject* obj, QRect rect);
+    void gPaintObject(GScene* obj, QRect rect);
 public:
     gShape shape;
     float size;

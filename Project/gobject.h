@@ -5,6 +5,7 @@
 #include <QWidget>
 
 class gComponent;
+class GScene;
 
 class gObject : public QWidget
 {
@@ -13,18 +14,14 @@ public:
     explicit gObject(QString name, bool active, QWidget *parent = nullptr);
     ~gObject();
 
-    QSize sizeHint() const override;
-    QSize minimumSizeHint() const override;
-
     void AddComponentTransform();
     void AddComponentRenderShape();
+
+    void PaintGGObject(GScene* obj, QRect rect);
 
 signals:
 
 public slots:
-
-private:
-    void paintEvent(QPaintEvent *event) override;
 
 private:
     QString name = "";

@@ -1,6 +1,7 @@
 #include "gcomponentrender.h"
 #include"gobject.h"
 #include <QPainter>
+#include "gscene.h"
 
 gComponentRender::gComponentRender()
 {
@@ -14,7 +15,7 @@ gComponentRender::gComponentRender(gShape newShape, float newsize)
     size = newsize;
 }
 
-void gComponentRender::gPaintObject(gObject* obj, QRect rect)
+void gComponentRender::gPaintObject(GScene* obj, QRect rect)
 {
     QColor blueColor = QColor::fromRgb(127,190,220);
     QColor whiteColor = QColor::fromRgb(255,255,255);

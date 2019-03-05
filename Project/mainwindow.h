@@ -17,14 +17,8 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-public slots:
-    void HierarchyAdd();
-    void HierarchyRemove();
-
-private:
-    Ui::MainWindow* ui = nullptr;
-    QVector<gObject*> scenegObjectVector;
-    int objectNum = 0;
 };
+
+extern Ui::MainWindow* mainWindow;
 
 #endif // MAINWINDOW_H

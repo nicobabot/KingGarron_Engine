@@ -1,5 +1,8 @@
 #include "mainwindow.h"
 #include <QApplication>
+#include <QMainWindow>
+
+Ui::MainWindow* mainWindow = nullptr;
 
 int main(int argc, char *argv[])
 {

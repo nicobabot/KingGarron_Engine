@@ -34,7 +34,8 @@ SOURCES += \
     gtransformwidget.cpp \
     grenderwidget.cpp \
     gcomponenttransform.cpp \
-    gcomponentrender.cpp
+    gcomponentrender.cpp \
+    gscene.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -46,7 +47,8 @@ HEADERS += \
     gtransformwidget.h \
     grenderwidget.h \
     gcomponenttransform.h \
-    gcomponentrender.h
+    gcomponentrender.h \
+    gscene.h
 
 
 FORMS += \
