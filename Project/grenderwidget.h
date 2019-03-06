@@ -15,7 +15,7 @@ public:
     explicit GRenderWidget(QWidget *parent = 0);
     ~GRenderWidget();
 
-private:
+public:
     Ui::GRenderWidget *ui;
 };
 

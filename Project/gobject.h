@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QWidget>
+#include "inspectorwidget.h"
 
 class gComponent;
 class GScene;
@@ -10,6 +11,7 @@ class GScene;
 class gObject : public QWidget
 {
     Q_OBJECT
+    friend class InspectorWidget;
 public:
     explicit gObject(QString name, bool active, QWidget *parent = nullptr);
     ~gObject();

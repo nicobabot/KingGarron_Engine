@@ -11,5 +11,5 @@ gComponentTransform::gComponentTransform(QVector3D newpos, QVector3D newscale, Q
     compType = gComponentType::COMP_TRANSFORM;
     position = newpos;
     scale = newscale;
-    rotation = rotation;
+    rotation = newrotation;
 }

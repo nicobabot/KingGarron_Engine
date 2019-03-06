@@ -15,7 +15,7 @@ public:
     explicit GTransformWidget(QWidget *parent = 0);
     ~GTransformWidget();
 
-private:
+public:
     Ui::GTransformWidget *ui;
 };
 

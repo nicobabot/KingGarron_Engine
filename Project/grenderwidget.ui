@@ -16,16 +16,22 @@
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>10</y>
+     <x>0</x>
+     <y>0</y>
      <width>131</width>
      <height>101</height>
     </rect>
    </property>
+   <property name="minimumSize">
+    <size>
+     <width>131</width>
+     <height>101</height>
+    </size>
+   </property>
    <property name="title">
     <string>Render</string>
    </property>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -45,7 +51,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="comboBox"/>
+        <widget class="QComboBox" name="Shapebox"/>
        </item>
       </layout>
      </item>

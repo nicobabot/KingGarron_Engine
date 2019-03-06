@@ -65,6 +65,9 @@ void GScene::HierarchyRemove()
 void GScene::HierarchyClicked(QListWidgetItem* item)
 {
     QModelIndexList indexes = mainWindow->HierarchyList->selectionModel()->selectedIndexes();
-    indexes[0].row();
+    int index = indexes[0].row();
+
+    //Inspector.UpdateInspector(obj)
+
     //qDebug("SUCC");
 }

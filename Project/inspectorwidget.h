@@ -5,6 +5,7 @@
 
 class GTransformWidget;
 class GRenderWidget;
+class gObject;
 
 class InspectorWidget : public QWidget
 {
@@ -12,6 +13,9 @@ class InspectorWidget : public QWidget
 public:
     explicit InspectorWidget(QWidget *parent = nullptr);
     ~InspectorWidget();
+
+    void UpdateInspectorValues(gObject *object = nullptr);
+
 signals:
 
 public slots:
