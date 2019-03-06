@@ -3,6 +3,7 @@
 
 #include <QWidget>
 
+class QListWidgetItem;
 class gObject;
 class InspectorWidget;
 
@@ -21,6 +22,7 @@ private:
 public slots:
     void HierarchyAdd();
     void HierarchyRemove();
+    void HierarchyClicked(QListWidgetItem* item);
 
 public:
     QVector<gObject*> scenegObjectVector;

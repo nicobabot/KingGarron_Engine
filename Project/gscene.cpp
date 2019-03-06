@@ -1,3 +1,4 @@
+#include <QListWidget>
 #include "gscene.h"
 #include "gobject.h"
 #include "mainwindow.h"
@@ -11,6 +12,7 @@ GScene::GScene(QWidget *parent) : QWidget(parent)
 
     connect(mainWindow->HierarchyAdd, SIGNAL(clicked()), this, SLOT(HierarchyAdd()));
     connect(mainWindow->HierarchyRemove, SIGNAL(clicked()), this, SLOT(HierarchyRemove()));
+    connect(mainWindow->HierarchyList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(HierarchyClicked(QListWidgetItem*)));
 }
 
 QSize GScene::sizeHint() const
@@ -58,4 +60,11 @@ void GScene::HierarchyRemove()
     }
     qDeleteAll(mainWindow->HierarchyList->selectedItems());
     this->repaint();
+}
+
+void GScene::HierarchyClicked(QListWidgetItem* item)
+{
+    QModelIndexList indexes = mainWindow->HierarchyList->selectionModel()->selectedIndexes();
+    indexes[0].row();
+    //qDebug("SUCC");
 }
