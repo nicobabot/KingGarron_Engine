@@ -36,21 +36,23 @@ void InspectorWidget::UpdateInspectorValues(gObject *object)
         {
             switch(comp->compType)
             {
+            case gComponentType::COMP_UNDEFINED:
+            {
+                //Do nosin
+             break;
+            }
                 case gComponentType::COMP_TRANSFORM:
             {
-                transform->ui->pos_x->setValue(((gComponentTransform*)comp)->position.x());
-                transform->ui->pos_y->setValue(((gComponentTransform*)comp)->position.y());
-                transform->ui->pos_z->setValue(((gComponentTransform*)comp)->position.z());
-
-                                break;
+                transform->ui->pos_x->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->position.x()));
+                transform->ui->pos_y->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->position.y()));
+                transform->ui->pos_z->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->position.z()));
+                break;
             }
-
             case gComponentType::COMP_RENDER:
             {
              //render_widget->ui->comboBox->addItem()
              break;
             }
-
             }
         }
     }

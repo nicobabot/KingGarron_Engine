@@ -55,29 +55,25 @@ void gComponentRender::RenderShapeType(QPainter painter)
     {
     case gShape::SPHERE:
     {
-        r = 64;
-        w = r*2;
-        h = r*2;
+        r = 64.0f;
+        w = r * 2.0f;
+        h = r * 2.0f;
         x = size / 2 - r;
         y = size / 2 - r;
-        QRect circleRect(x,y,w,h);
+        QRect circleRect(static_cast<int>(x),static_cast<int>(y),static_cast<int>(w),static_cast<int>(h));
         painter.drawEllipse(circleRect);
     }
         break;
 
      case gShape::CUBE:
     {
-        w = r*2;
-        h = r*2;
+        w = r * 2.0f;
+        h = r * 2.0f;
         x = size / 2 ;
         y = size / 2;
-        QRect QuadeRect(x,y,w,h);
+        QRect QuadeRect(static_cast<int>(x),static_cast<int>(y),static_cast<int>(w),static_cast<int>(h));
         painter.drawRect(QuadeRect);
     }
-        break;
-
-     default:
-    {}
         break;
     }
 }
