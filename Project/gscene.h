@@ -4,6 +4,7 @@
 #include <QWidget>
 
 class gObject;
+class InspectorWidget;
 
 class GScene : public QWidget
 {
@@ -23,8 +24,8 @@ public slots:
 
 public:
     QVector<gObject*> scenegObjectVector;
-
 private:
+    InspectorWidget *inspectorWidget = nullptr;
     int objectNum = 0;
 };
 

@@ -8,8 +8,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     mainWindow = new Ui::MainWindow;
     mainWindow->setupUi(this);
-    InspectorWidget *inspectorWidget = new InspectorWidget();
-    mainWindow->Inspector->setWidget(inspectorWidget);
 }
 
 MainWindow::~MainWindow()

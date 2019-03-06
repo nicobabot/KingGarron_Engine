@@ -2,9 +2,13 @@
 #include "gobject.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "inspectorwidget.h"
 
 GScene::GScene(QWidget *parent) : QWidget(parent)
 {
+    inspectorWidget = new InspectorWidget();
+    mainWindow->Inspector->setWidget(inspectorWidget);
+
     connect(mainWindow->HierarchyAdd, SIGNAL(clicked()), this, SLOT(HierarchyAdd()));
     connect(mainWindow->HierarchyRemove, SIGNAL(clicked()), this, SLOT(HierarchyRemove()));
 }

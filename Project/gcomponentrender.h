@@ -2,6 +2,7 @@
 #define GCOMPONENTRENDER_H
 #include "gcomponent.h"
 #include "qrect.h"
+#include <QPainter>
 
 class GScene;
 
@@ -16,6 +17,9 @@ public:
     gComponentRender();
     gComponentRender(gShape newShape, float newsize);
     void gPaintObject(GScene* obj, QRect rect);
+private:
+    void RenderShapeType(QPainter painter);
+
 public:
     gShape shape;
     float size;
