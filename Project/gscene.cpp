@@ -38,6 +38,7 @@ void GScene::HierarchyAdd()
     name += std::to_string(objectNum++);
     mainWindow->HierarchyList->addItem(QString(name.c_str()));
     scenegObjectVector.append(new gObject(QString(name.c_str()), true));
+    this->repaint();
 }
 
 void GScene::HierarchyRemove()
@@ -52,4 +53,5 @@ void GScene::HierarchyRemove()
         scenegObjectVector.remove(i);
     }
     qDeleteAll(mainWindow->HierarchyList->selectedItems());
+    this->repaint();
 }
