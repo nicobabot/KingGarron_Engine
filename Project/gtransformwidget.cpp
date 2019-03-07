@@ -19,13 +19,9 @@ GTransformWidget::~GTransformWidget()
 
 void GTransformWidget::PosXWidget(double item)
 {
-    //qDebug("CHANGEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEED");
-    //qDebug("first item qspin %f", item);
     if (transformComponent != nullptr)
     {
         transformComponent->position.setX(item);
-        //qDebug("pos x %f", transformComponent->position.x());
-        //qDebug("item qspin %f", item);
     }
 }
 

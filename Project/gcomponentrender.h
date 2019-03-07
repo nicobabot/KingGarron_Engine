@@ -22,6 +22,7 @@ private:
 
 public:
     gShape shape;
+    //QString shape;
     float size;
 };
 

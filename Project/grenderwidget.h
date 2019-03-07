@@ -15,6 +15,8 @@ public:
     explicit GRenderWidget(QWidget *parent = 0);
     ~GRenderWidget();
 
+    void ModifyShapeComponent(QString*);
+
 public:
     Ui::GRenderWidget *ui;
 };

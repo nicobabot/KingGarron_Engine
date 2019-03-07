@@ -1,5 +1,6 @@
 #ifndef GCOMPONENT_H
 #define GCOMPONENT_H
+#include <QObject>
 
 class gObject;
 

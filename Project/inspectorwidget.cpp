@@ -9,6 +9,7 @@
 #include "gcomponent.h"
 #include "gcomponenttransform.h"
 #include "ui_gtransformwidget.h"
+#include "gcomponentrender.h"
 #include "grenderwidget.h"
 #include "ui_grenderwidget.h"
 #include <QSignalBlocker>
@@ -52,17 +53,22 @@ void InspectorWidget::UpdateInspectorValues(gObject *object)
                 case gComponentType::COMP_TRANSFORM:
             {
                 transform->transformComponent = static_cast<gComponentTransform*>(comp);
-                //qDebug("Index obj trans: %s", object->name.toStdString().c_str());
                 transform->ui->pos_x->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->position.x()));
-                //qDebug("Position x: %f", static_cast<double>(static_cast<gComponentTransform*>(comp)->position.x()));
                 transform->ui->pos_y->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->position.y()));
                 transform->ui->pos_z->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->position.z()));
 
+                 transform->ui->scale_x->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->scale.x()));
+                 transform->ui->scale_y->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->scale.y()));
+                 transform->ui->scale_z->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->scale.z()));
+
+                 //For rotation we need to transform quaternion to euler ang
                 break;
             }
             case gComponentType::COMP_RENDER:
             {
-             //render_widget->ui->comboBox->addItem()
+                //render_widget->ui->Shapebox->set
+                //static_cast<gComponentRender*>(comp)->shape;
+
              break;
             }
             }
