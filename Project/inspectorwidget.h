@@ -18,8 +18,6 @@ public:
 
 signals:
 
-public slots:
-
 public:
         GTransformWidget *transform = nullptr;
         GRenderWidget *render_widget = nullptr;

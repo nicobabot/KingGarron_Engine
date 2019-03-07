@@ -66,6 +66,8 @@ void GScene::HierarchyClicked(QListWidgetItem* item)
 {
     QModelIndexList indexes = mainWindow->HierarchyList->selectionModel()->selectedIndexes();
     int index = indexes[0].row();
+    qDebug("index: %i", index);
+    inspectorWidget->UpdateInspectorValues(scenegObjectVector.at(index));
 
     //Inspector.UpdateInspector(obj)
 

@@ -7,6 +7,8 @@ namespace Ui {
 class GTransformWidget;
 }
 
+class gComponentTransform;
+
 class GTransformWidget : public QWidget
 {
     Q_OBJECT
@@ -14,9 +16,14 @@ class GTransformWidget : public QWidget
 public:
     explicit GTransformWidget(QWidget *parent = 0);
     ~GTransformWidget();
+public slots:
+    void PosXWidget(double item);
+    void PosYWidget(double item);
+    void PosZWidget(double item);
 
 public:
     Ui::GTransformWidget *ui;
+    gComponentTransform *transformComponent = nullptr;
 };
 
 #endif // GTRANSFORMWIDGET_H
