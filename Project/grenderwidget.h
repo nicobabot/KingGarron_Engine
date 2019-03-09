@@ -7,6 +7,8 @@ namespace Ui {
 class GRenderWidget;
 }
 
+class gComponentRender;
+
 class GRenderWidget : public QWidget
 {
     Q_OBJECT
@@ -15,10 +17,13 @@ public:
     explicit GRenderWidget(QWidget *parent = 0);
     ~GRenderWidget();
 
-    void ModifyShapeComponent(QString*);
+public slots:
+    void ModifyShapeComponent(const QString&);
 
 public:
-    Ui::GRenderWidget *ui;
+    Ui::GRenderWidget *ui= nullptr;
+    gComponentRender *renderComponent = nullptr;
+
 };
 
 #endif // GRENDERWIDGET_H

@@ -6,6 +6,7 @@
 class GTransformWidget;
 class GRenderWidget;
 class gObject;
+class GScene;
 
 class InspectorWidget : public QWidget
 {
@@ -14,7 +15,7 @@ public:
     explicit InspectorWidget(QWidget *parent = nullptr);
     ~InspectorWidget();
 
-    void UpdateInspectorValues(gObject *object = nullptr);
+    void UpdateInspectorValues(gObject *object = nullptr, GScene* scene = nullptr);
 
 signals:
 

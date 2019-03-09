@@ -18,11 +18,11 @@ public:
     gComponentRender(gShape newShape, float newsize);
     void gPaintObject(GScene* obj, QRect rect);
 private:
-    void RenderShapeType(QPainter painter);
+    void RenderShapeType(QPainter *painter, QRect rect);
 
 public:
-    gShape shape;
-    //QString shape;
+    //gShape shape;
+    std::string shape;
     float size;
 };
 

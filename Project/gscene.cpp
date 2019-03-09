@@ -71,8 +71,8 @@ void GScene::HierarchyClicked(QListWidgetItem* item)
     else
         clickedIndex = indexes[0].row();
     if (clickedIndex >= 0)
-        inspectorWidget->UpdateInspectorValues(scenegObjectVector.at(clickedIndex));
+        inspectorWidget->UpdateInspectorValues(scenegObjectVector.at(clickedIndex), this);
     else
-        inspectorWidget->UpdateInspectorValues(nullptr);
+        inspectorWidget->UpdateInspectorValues(nullptr, this);
     qDebug("index: %i", clickedIndex);
 }

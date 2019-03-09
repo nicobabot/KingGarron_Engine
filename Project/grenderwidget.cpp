@@ -1,5 +1,7 @@
 #include "grenderwidget.h"
 #include "ui_grenderwidget.h"
+#include "gcomponentrender.h"
+#include "mainwindow.h"
 
 GRenderWidget::GRenderWidget(QWidget *parent) :
     QWidget(parent),
@@ -9,8 +11,7 @@ GRenderWidget::GRenderWidget(QWidget *parent) :
     ui->Shapebox->addItem("Quad");
     ui->Shapebox->addItem("Circle");
 
-    connect(ui->Shapebox,SIGNAL(currentIndexChanged(const QString&)),
-            this,SLOT(ModifyShapeComponent(const QString&)));
+    connect(ui->Shapebox,SIGNAL(currentTextChanged(const QString&)), this,SLOT(ModifyShapeComponent(const QString&)));
 }
 
 GRenderWidget::~GRenderWidget()
@@ -18,7 +19,7 @@ GRenderWidget::~GRenderWidget()
     delete ui;
 }
 
-void GRenderWidget::ModifyShapeComponent(QString* str)
+void GRenderWidget::ModifyShapeComponent(const QString& text)
 {
-
+    renderComponent->shape = text.toStdString();
 }

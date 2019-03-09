@@ -6,6 +6,7 @@
 gComponentRender::gComponentRender()
 {
     compType = gComponentType::COMP_RENDER;
+    shape = "Quad";
 }
 
 gComponentRender::gComponentRender(gShape newShape, float newsize)
@@ -32,6 +33,8 @@ void gComponentRender::gPaintObject(GScene* obj, QRect rect)
     painter.setBrush(brush);
     painter.setPen(pen);
 
+    //painter.drawRect(rect);
+
     brush.setColor(whiteColor);
     pen.setWidth(4);
     pen.setColor(blackColor);
@@ -40,40 +43,43 @@ void gComponentRender::gPaintObject(GScene* obj, QRect rect)
     painter.setPen(pen);
 
 
+    RenderShapeType(&painter, rect);
     painter.end();
+
+
+
+
+
 }
 
-void gComponentRender::RenderShapeType(QPainter painter)
+void gComponentRender::RenderShapeType(QPainter *painter, QRect rect)
 {
-    float r = 0;
-    float w = 0;
-    float h = 0;
-    float x = 0;
-    float y = 0;
+    int r = 0;
+    int w = 0;
+    int h = 0;
+    int x = 0;
+    int y = 0;
 
-    switch(shape)
+    if(shape.compare("Circle")==0)
     {
-    case gShape::SPHERE:
-    {
-        r = 64.0f;
-        w = r * 2.0f;
-        h = r * 2.0f;
-        x = size / 2 - r;
-        y = size / 2 - r;
-        QRect circleRect(static_cast<int>(x),static_cast<int>(y),static_cast<int>(w),static_cast<int>(h));
-        painter.drawEllipse(circleRect);
+        qDebug("I AM A CIRCLE");
+        r = 64;
+        w = r * 2;
+        h = r * 2;
+        x = rect.width() / 2 - r;
+        y = rect.height() / 2 - r;
+        QRect circleRect(x,y,w,h);
+        painter->drawEllipse(circleRect);
     }
-        break;
+    else if (shape.compare("Quad")==0) {
+        qDebug("I AM A QUAD");
+        r = 64;
+        w = r * 2;
+        h = r * 2;
+        x = rect.width() / 2 - r;
+        y = rect.height() / 2 - r;
+        QRect QuadeRect(x,y,w,h);
+        painter->drawRect(QuadeRect);
+    }
 
-     case gShape::CUBE:
-    {
-        w = r * 2.0f;
-        h = r * 2.0f;
-        x = size / 2 ;
-        y = size / 2;
-        QRect QuadeRect(static_cast<int>(x),static_cast<int>(y),static_cast<int>(w),static_cast<int>(h));
-        painter.drawRect(QuadeRect);
-    }
-        break;
-    }
 }

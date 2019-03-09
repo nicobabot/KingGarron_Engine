@@ -13,6 +13,7 @@
 #include "grenderwidget.h"
 #include "ui_grenderwidget.h"
 #include <QSignalBlocker>
+#include "gscene.h"
 
 
 InspectorWidget::InspectorWidget(QWidget *parent) :
@@ -32,13 +33,14 @@ InspectorWidget::InspectorWidget(QWidget *parent) :
 
 }
 
-void InspectorWidget::UpdateInspectorValues(gObject *object)
+void InspectorWidget::UpdateInspectorValues(gObject *object, GScene* scene)
 {
     /*
     QSignalBlocker posx_blocker(transform->ui->pos_x);
     QSignalBlocker posy_blocker(transform->ui->pos_y);
     QSignalBlocker posz_blocker(transform->ui->pos_z);
     */
+
     if(object!=nullptr)
     {
         for(gComponent *comp: object->gComponentVector)
@@ -66,13 +68,20 @@ void InspectorWidget::UpdateInspectorValues(gObject *object)
             }
             case gComponentType::COMP_RENDER:
             {
-                //render_widget->ui->Shapebox->set
-                //static_cast<gComponentRender*>(comp)->shape;
+                render_widget->renderComponent = static_cast<gComponentRender*>(comp);
+                QString* strShape = new QString(((static_cast<gComponentRender*>(comp))->shape).c_str());
+                int combIndex = render_widget->ui->Shapebox->findText(*strShape);
+                if ( combIndex != -1 ) { // -1 for not found
+                   render_widget->ui->Shapebox->setCurrentIndex(combIndex);
+                }
 
              break;
             }
             }
         }
+
+        if(scene != nullptr)
+        scene->repaint();
     }
 }
 
