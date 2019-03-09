@@ -59,17 +59,20 @@ void GScene::HierarchyRemove()
         scenegObjectVector.remove(i);
     }
     qDeleteAll(mainWindow->HierarchyList->selectedItems());
+    HierarchyClicked();
     this->repaint();
 }
 
 void GScene::HierarchyClicked(QListWidgetItem* item)
 {
     QModelIndexList indexes = mainWindow->HierarchyList->selectionModel()->selectedIndexes();
-    int index = indexes[0].row();
-    qDebug("index: %i", index);
-    inspectorWidget->UpdateInspectorValues(scenegObjectVector.at(index));
-
-    //Inspector.UpdateInspector(obj)
-
-    //qDebug("SUCC");
+    if (indexes.size() == 0)
+        clickedIndex = -1;
+    else
+        clickedIndex = indexes[0].row();
+    if (clickedIndex >= 0)
+        inspectorWidget->UpdateInspectorValues(scenegObjectVector.at(clickedIndex));
+    else
+        inspectorWidget->UpdateInspectorValues(nullptr);
+    qDebug("index: %i", clickedIndex);
 }
