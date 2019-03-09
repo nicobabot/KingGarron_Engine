@@ -2,6 +2,7 @@
 #include "ui_grenderwidget.h"
 #include "gcomponentrender.h"
 #include "mainwindow.h"
+#include "gscene.h";
 
 GRenderWidget::GRenderWidget(QWidget *parent) :
     QWidget(parent),
@@ -22,4 +23,12 @@ GRenderWidget::~GRenderWidget()
 void GRenderWidget::ModifyShapeComponent(const QString& text)
 {
     renderComponent->shape = text.toStdString();
+
+    if(scene != nullptr){
+        scene->repaint();
+    }
+    else{
+        qDebug("Scene is nullptr");
+    }
+
 }

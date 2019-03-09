@@ -1,6 +1,7 @@
 #include "gtransformwidget.h"
 #include "ui_gtransformwidget.h"
 #include "gcomponenttransform.h"
+#include "gscene.h";
 
 GTransformWidget::GTransformWidget(QWidget *parent) :
     QWidget(parent),
@@ -22,6 +23,8 @@ void GTransformWidget::PosXWidget(double item)
     if (transformComponent != nullptr)
     {
         transformComponent->position.setX(item);
+        if(scene != nullptr)
+        scene->repaint();
     }
 }
 
@@ -29,10 +32,14 @@ void GTransformWidget::PosYWidget(double item)
 {
     if(transformComponent!=nullptr)
     transformComponent->position.setY(item);
+    if(scene != nullptr)
+    scene->repaint();
 }
 
 void GTransformWidget::PosZWidget(double item)
 {
     if(transformComponent!=nullptr)
     transformComponent->position.setZ(item);
+    if(scene != nullptr)
+    scene->repaint();
 }

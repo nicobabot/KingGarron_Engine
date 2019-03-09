@@ -8,6 +8,7 @@ class GRenderWidget;
 }
 
 class gComponentRender;
+class GScene;
 
 class GRenderWidget : public QWidget
 {
@@ -23,6 +24,7 @@ public slots:
 public:
     Ui::GRenderWidget *ui= nullptr;
     gComponentRender *renderComponent = nullptr;
+    GScene *scene = nullptr;
 
 };
 

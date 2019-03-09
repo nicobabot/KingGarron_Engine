@@ -8,6 +8,7 @@ class GTransformWidget;
 }
 
 class gComponentTransform;
+class GScene;
 
 class GTransformWidget : public QWidget
 {
@@ -24,6 +25,7 @@ public slots:
 public:
     Ui::GTransformWidget *ui;
     gComponentTransform *transformComponent = nullptr;
+    GScene *scene = nullptr;
 };
 
 #endif // GTRANSFORMWIDGET_H
