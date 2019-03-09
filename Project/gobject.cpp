@@ -37,3 +37,13 @@ void gObject::PaintGGObject(GScene* obj, QRect rect)
             (static_cast<gComponentRender*>(component))->gPaintObject(obj, rect);
     }
 }
+
+gComponent* gObject::GetComponent(gComponentType type)
+{
+    for (gComponent* component : gComponentVector)
+    {
+        if(component->compType == type)
+            return component;
+    }
+    return nullptr;
+}

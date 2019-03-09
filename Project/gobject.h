@@ -4,9 +4,11 @@
 #include <QObject>
 #include <QWidget>
 #include "inspectorwidget.h"
+//#include "gcomponent.h"
 
-class gComponent;
 class GScene;
+class gComponent;
+enum gComponentType;
 
 class gObject : public QWidget
 {
@@ -20,6 +22,8 @@ public:
     void AddComponentRenderShape();
 
     void PaintGGObject(GScene* obj, QRect rect);
+
+    gComponent* GetComponent(gComponentType type);
 
 signals:
 
