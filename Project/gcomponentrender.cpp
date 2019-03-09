@@ -2,14 +2,15 @@
 #include"gobject.h"
 #include <QPainter>
 #include "gscene.h"
+#include "gcomponenttransform.h"
 
-gComponentRender::gComponentRender()
+gComponentRender::gComponentRender(gObject *parent) : gComponent (parent)
 {
     compType = gComponentType::COMP_RENDER;
     shape = "Quad";
 }
 
-gComponentRender::gComponentRender(gShape newShape, float newsize)
+gComponentRender::gComponentRender(gObject *parent, gShape newShape, float newsize): gComponent (parent)
 {
     compType = gComponentType::COMP_RENDER;
     shape = newShape;
@@ -42,42 +43,35 @@ void gComponentRender::gPaintObject(GScene* obj, QRect rect)
     painter.setBrush(brush);
     painter.setPen(pen);
 
-
     RenderShapeType(&painter, rect);
     painter.end();
-
-
-
-
 
 }
 
 void gComponentRender::RenderShapeType(QPainter *painter, QRect rect)
 {
-    int r = 0;
-    int w = 0;
-    int h = 0;
+    gComponentTransform* trans = static_cast<gComponentTransform*>(parent->GetComponent(gComponentType::COMP_TRANSFORM));
+
     int x = 0;
     int y = 0;
+
+    if(trans!=nullptr){
+        x = trans->position.x();
+        y = trans->position.y();
+    }
+
+    int r = 64;
+    int w = r * 2;
+    int h = r * 2;
 
     if(shape.compare("Circle")==0)
     {
         qDebug("I AM A CIRCLE");
-        r = 64;
-        w = r * 2;
-        h = r * 2;
-        x = rect.width() / 2 - r;
-        y = rect.height() / 2 - r;
         QRect circleRect(x,y,w,h);
         painter->drawEllipse(circleRect);
     }
     else if (shape.compare("Quad")==0) {
         qDebug("I AM A QUAD");
-        r = 64;
-        w = r * 2;
-        h = r * 2;
-        x = rect.width() / 2 - r;
-        y = rect.height() / 2 - r;
         QRect QuadeRect(x,y,w,h);
         painter->drawRect(QuadeRect);
     }

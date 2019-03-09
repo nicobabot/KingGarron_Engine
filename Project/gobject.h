@@ -4,11 +4,11 @@
 #include <QObject>
 #include <QWidget>
 #include "inspectorwidget.h"
-//#include "gcomponent.h"
+#include "gcomponent.h"
 
 class GScene;
-class gComponent;
-enum gComponentType;
+//class gComponent;
+//enum gComponentType;
 
 class gObject : public QWidget
 {

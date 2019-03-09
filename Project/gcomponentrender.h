@@ -14,8 +14,8 @@ enum gShape{
 class gComponentRender : public gComponent
 {
 public:
-    gComponentRender();
-    gComponentRender(gShape newShape, float newsize);
+    gComponentRender(gObject *parent);
+    gComponentRender(gObject *parent, gShape newShape, float newsize);
     void gPaintObject(GScene* obj, QRect rect);
 private:
     void RenderShapeType(QPainter *painter, QRect rect);

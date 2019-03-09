@@ -1,5 +1,5 @@
 #include "gobject.h"
-#include "gcomponent.h"
+//#include "gcomponent.h"
 #include "gcomponentrender.h"
 #include "gcomponenttransform.h"
 #include "gscene.h"
@@ -21,12 +21,12 @@ gObject::~gObject()
 
 void gObject::AddComponentTransform()
 {
-    gComponentVector.push_back(new gComponentTransform());
+    gComponentVector.push_back(new gComponentTransform(this));
 }
 
 void gObject::AddComponentRenderShape()
 {
-    gComponentVector.push_back(new gComponentRender());
+    gComponentVector.push_back(new gComponentRender(this));
 }
 
 void gObject::PaintGGObject(GScene* obj, QRect rect)

@@ -9,8 +9,8 @@ class gObject;
 class gComponentTransform : public gComponent
 {
 public:
-    gComponentTransform();
-    gComponentTransform(QVector3D newpos, QVector3D newscale, QQuaternion newrotation);
+    gComponentTransform(gObject *parent);
+    gComponentTransform(gObject *parent, QVector3D newpos, QVector3D newscale, QQuaternion newrotation);
 public:
     QVector3D position;
     QVector3D scale;
