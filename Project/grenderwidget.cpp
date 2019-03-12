@@ -54,4 +54,14 @@ void GRenderWidget::ColorPicker(){
 
 QColor color = QColorDialog::getColor();
 
+if(renderComponent!=nullptr)
+renderComponent->color = color;
+
+if(scene != nullptr){
+    scene->repaint();
+}
+else{
+    qDebug("Scene is nullptr");
+}
+
 }

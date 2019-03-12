@@ -36,7 +36,7 @@ void gComponentRender::gPaintObject(GScene* obj, QRect rect)
 
     //painter.drawRect(rect);
 
-    brush.setColor(whiteColor);
+    brush.setColor(color);
     pen.setWidth(4);
     pen.setColor(blackColor);
     pen.setStyle(Qt::PenStyle::DashLine);

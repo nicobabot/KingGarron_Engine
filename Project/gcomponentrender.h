@@ -3,6 +3,7 @@
 #include "gcomponent.h"
 #include "qrect.h"
 #include <QPainter>
+#include <QColorDialog>
 
 class GScene;
 
@@ -24,6 +25,7 @@ public:
     //gShape shape;
     std::string shape;
     float size = 50.0f;
+    QColor color;
 };
 
 #endif // GCOMPONENTRENDER_H
