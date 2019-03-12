@@ -60,7 +60,7 @@ void gComponentRender::RenderShapeType(QPainter *painter, QRect rect)
         y = trans->position.y();
     }
 
-    int r = 64;
+    int r = size;
     int w = r * 2;
     int h = r * 2;
 

@@ -20,6 +20,8 @@ public:
 
 public slots:
     void ModifyShapeComponent(const QString&);
+    void ModifySizeComponent(double item);
+    void ColorPicker();
 
 public:
     Ui::GRenderWidget *ui= nullptr;

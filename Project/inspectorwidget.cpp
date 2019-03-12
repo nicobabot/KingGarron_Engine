@@ -60,9 +60,9 @@ void InspectorWidget::UpdateInspectorValues(gObject *object, GScene* scene)
                 transform->ui->pos_y->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->position.y()));
                 transform->ui->pos_z->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->position.z()));
 
-                 transform->ui->scale_x->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->scale.x()));
-                 transform->ui->scale_y->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->scale.y()));
-                 transform->ui->scale_z->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->scale.z()));
+                 //transform->ui->scale_x->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->scale.x()));
+                 //transform->ui->scale_y->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->scale.y()));
+                 //transform->ui->scale_z->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->scale.z()));
 
                  //For rotation we need to transform quaternion to euler ang
                 break;
@@ -75,6 +75,7 @@ void InspectorWidget::UpdateInspectorValues(gObject *object, GScene* scene)
                 int combIndex = render_widget->ui->Shapebox->findText(*strShape);
                 if ( combIndex != -1 ) { // -1 for not found
                    render_widget->ui->Shapebox->setCurrentIndex(combIndex);
+                   render_widget->ui->SizeValue->setValue(static_cast<double>(static_cast<gComponentRender*>(comp)->size));
                 }
 
              break;

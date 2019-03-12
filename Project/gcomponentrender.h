@@ -23,7 +23,7 @@ private:
 public:
     //gShape shape;
     std::string shape;
-    float size;
+    float size = 50.0f;
 };
 
 #endif // GCOMPONENTRENDER_H
