@@ -25,7 +25,7 @@ public:
     //gShape shape;
     std::string shape;
     float size = 50.0f;
-    QColor color;
+    QColor color = QColor(1,1,1,255);
 };
 
 #endif // GCOMPONENTRENDER_H

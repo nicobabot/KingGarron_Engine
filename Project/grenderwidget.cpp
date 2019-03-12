@@ -57,6 +57,8 @@ QColor color = QColorDialog::getColor();
 if(renderComponent!=nullptr)
 renderComponent->color = color;
 
+ui->ColorButton->setStyleSheet(QString("Background-Color: %0;").arg(renderComponent->color.name()));
+
 if(scene != nullptr){
     scene->repaint();
 }

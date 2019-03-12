@@ -76,7 +76,7 @@ void InspectorWidget::UpdateInspectorValues(gObject *object, GScene* scene)
                 if ( combIndex != -1 ) { // -1 for not found
                    render_widget->ui->Shapebox->setCurrentIndex(combIndex);
                    render_widget->ui->SizeValue->setValue(static_cast<double>(static_cast<gComponentRender*>(comp)->size));
-                   render_widget->ui->ColorButton->setStyleSheet(QString("Background-color: %0;").arg((static_cast<gComponentRender*>(comp))->color.name()));
+                   render_widget->ui->ColorButton->setStyleSheet(QString("Background-Color: %0;").arg(static_cast<gComponentRender*>(comp)->color.name()));
                 }
 
              break;
