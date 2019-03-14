@@ -28,7 +28,7 @@ void gComponentRender::gPaintObject(GScene* obj)
     brush.setColor(color);
     pen.setWidth(4);
     pen.setColor(blackColor);
-    pen.setStyle(Qt::PenStyle::DashLine);
+    pen.setStyle(Qt::PenStyle::NoPen);
     painter.setBrush(brush);
     painter.setPen(pen);
     RenderShapeType(&painter);
