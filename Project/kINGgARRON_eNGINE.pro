@@ -27,7 +27,6 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     myopenglwidget.cpp \
-    gprimitive.cpp \
     gcomponent.cpp \
     gobject.cpp \
     inspectorwidget.cpp \
@@ -40,7 +39,6 @@ SOURCES += \
 HEADERS += \
         mainwindow.h \
     myopenglwidget.h \
-    gprimitive.h \
     gcomponent.h \
     gobject.h \
     inspectorwidget.h \

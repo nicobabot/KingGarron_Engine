@@ -12,11 +12,9 @@ GRenderWidget::GRenderWidget(QWidget *parent) :
     ui->setupUi(this);
     ui->Shapebox->addItem("Quad");
     ui->Shapebox->addItem("Circle");
-
     connect(ui->Shapebox,SIGNAL(currentTextChanged(const QString&)), this,SLOT(ModifyShapeComponent(const QString&)));
     connect(ui->SizeValue, SIGNAL(valueChanged(double)), this, SLOT(ModifySizeComponent(double)));
     connect(ui->ColorButton, SIGNAL(clicked()), this, SLOT(ColorPicker()));
-    //ColorButton
 }
 
 GRenderWidget::~GRenderWidget()
@@ -26,44 +24,34 @@ GRenderWidget::~GRenderWidget()
 
 void GRenderWidget::ModifyShapeComponent(const QString& text)
 {
-    if(renderComponent!=nullptr)
-    renderComponent->shape = text.toStdString();
-
-    if(scene != nullptr){
+    if (renderComponent != nullptr)
+        renderComponent->shape = text.toStdString();
+    if (scene != nullptr)
         scene->repaint();
-    }
-    else{
+    else
         qDebug("Scene is nullptr");
-    }
 }
 
 void GRenderWidget::ModifySizeComponent(double item)
 {
     if(renderComponent!=nullptr)
-    renderComponent->size = item;
-
-    if(scene != nullptr){
+        renderComponent->size = static_cast<float>(item);
+    if (scene != nullptr)
         scene->repaint();
-    }
-    else{
+    else
         qDebug("Scene is nullptr");
+}
+
+void GRenderWidget::ColorPicker()
+{
+    QColor color = QColorDialog::getColor();
+    if (renderComponent != nullptr)
+    {
+        renderComponent->color = color;
+        ui->ColorButton->setStyleSheet(QString("Background-Color: %0;").arg(renderComponent->color.name()));
     }
-}
-
-void GRenderWidget::ColorPicker(){
-
-QColor color = QColorDialog::getColor();
-
-if(renderComponent!=nullptr){
-renderComponent->color = color;
-ui->ColorButton->setStyleSheet(QString("Background-Color: %0;").arg(renderComponent->color.name()));
-}
-
-if(scene != nullptr){
-    scene->repaint();
-}
-else{
-    qDebug("Scene is nullptr");
-}
-
+    if (scene != nullptr)
+        scene->repaint();
+    else
+        qDebug("Scene is nullptr");
 }

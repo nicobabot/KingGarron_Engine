@@ -4,7 +4,8 @@
 
 class gObject;
 
-enum gComponentType{
+enum gComponentType
+{
     COMP_UNDEFINED,
     COMP_TRANSFORM,
     COMP_RENDER

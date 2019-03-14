@@ -9,7 +9,6 @@ GScene::GScene(QWidget *parent) : QWidget(parent)
 {
     inspectorWidget = new InspectorWidget();
     mainWindow->Inspector->setWidget(inspectorWidget);
-
     connect(mainWindow->HierarchyAdd, SIGNAL(clicked()), this, SLOT(HierarchyAdd()));
     connect(mainWindow->HierarchyRemove, SIGNAL(clicked()), this, SLOT(HierarchyRemove()));
     connect(mainWindow->HierarchyList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(HierarchyClicked(QListWidgetItem*)));
@@ -25,17 +24,10 @@ QSize GScene::minimumSizeHint() const
     return QSize(64,64);
 }
 
-void GScene::paintEvent(QPaintEvent *event)
+void GScene::paintEvent(QPaintEvent* event)
 {
     for (gObject* object : scenegObjectVector)
-        object->PaintGGObject(this, rect());
-    /*
-    for (gComponent* component : gComponentVector)
-    {
-        if(component->compType == gComponentType::COMP_RENDER)
-            ((gComponentRender*)component)->gPaintObject(obj, rect);
-    }
-    */
+        object->PaintGGObject(this);
 }
 
 void GScene::HierarchyAdd()
@@ -74,5 +66,5 @@ void GScene::HierarchyClicked(QListWidgetItem* item)
         inspectorWidget->UpdateInspectorValues(scenegObjectVector.at(clickedIndex), this);
     else
         inspectorWidget->UpdateInspectorValues(nullptr, this);
-    qDebug("index: %i", clickedIndex);
+    //qDebug("index: %i", clickedIndex);
 }

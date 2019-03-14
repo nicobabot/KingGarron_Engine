@@ -17,23 +17,14 @@ class gObject : public QWidget
 public:
     explicit gObject(QString name, bool active, QWidget *parent = nullptr);
     ~gObject();
-
     void AddComponentTransform();
     void AddComponentRenderShape();
-
-    void PaintGGObject(GScene* obj, QRect rect);
-
+    void PaintGGObject(GScene* obj);
     gComponent* GetComponent(gComponentType type);
-
-signals:
-
-public slots:
-
 private:
     QString name = "";
     bool active = true;
     QVector<gComponent*> gComponentVector;
-
 };
 
 #endif // GOBJECT_H

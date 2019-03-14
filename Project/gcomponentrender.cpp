@@ -17,63 +17,45 @@ gComponentRender::gComponentRender(gObject *parent, gShape newShape, float newsi
     size = newsize;
 }
 
-void gComponentRender::gPaintObject(GScene* obj, QRect rect)
+void gComponentRender::gPaintObject(GScene* obj)
 {
-    QColor blueColor = QColor::fromRgb(127,190,220);
-    QColor whiteColor = QColor::fromRgb(255,255,255);
-    QColor blackColor = QColor::fromRgb(0,0,0);
-
-    QPainter painter;
-    QBrush brush;
-    QPen pen;
-
     painter.begin(obj);
     brush.setColor(blueColor);
     brush.setStyle(Qt::BrushStyle::SolidPattern);
     pen.setStyle(Qt::PenStyle::NoPen);
     painter.setBrush(brush);
     painter.setPen(pen);
-
-    //painter.drawRect(rect);
-
     brush.setColor(color);
     pen.setWidth(4);
     pen.setColor(blackColor);
     pen.setStyle(Qt::PenStyle::DashLine);
     painter.setBrush(brush);
     painter.setPen(pen);
-
-    RenderShapeType(&painter, rect);
+    RenderShapeType(&painter);
     painter.end();
-
 }
 
-void gComponentRender::RenderShapeType(QPainter *painter, QRect rect)
+void gComponentRender::RenderShapeType(QPainter *painter)
 {
     gComponentTransform* trans = static_cast<gComponentTransform*>(parent->GetComponent(gComponentType::COMP_TRANSFORM));
-
     int x = 0;
     int y = 0;
-
-    if(trans!=nullptr){
-        x = trans->position.x();
-        y = trans->position.y();
+    if (trans != nullptr)
+    {
+        x = static_cast<int>(trans->position.x());
+        y = static_cast<int>(trans->position.y());
     }
-
-    int r = size;
+    int r = static_cast<int>(size);
     int w = r * 2;
     int h = r * 2;
-
-    if(shape.compare("Circle")==0)
+    if (shape.compare("Circle") == 0)
     {
-        qDebug("I AM A CIRCLE");
         QRect circleRect(x,y,w,h);
         painter->drawEllipse(circleRect);
     }
-    else if (shape.compare("Quad")==0) {
-        qDebug("I AM A QUAD");
+    else if (shape.compare("Quad") == 0)
+    {
         QRect QuadeRect(x,y,w,h);
         painter->drawRect(QuadeRect);
     }
-
 }

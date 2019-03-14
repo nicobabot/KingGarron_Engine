@@ -3,7 +3,8 @@
 
 #include <QWidget>
 
-namespace Ui {
+namespace Ui
+{
 class GTransformWidget;
 }
 
@@ -13,17 +14,15 @@ class GScene;
 class GTransformWidget : public QWidget
 {
     Q_OBJECT
-
 public:
-    explicit GTransformWidget(QWidget *parent = 0);
+    explicit GTransformWidget(QWidget *parent = nullptr);
     ~GTransformWidget();
 public slots:
     void PosXWidget(double item);
     void PosYWidget(double item);
     void PosZWidget(double item);
-
 public:
-    Ui::GTransformWidget *ui;
+    Ui::GTransformWidget *ui = nullptr;
     gComponentTransform *transformComponent = nullptr;
     GScene *scene = nullptr;
 };

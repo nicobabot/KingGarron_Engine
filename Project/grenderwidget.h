@@ -3,7 +3,8 @@
 
 #include <QWidget>
 
-namespace Ui {
+namespace Ui
+{
 class GRenderWidget;
 }
 
@@ -13,21 +14,17 @@ class GScene;
 class GRenderWidget : public QWidget
 {
     Q_OBJECT
-
 public:
-    explicit GRenderWidget(QWidget *parent = 0);
+    explicit GRenderWidget(QWidget *parent = nullptr);
     ~GRenderWidget();
-
 public slots:
     void ModifyShapeComponent(const QString&);
     void ModifySizeComponent(double item);
     void ColorPicker();
-
 public:
     Ui::GRenderWidget *ui= nullptr;
     gComponentRender *renderComponent = nullptr;
     GScene *scene = nullptr;
-
 };
 
 #endif // GRENDERWIDGET_H
