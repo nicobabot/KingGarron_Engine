@@ -43,6 +43,17 @@ public slots:
  
  To print the scene we have I class that inheritates from QWidget and a widget promoted that will print using Qpainter all the objects.
 
+Example:
+
+Scene in paint event calling object drawing:
+
+void GScene::paintEvent(QPaintEvent* event)
+{
+    for (gObject* object : scenegObjectVector)
+        object->PaintGGObject(this);
+}
+
+
 Honor to the name of the engine:
 
 ![KingKRool](https://github.com/nicobabot/KingGarron_Engine/blob/master/Images/KingKRool.jpg?raw=true)
