@@ -25,6 +25,18 @@ In this component is stored the shape of the object, also the color and the size
 
 ![RenderTransform](https://github.com/nicobabot/KingGarron_Engine/blob/master/Images/RenderTransform.PNG?raw=true)
 
+We've created entities that have components.
+This components store all the information about their type of comoponent.
+We've also created Widgets of all the components types and connectet the components to the widgets by using slots and signals.
+
+Examples:
+
+ connect(ui->pos_x, SIGNAL(valueChanged(double)), this, SLOT(PosXWidget(double)));
+ connect(ui->pos_y, SIGNAL(valueChanged(double)), this, SLOT(PosYWidget(double)));
+public slots:
+    void PosXWidget(double item);
+    void PosYWidget(double item);
+
 Honor to the name of the engine:
 
 ![KingKRool](https://github.com/nicobabot/KingGarron_Engine/blob/master/Images/KingKRool.jpg?raw=true)
