@@ -49,8 +49,10 @@ Scene in paint event calling object drawing:
 
 void GScene::paintEvent(QPaintEvent* event)
 {
+
     for (gObject* object : scenegObjectVector)
         object->PaintGGObject(this);
+        
 }
 
 
