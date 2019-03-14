@@ -47,8 +47,8 @@ void GScene::HierarchyRemove()
         indexList.push_back(index.row());
     for (int i = 0; i < static_cast<int>(indexList.size()); i++)
     {
-        delete scenegObjectVector.at(i);
-        scenegObjectVector.remove(i);
+        delete scenegObjectVector.at(indexList.at(i));
+        scenegObjectVector.remove(indexList.at(i));
     }
     qDeleteAll(mainWindow->HierarchyList->selectedItems());
     HierarchyClicked();
