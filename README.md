@@ -27,7 +27,7 @@ In this component is stored the shape of the object, also the color and the size
 
 We've created entities that have components.
 This components store all the information about their type of comoponent.
-We've also created Widgets of all the components types and connectet the components to the widgets by using slots and signals.
+We've also created Widgets of all the components types and connected the components to the widgets by using slots and signals.
 
 Examples:
 
@@ -40,6 +40,8 @@ public slots:
  void PosXWidget(double item);
     
  void PosYWidget(double item);
+ 
+ To print the scene we have I class that inheritates from QWidget and a widget promoted that will print using Qpainter all the objects.
 
 Honor to the name of the engine:
 
