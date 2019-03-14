@@ -32,10 +32,14 @@ We've also created Widgets of all the components types and connectet the compone
 Examples:
 
  connect(ui->pos_x, SIGNAL(valueChanged(double)), this, SLOT(PosXWidget(double)));
+ 
  connect(ui->pos_y, SIGNAL(valueChanged(double)), this, SLOT(PosYWidget(double)));
+ 
 public slots:
-    void PosXWidget(double item);
-    void PosYWidget(double item);
+
+ void PosXWidget(double item);
+    
+ void PosYWidget(double item);
 
 Honor to the name of the engine:
 
