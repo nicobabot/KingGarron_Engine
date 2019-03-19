@@ -27,19 +27,48 @@ In this component is stored the shape of the object, also the color and the size
 
 We've created entities that have components.
 This components store all the information about their type of comoponent.
-We've also created Widgets of all the components types and connectet the components to the widgets by using slots and signals.
+We've also created Widgets of all the components types and connected the components to the widgets by using slots and signals.
 
-Examples:
-
- connect(ui->pos_x, SIGNAL(valueChanged(double)), this, SLOT(PosXWidget(double)));
+Connect:
+ ```bash
+    connect(ui->pos_x, SIGNAL(valueChanged(double)), this, SLOT(PosXWidget(double)));
+    connect(ui->pos_y, SIGNAL(valueChanged(double)), this, SLOT(PosYWidget(double)));
+    connect(ui->pos_z, SIGNAL(valueChanged(double)), this, SLOT(PosZWidget(double)));
+ ```
  
- connect(ui->pos_y, SIGNAL(valueChanged(double)), this, SLOT(PosYWidget(double)));
+ Slots:
  
-public slots:
+  ```bash
+ public slots:
+    void PosXWidget(double item);
+    void PosYWidget(double item);
+    void PosZWidget(double item);
+   ```
+ 
+To print the scene we have a class that inheritates from QWidget and a widget promoted that will print using Qpainter all the objects.
 
- void PosXWidget(double item);
-    
- void PosYWidget(double item);
+Scene in paint event calling object drawing:
+
+```bash
+void GScene::paintEvent(QPaintEvent* event)
+{
+    for (gObject* object : scenegObjectVector)
+        object->PaintGGObject(this); 
+}
+```
+To choose the color of the Objects we used a QColorDialog to let the user choose the color and finally we change the stylesheet of a button to show the user the color of the object.
+
+```bash
+void GRenderWidget::ColorPicker()
+{
+    QColor color = QColorDialog::getColor();
+    if (renderComponent != nullptr)
+    {
+        renderComponent->color = color;
+        ui->ColorButton->setStyleSheet(QString("Background-Color: %0;").arg(renderComponent->color.name()));
+    }
+}
+```
 
 Honor to the name of the engine:
 
