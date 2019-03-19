@@ -34,7 +34,8 @@ SOURCES += \
     grenderwidget.cpp \
     gcomponenttransform.cpp \
     gcomponentrender.cpp \
-    gscene.cpp
+    gscene.cpp \
+    vertexformat.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -46,7 +47,8 @@ HEADERS += \
     grenderwidget.h \
     gcomponenttransform.h \
     gcomponentrender.h \
-    gscene.h
+    gscene.h \
+    vertexformat.h
 
 
 FORMS += \
@@ -57,3 +59,7 @@ FORMS += \
 LIBS += -lopengl32
 
 QT += opengl
+
+DISTFILES += \
+    shaders/shaderl_vert.vsh \
+    shaders/shaderl_frag.fsh

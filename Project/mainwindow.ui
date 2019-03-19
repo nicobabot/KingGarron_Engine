@@ -122,7 +122,7 @@
    <widget class="QWidget" name="dockWidgetContents_6">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="GScene" name="widget" native="true"/>
+      <widget class="MyOpenGLWidget" name="openGLWidget"/>
      </item>
     </layout>
    </widget>
@@ -161,10 +161,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>GScene</class>
-   <extends>QWidget</extends>
-   <header location="global">gscene.h</header>
-   <container>1</container>
+   <class>MyOpenGLWidget</class>
+   <extends>QOpenGLWidget</extends>
+   <header location="global">myopenglwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
