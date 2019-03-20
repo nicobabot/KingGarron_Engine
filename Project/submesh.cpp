@@ -24,6 +24,13 @@ SubMesh::~SubMesh()
 }
 void SubMesh::update()
 {
+    //glLoadMatrixf()
+
+    glTranslatef(0,0, -5);
+    glPushMatrix();
+    glLoadIdentity();
+
+    //glRotatef()
 
     // VAO: Vertex format description and state of VBOs vao.create();
     vao.bind();
@@ -55,6 +62,9 @@ void SubMesh::update()
     if (ibo.isCreated()) {
     ibo.release();
     }
+
+    glPopMatrix();
+
 }
 void SubMesh::draw()
 {

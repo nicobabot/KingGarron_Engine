@@ -26,5 +26,7 @@ private:
     QOpenGLBuffer vbo;
     QOpenGLBuffer ibo;
     QOpenGLVertexArrayObject vao;
+
+    QOpenGLFunctions *glfuncs = nullptr;
 };
 #endif // SUBMESH_H
