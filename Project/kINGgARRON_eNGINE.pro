@@ -67,3 +67,9 @@ QT += opengl
 DISTFILES += \
     shaders/shaderl_vert.vsh \
     shaders/shaderl_frag.fsh
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../ThirdParty/Assimp/lib/windows/ - lassimp
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../ThirdParty/Assimp/lib/windows/ - lassimpd
+else:unix: LIBS += -L$$PWD/../ThirdParty/Assimp/lib/osx/ - lassimp.4.1.0
+INCLUDEPATH += $$PWD/../ThirdParty/Assimp/include
+DEPENDPATH += $$PWD/../ThirdParty/Assimp/include
