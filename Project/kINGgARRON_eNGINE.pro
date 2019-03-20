@@ -35,7 +35,9 @@ SOURCES += \
     gcomponenttransform.cpp \
     gcomponentrender.cpp \
     gscene.cpp \
-    vertexformat.cpp
+    vertexformat.cpp \
+    submesh.cpp \
+    mesh.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -48,7 +50,9 @@ HEADERS += \
     gcomponenttransform.h \
     gcomponentrender.h \
     gscene.h \
-    vertexformat.h
+    vertexformat.h \
+    submesh.h \
+    mesh.h
 
 
 FORMS += \
