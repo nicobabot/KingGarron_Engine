@@ -1,6 +1,7 @@
 #include "submesh.h"
 #include<QtOpenGL>
 #include<QOpenGLFunctions_3_3_Core>
+#include<QMatrix4x4>
 
 SubMesh::SubMesh(VertexFormat vertexFormat,	void *data, int	size)
 {
@@ -29,6 +30,11 @@ void SubMesh::update()
     glTranslatef(0,0, -5);
     glPushMatrix();
     glLoadIdentity();
+
+    QMatrix4x4 mat;
+    mat.setToIdentity();
+    mat.translate(QVector3D(0.0f, 0.0f, 0.0f));
+    mat.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
 
     //glRotatef()
 

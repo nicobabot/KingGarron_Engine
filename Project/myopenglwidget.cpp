@@ -38,6 +38,36 @@ void MyOpenGLWidget::paintGL()
     glClearColor(0.0f, 0.0f, 0.0f,1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
+    //Projection/Model view setting
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    /*QMatrix4x4 mat;
+    mat.setToIdentity();
+    mat.translate(QVector3D(0.0f, 0.0f, 0.0f));
+    mat.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
+    glLoadMatrixf(mat.data());*/
+
+
+    QMatrix4x4 model;
+    model.translate(QVector3D(0.0f, 0.0f, -5.0f));
+    //model.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
+
+    QMatrix4x4 view;
+    view.lookAt(
+      QVector3D(0.0, 0.0, 0.0), // Eye
+      QVector3D(0.0, 0.0, 0.0), // Focal Point
+      QVector3D(0.0, 1.0, 0.0)); // Up vector
+    QMatrix4x4 proj;
+    // Window size is fixed at 800.0 by 600.0
+    proj.perspective(45.0, 1920.0 / 1080.0, 1.0, 100.0);
+    QMatrix4x4 mvp = (proj * view * model);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    //Stuff
     QOpenGLBuffer vbo;
     QOpenGLVertexArrayObject vao;
     QOpenGLShaderProgram program;
@@ -52,6 +82,13 @@ void MyOpenGLWidget::paintGL()
     QVector3D vertices[] = { QVector3D(-0.5f, -0.5f, 0.0f), QVector3D(1.0f, 0.0f, 0.0f),
                              QVector3D( 0.5f, -0.5f, 0.0f), QVector3D(0.0f, 1.0f, 0.0f),
                              QVector3D( 0.0f, 0.5f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f) };
+
+
+    int modelLoc = glGetUniformLocation(program.programId(), "mat_model");
+    glUniformMatrix4fv(modelLoc, 1, GL_TRUE, model.data());
+
+    int projecLoc = glGetUniformLocation(program.programId(), "projection_view");
+    glUniformMatrix4fv(projecLoc, 1, GL_TRUE, mvp.data());
 
     vbo.create();
     vbo.bind();
@@ -71,18 +108,13 @@ void MyOpenGLWidget::paintGL()
 
     if(program.bind())
     {
+
         vao.bind();
         glDrawArrays(GL_TRIANGLES, 0,3);
     }
-
-
-
-
 
     // Release
     vao.release();
     vbo.release();
     program. release();
-
-
 }
