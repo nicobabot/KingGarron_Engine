@@ -8,6 +8,7 @@ Ui::MainWindow* mainWindow = nullptr;
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    //a.setAttribute(Qt::AA_UseDesktopOpenGL);
     QSurfaceFormat format = QSurfaceFormat::defaultFormat();
     format.setMinorVersion(3);
     format.setMajorVersion(3);

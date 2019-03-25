@@ -49,9 +49,10 @@ void MyOpenGLWidget::paintGL()
     mat.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
     glLoadMatrixf(mat.data());*/
 
-
+    /*
     QMatrix4x4 model;
-    model.translate(QVector3D(0.0f, 0.0f, -5.0f));
+    model.setToIdentity();
+    //model.translate(QVector3D(0.0f, 0.0f, 0.0f));
     //model.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
 
     QMatrix4x4 view;
@@ -59,10 +60,22 @@ void MyOpenGLWidget::paintGL()
       QVector3D(0.0, 0.0, 0.0), // Eye
       QVector3D(0.0, 0.0, 0.0), // Focal Point
       QVector3D(0.0, 1.0, 0.0)); // Up vector
+
     QMatrix4x4 proj;
     // Window size is fixed at 800.0 by 600.0
     proj.perspective(45.0, 1920.0 / 1080.0, 1.0, 100.0);
-    QMatrix4x4 mvp = (proj * view * model);
+    QMatrix4x4 mvp = (proj * view);
+    */
+    QMatrix4x4 model;
+    model.setToIdentity();
+    model.rotate(-55.0f, QVector3D(1.0f, 0.0f, 0.0f));
+    QMatrix4x4 view;
+    view.setToIdentity();
+    view.translate(QVector3D(0.0f, 0.0f, -3.0f));
+    QMatrix4x4 proj;
+    proj.perspective(45.0f, 1920.0 / 1080.0, 0.1f, 100.0f);
+    proj.setToIdentity();
+    QMatrix4x4 mvp = (proj * view);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
