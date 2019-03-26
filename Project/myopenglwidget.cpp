@@ -73,9 +73,10 @@ void MyOpenGLWidget::paintGL()
     view.setToIdentity();
     view.translate(QVector3D(0.0f, 0.0f, -3.0f));
     QMatrix4x4 proj;
-    proj.perspective(45.0f, 1920.0 / 1080.0, 0.1f, 100.0f);
     proj.setToIdentity();
-    QMatrix4x4 mvp = (proj * view);
+    proj.perspective(45.0f, 1920.0 / 1080.0, 0.1f, 100.0f);
+
+    QMatrix4x4 mvp = (proj * view * model);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
