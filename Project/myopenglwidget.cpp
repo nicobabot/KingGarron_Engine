@@ -68,7 +68,7 @@ void MyOpenGLWidget::paintGL()
     */
     QMatrix4x4 model;
     model.setToIdentity();
-    model.rotate(-55.0f, QVector3D(1.0f, 0.0f, 0.0f));
+    model.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
     QMatrix4x4 view;
     view.setToIdentity();
     view.translate(QVector3D(0.0f, 0.0f, -3.0f));

@@ -68,5 +68,5 @@ DISTFILES += \
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/ThirdParty/Assimp/lib -lassimp
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/ThirdParty/Assimp/lib -lassimpd
-INCLUDEPATH += $$PWD/../ThirdParty/Assimp/include
-DEPENDPATH += $$PWD/../ThirdParty/Assimp/include
+INCLUDEPATH += $$PWD/ThirdParty/Assimp/include
+DEPENDPATH += $$PWD/ThirdParty/Assimp/include
