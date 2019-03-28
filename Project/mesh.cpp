@@ -1,7 +1,5 @@
 #include "mesh.h"
-//#include <ThirdParty/Assimp/include/assimp/Importer.hpp>
-
-//#pragma comment(lib, "./ThirdParty/Assimp/lib/assimp.lib")
+#include <assimp/Importer.hpp>
 
 Mesh::Mesh()
 {
@@ -10,8 +8,7 @@ Mesh::Mesh()
 
 void Mesh::loadModel(const char *filename)
 {
-    //Assimp::Importer import;
-
+    Assimp::Importer importer;
    /* QFile file(path);
     if (!file.open(QI0Device::ReadOnly))
     std::cout << "Could not open file for read: " << path << std::endl;
