@@ -41,3 +41,6 @@ target_wrapper.*
 
 # QtCreator CMake
 CMakeLists.txt.user*
+
+!./Project/ThirdParty/Assimp/lib/assimp.dll
+!./Project/ThirdParty/Assimp/lib/assimpd.dll
