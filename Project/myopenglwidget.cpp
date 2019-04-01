@@ -3,6 +3,8 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLShaderProgram>
+#include "mesh.h"
+#include "submesh.h"
 
 #pragma comment(lib, "OpenGL32.lib")
 
@@ -23,6 +25,11 @@ void MyOpenGLWidget::initializeGL()
 
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
+
+    myMesh = new Mesh();
+    myMesh->loadModel("./Models/Patrick/Patrick.obj");
+
+    qDebug("Number of submeshes: %i", myMesh->submeshes.count());
 
     //glDisable(GL_CULL_FACE);
 
@@ -131,4 +138,20 @@ void MyOpenGLWidget::paintGL()
     vao.release();
     vbo.release();
     program. release();
+
+
+    /*for(int i=0; i<myMesh->submeshes.count(); i++)
+    {
+        if(myMesh->submeshes[i]!=nullptr)
+        {
+            myMesh->submeshes[i]->update();
+            qDebug("DIBUGAME");
+            myMesh->submeshes[i]->draw();
+            qDebug("SubMesh %i is your time", i);
+        }
+        else{
+                qDebug("SubMesh %i is nullptr", i);
+        }
+    }*/
+
 }

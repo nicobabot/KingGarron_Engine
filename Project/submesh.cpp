@@ -27,16 +27,19 @@ void SubMesh::update()
 {
     //glLoadMatrixf()
 
-    glTranslatef(0,0, -5);
-    glPushMatrix();
+    //glTranslatef(0,0, -5);
+    //glPushMatrix();
+
+    glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    QMatrix4x4 mat;
+    /*QMatrix4x4 mat;
     mat.setToIdentity();
     mat.translate(QVector3D(0.0f, 0.0f, 0.0f));
-    mat.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
+    mat.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));*/
 
     //glRotatef()
+    qDebug("1");
 
     // VAO: Vertex format description and state of VBOs vao.create();
     vao.bind();
@@ -45,20 +48,31 @@ void SubMesh::update()
     vbo.bind();
     vbo.setUsagePattern(QOpenGLBuffer::UsagePattern::StaticDraw);
     vbo.allocate(data, int(data_size));
-    delete[] data;
+    qDebug("2");
+    //delete[] data;
+    qDebug("3");
     data = nullptr;
+    qDebug("4");
     // IBO: Buffer with indexes if (indices != nullptr)
     ibo.create();
+    qDebug("5");
     ibo.bind();
-    ibo.setUsagePattern(QOpenGLBuffer::UsagePattern::StaticDraw); ibo.allocate(indices, int(indices_count * sizeof(unsigned int))); delete[] indices;
+    qDebug("6");
+    ibo.setUsagePattern(QOpenGLBuffer::UsagePattern::StaticDraw);
+
+    qDebug("MY INDICES ARE %i", indices_count);
+
+    ibo.allocate(indices, int(indices_count * sizeof(unsigned int)));
+    //delete[] indices;
+    qDebug("7");
     indices = nullptr;
     for (int location = 0; location < MAX_VERTEX_ATTRIBUTES; ++location)
     {
         VertexAttribute &attr = vertexFormat.attribute[location];
         if (attr.enabled)
         {
-
             glfuncs->glEnableVertexAttribArray(GLuint(location));
+
             glfuncs->glVertexAttribPointer(GLuint(location), attr.ncomp,GL_FLOAT,GL_FALSE,vertexFormat.size, (void *)(attr.offset));
         }
     }
@@ -69,19 +83,25 @@ void SubMesh::update()
     ibo.release();
     }
 
-    glPopMatrix();
+    //glPopMatrix();
 
 }
 void SubMesh::draw()
 {
+    qDebug("8");
     int num_vertices = data_size / vertexFormat.size;
+    qDebug("9");
     vao.bind();
     if (indices_count > 0) {
+        qDebug("10");
     glfuncs->glDrawElements(GL_TRIANGLES, indices_count, GL_UNSIGNED_INT, nullptr);
+        qDebug("10.5");
     }
     else {
+        qDebug("11");
     glfuncs->glDrawArrays(GL_TRIANGLES, 0, num_vertices);
     }
+    qDebug("12");
     vao.release();
 }
 void SubMesh::destroy()
