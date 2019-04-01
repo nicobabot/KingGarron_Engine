@@ -3,13 +3,15 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLShaderProgram>
+#include <QKeyEvent>
 
 #pragma comment(lib, "OpenGL32.lib")
 
 MyOpenGLWidget::MyOpenGLWidget(QWidget *parent)
     : QOpenGLWidget(parent)
 {
-
+    this->setFocus();
+    this->setFocusPolicy(Qt::FocusPolicy::StrongFocus);
 }
 
 MyOpenGLWidget::~MyOpenGLWidget()
@@ -131,4 +133,10 @@ void MyOpenGLWidget::paintGL()
     vao.release();
     vbo.release();
     program. release();
+}
+
+void MyOpenGLWidget::keyPressEvent(QKeyEvent* event)
+{
+    if (event->key() == Qt::Key_R) qDebug("R KEY GL");
+    else qDebug("ELSE KEY GL");
 }
