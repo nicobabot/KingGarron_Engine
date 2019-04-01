@@ -1,8 +1,9 @@
 #ifndef MYOPENGLWIDGET_H
 #define MYOPENGLWIDGET_H
 
-#include<QOpenGLWidget>
+#include <QOpenGLWidget>
 #include <QOpenGLFunctions_3_3_Core>
+#include <QVector3D>
 
 class MyOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
 {
@@ -15,6 +16,8 @@ public:
     void paintGL() override;
 private:
     void keyPressEvent(QKeyEvent*);
+private:
+    QVector3D position = QVector3D(0.0f, 0.0f, -3.0f);
 };
 
 #endif // MYOPENGLWIDGET_H

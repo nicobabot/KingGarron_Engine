@@ -73,7 +73,7 @@ void MyOpenGLWidget::paintGL()
     model.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
     QMatrix4x4 view;
     view.setToIdentity();
-    view.translate(QVector3D(0.0f, 0.0f, -3.0f));
+    view.translate(position);
     QMatrix4x4 proj;
     proj.setToIdentity();
     proj.perspective(45.0f, 1920.0 / 1080.0, 0.1f, 100.0f);
@@ -137,6 +137,19 @@ void MyOpenGLWidget::paintGL()
 
 void MyOpenGLWidget::keyPressEvent(QKeyEvent* event)
 {
+    /*
     if (event->key() == Qt::Key_R) qDebug("R KEY GL");
     else qDebug("ELSE KEY GL");
+    */
+
+    if (event->key() == Qt::Key_W)
+        position.setZ(position.z() + 1.0f);
+    if (event->key() == Qt::Key_S)
+        position.setZ(position.z() - 1.0f);
+    if (event->key() == Qt::Key_A)
+        position.setX(position.x() + 1.0f);
+    if (event->key() == Qt::Key_D)
+        position.setX(position.x() - 1.0f);
+
+    this->repaint();
 }
