@@ -6,7 +6,8 @@
 #include "mesh.h"
 #include "submesh.h"
 #include <QKeyEvent>
-
+#include <QMouseEvent>
+#include <QEvent>
 
 #pragma comment(lib, "OpenGL32.lib")
 
@@ -78,10 +79,12 @@ void MyOpenGLWidget::paintGL()
     */
     QMatrix4x4 model;
     model.setToIdentity();
+    model.translate(QVector3D(0.0f, 0.0f, 0.0f));
     model.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
     QMatrix4x4 view;
     view.setToIdentity();
     view.translate(position);
+    model.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
     QMatrix4x4 proj;
     proj.setToIdentity();
     proj.perspective(45.0f, 1920.0 / 1080.0, 0.1f, 100.0f);
@@ -156,16 +159,10 @@ void MyOpenGLWidget::paintGL()
                 qDebug("SubMesh %i is nullptr", i);
         }
     }*/
-
 }
 
 void MyOpenGLWidget::keyPressEvent(QKeyEvent* event)
 {
-    /*
-    if (event->key() == Qt::Key_R) qDebug("R KEY GL");
-    else qDebug("ELSE KEY GL");
-    */
-
     if (event->key() == Qt::Key_W)
         position.setZ(position.z() + 1.0f);
     if (event->key() == Qt::Key_S)
@@ -174,6 +171,36 @@ void MyOpenGLWidget::keyPressEvent(QKeyEvent* event)
         position.setX(position.x() + 1.0f);
     if (event->key() == Qt::Key_D)
         position.setX(position.x() - 1.0f);
-
+    event->accept();
     this->repaint();
+}
+
+void MyOpenGLWidget::keyReleaseEvent(QKeyEvent* event)
+{
+
+}
+
+void MyOpenGLWidget::mousePressEvent(QMouseEvent* event)
+{
+
+}
+
+void MyOpenGLWidget::mouseMoveEvent(QMouseEvent* event)
+{
+
+}
+
+void MyOpenGLWidget::mouseReleaseEvent(QMouseEvent* event)
+{
+
+}
+
+void MyOpenGLWidget::enterEvent(QEvent* event)
+{
+
+}
+
+void MyOpenGLWidget::leaveEvent(QEvent* event)
+{
+
 }
