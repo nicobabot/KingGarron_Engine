@@ -49,7 +49,6 @@ void MyOpenGLWidget::initializeGL()
     program.addShaderFromSourceFile(QOpenGLShader::Vertex, "shaders/shaderl_vert.vsh");
     program.addShaderFromSourceFile(QOpenGLShader::Fragment, "shaders/shaderl_frag.fsh");
     program.link();
-    program.bind();
 
     // VB0
 
@@ -97,17 +96,19 @@ void MyOpenGLWidget::paintGL()
     */
     QMatrix4x4 model;
     model.setToIdentity();
-    model.translate(QVector3D(0.0f, 0.0f, 0.0f));
-    model.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
+    model.translate(QVector3D(1.0f, 0.0f, 0.0f));
+    //model.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
     QMatrix4x4 view;
     view.setToIdentity();
-    view.translate(position);
-    model.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
+    view.setColumn(3, QVector4D(position,1));
+    //model.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
     QMatrix4x4 proj;
     proj.setToIdentity();
-    proj.perspective(45.0f, 1920.0 / 1080.0, 0.1f, 100.0f);
+    proj.perspective(90.0f, width()/ (float)height(), 0.1f, 100.0f);
 
     QMatrix4x4 mvp = (proj * view * model);
+    mvp = mvp.transposed();
+    program.bind();
 
     int modelLoc = glGetUniformLocation(program.programId(), "mat_model");
     glUniformMatrix4fv(modelLoc, 1, GL_TRUE, model.data());
@@ -148,10 +149,9 @@ void MyOpenGLWidget::paintGL()
     {
         if(myMesh->submeshes[i]!=nullptr)
         {
-            if(program.bind())
-            {
+
             myMesh->submeshes[i]->draw();
-            }
+
             qDebug("SubMesh %i is your time", i);
         }
         else{
