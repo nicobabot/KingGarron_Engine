@@ -3,14 +3,14 @@
 #include<QOpenGLFunctions_3_3_Core>
 #include<QMatrix4x4>
 
-SubMesh::SubMesh(VertexFormat vertexFormat,	void *data, int	size)
+SubMesh::SubMesh(VertexFormat vertexFormat,	void *data, int	size): ibo(QOpenGLBuffer::IndexBuffer)
 {
     this->vertexFormat = vertexFormat;
     this->data = static_cast<unsigned char*>(data);
     this->data_size = size;
     glfuncs = QOpenGLContext::currentContext()->functions();
 }
-SubMesh::SubMesh(VertexFormat vertexFormat,	void *data, int	size, unsigned int *indices, int indices_count)
+SubMesh::SubMesh(VertexFormat vertexFormat,	void *data, int	size, unsigned int *indices, int indices_count):ibo(QOpenGLBuffer::IndexBuffer)
 {
     this->vertexFormat = vertexFormat;
     //this->data = static_cast<unsigned char*>(data);
@@ -44,7 +44,8 @@ void SubMesh::update()
     //glRotatef()
     qDebug("1");
 
-    // VAO: Vertex format description and state of VBOs vao.create();
+    // VAO: Vertex format description and state of VBOs
+    vao.create();
     vao.bind();
     // VBO: Buffer with vertex data
     vbo.create();

@@ -4,6 +4,9 @@
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions_3_3_Core>
 #include <QVector3D>
+#include <QOpenGLBuffer>
+#include <QOpenGLVertexArrayObject>
+#include <QOpenGLShaderProgram>
 
 class Mesh;
 class QKeyEvent;
@@ -22,6 +25,7 @@ public:
 
     Mesh *myMesh = nullptr;
 
+
 private:
     void keyPressEvent(QKeyEvent* event) override;
     void keyReleaseEvent(QKeyEvent* event) override;
@@ -33,6 +37,10 @@ private:
 
 private:
     QVector3D position = QVector3D(0.0f, 0.0f, -3.0f);
+    //Stuff
+    QOpenGLBuffer vbo;
+    QOpenGLVertexArrayObject vao;
+    QOpenGLShaderProgram program;
 };
 
 #endif // MYOPENGLWIDGET_H

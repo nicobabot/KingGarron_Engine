@@ -35,6 +35,24 @@ void MyOpenGLWidget::initializeGL()
 
     qDebug("Number of submeshes: %i", myMesh->submeshes.count());
 
+    for(int i=0; i<myMesh->submeshes.count(); i++)
+     {
+         if(myMesh->submeshes[i]!=nullptr)
+         {
+             myMesh->submeshes[i]->update();
+
+         }
+     }
+
+    // Program
+    program.create();
+    program.addShaderFromSourceFile(QOpenGLShader::Vertex, "shaders/shaderl_vert.vsh");
+    program.addShaderFromSourceFile(QOpenGLShader::Fragment, "shaders/shaderl_frag.fsh");
+    program.link();
+    program.bind();
+
+    // VB0
+
     //glDisable(GL_CULL_FACE);
 
 }
@@ -49,10 +67,10 @@ void MyOpenGLWidget::paintGL()
     glClearColor(0.0f, 0.0f, 0.0f,1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
+    QVector3D vertices[] = { QVector3D(-0.5f, -0.5f, 0.0f), QVector3D(1.0f, 0.0f, 0.0f),
+                             QVector3D( 0.5f, -0.5f, 0.0f), QVector3D(0.0f, 1.0f, 0.0f),
+                             QVector3D( 0.0f, 0.5f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f) };
     //Projection/Model view setting
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
 
     /*QMatrix4x4 mat;
     mat.setToIdentity();
@@ -91,26 +109,6 @@ void MyOpenGLWidget::paintGL()
 
     QMatrix4x4 mvp = (proj * view * model);
 
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    //Stuff
-    QOpenGLBuffer vbo;
-    QOpenGLVertexArrayObject vao;
-    QOpenGLShaderProgram program;
-    // Program
-    program.create();
-    program.addShaderFromSourceFile(QOpenGLShader::Vertex, "shaders/shaderl_vert.vsh");
-    program.addShaderFromSourceFile(QOpenGLShader::Fragment, "shaders/shaderl_frag.fsh");
-    program.link();
-    program.bind();
-
-    // VB0
-    QVector3D vertices[] = { QVector3D(-0.5f, -0.5f, 0.0f), QVector3D(1.0f, 0.0f, 0.0f),
-                             QVector3D( 0.5f, -0.5f, 0.0f), QVector3D(0.0f, 1.0f, 0.0f),
-                             QVector3D( 0.0f, 0.5f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f) };
-
-
     int modelLoc = glGetUniformLocation(program.programId(), "mat_model");
     glUniformMatrix4fv(modelLoc, 1, GL_TRUE, model.data());
 
@@ -143,23 +141,26 @@ void MyOpenGLWidget::paintGL()
     // Release
     vao.release();
     vbo.release();
-    program. release();
 
 
-  /*  for(int i=0; i<myMesh->submeshes.count(); i++)
+
+   for(int i=0; i<myMesh->submeshes.count(); i++)
     {
         if(myMesh->submeshes[i]!=nullptr)
         {
-            myMesh->submeshes[i]->update();
-            qDebug("DIBUGAME");
+            if(program.bind())
+            {
             myMesh->submeshes[i]->draw();
+            }
             qDebug("SubMesh %i is your time", i);
         }
         else{
                 qDebug("SubMesh %i is nullptr", i);
         }
 
-    }*/
+    }
+
+       program. release();
 
 }
 
