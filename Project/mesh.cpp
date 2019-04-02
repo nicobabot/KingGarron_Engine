@@ -56,10 +56,11 @@ void Mesh::processNode(aiNode *node, const aiScene *scene)
 
 SubMesh* Mesh::processMesh(aiMesh *mesh, const aiScene *scene)
 {
+    bool hasTexCoords = false;
+
     QVector<float> vertices;
     QVector<unsigned int> indices;
 
-    bool hasTexCoords = false;
     // process vertices
     for(unsigned int i = 0; i < mesh->mNumVertices; i++) {
         vertices.push_back(mesh->mVertices[i].x);

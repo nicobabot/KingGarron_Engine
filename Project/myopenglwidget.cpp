@@ -76,7 +76,7 @@ void MyOpenGLWidget::paintGL()
     proj.perspective(45.0, 1920.0 / 1080.0, 1.0, 100.0);
     QMatrix4x4 mvp = (proj * view);
     */
-    QMatrix4x4 model;
+    /*QMatrix4x4 model;
     model.setToIdentity();
     model.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
     QMatrix4x4 view;
@@ -140,10 +140,10 @@ void MyOpenGLWidget::paintGL()
     // Release
     vao.release();
     vbo.release();
-    program. release();
+    program. release();*/
 
 
-    /*for(int i=0; i<myMesh->submeshes.count(); i++)
+    for(int i=0; i<myMesh->submeshes.count(); i++)
     {
         if(myMesh->submeshes[i]!=nullptr)
         {
@@ -155,7 +155,7 @@ void MyOpenGLWidget::paintGL()
         else{
                 qDebug("SubMesh %i is nullptr", i);
         }
-    }*/
+    }
 
 }
 
