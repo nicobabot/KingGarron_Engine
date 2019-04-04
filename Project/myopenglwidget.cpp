@@ -17,6 +17,14 @@ MyOpenGLWidget::MyOpenGLWidget(QWidget *parent)
     this->setFocus();
     this->setFocusPolicy(Qt::FocusPolicy::StrongFocus);
     inputClass = new gGLInput();
+
+    connect(&timer, SIGNAL(timeout()), this, SLOT(update()));
+    if (format().swapInterval() == -1)
+        timer.setInterval(17);
+    else
+        timer.setInterval(0);
+    timer.start();
+
 }
 
 MyOpenGLWidget::~MyOpenGLWidget()
@@ -64,42 +72,22 @@ void MyOpenGLWidget::paintGL()
     QVector3D vertices[] = { QVector3D(-0.5f, -0.5f, 0.0f), QVector3D(1.0f, 0.0f, 0.0f),
                              QVector3D( 0.5f, -0.5f, 0.0f), QVector3D(0.0f, 1.0f, 0.0f),
                              QVector3D( 0.0f, 0.5f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f) };
-    //Projection/Model view setting
 
-    /*QMatrix4x4 mat;
-    mat.setToIdentity();
-    mat.translate(QVector3D(0.0f, 0.0f, 0.0f));
-    mat.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
-    glLoadMatrixf(mat.data());*/
-
-    /*
-    QMatrix4x4 model;
-    model.setToIdentity();
-    //model.translate(QVector3D(0.0f, 0.0f, 0.0f));
-    //model.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
-
-    QMatrix4x4 view;
-    view.lookAt(
-      QVector3D(0.0, 0.0, 0.0), // Eye
-      QVector3D(0.0, 0.0, 0.0), // Focal Point
-      QVector3D(0.0, 1.0, 0.0)); // Up vector
-
-    QMatrix4x4 proj;
-    // Window size is fixed at 800.0 by 600.0
-    proj.perspective(45.0, 1920.0 / 1080.0, 1.0, 100.0);
-    QMatrix4x4 mvp = (proj * view);
-    */
     QMatrix4x4 model;
     model.setToIdentity();
     model.translate(QVector3D(1.0f, 0.0f, 0.0f));
-    //model.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
+    model.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
+    model.scale(QVector3D(1.0f, 1.0f, 1.0f));
     QMatrix4x4 view;
     view.setToIdentity();
-    view.setColumn(3, QVector4D(position,1));
+    model.translate(position);
+    model.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
+    model.scale(QVector3D(1.0f, 1.0f, 1.0f));
+    //view.setColumn(3, QVector4D(position,1));
     //model.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
     QMatrix4x4 proj;
     proj.setToIdentity();
-    proj.perspective(90.0f, width()/ (float)height(), 0.1f, 100.0f);
+    proj.perspective(90.0f, static_cast<float>(width()) / static_cast<float>(height()), 0.1f, 100.0f);
 
     QMatrix4x4 mvp = (proj * view * model);
     mvp = mvp.transposed();
@@ -141,6 +129,7 @@ void MyOpenGLWidget::paintGL()
 
     for(Mesh* myMesh : myMeshScene)
     {
+
         for(int i=0; i<myMesh->submeshes.count(); i++)
          {
             if(myMesh->submeshes[i]!=nullptr)
@@ -157,6 +146,7 @@ void MyOpenGLWidget::paintGL()
        program. release();
 
 }
+
 
 void MyOpenGLWidget::UpdateMeshs()
 {
@@ -175,46 +165,49 @@ void MyOpenGLWidget::UpdateMeshs()
     }
 }
 
+void MyOpenGLWidget::Update()
+{
+    inputClass->Update();
+}
+
 void MyOpenGLWidget::keyPressEvent(QKeyEvent* event)
 {
-    if (event->key() == Qt::Key_W)
-        position.setZ(position.z() + 1.0f);
-    if (event->key() == Qt::Key_S)
-        position.setZ(position.z() - 1.0f);
-    if (event->key() == Qt::Key_A)
-        position.setX(position.x() + 1.0f);
-    if (event->key() == Qt::Key_D)
-        position.setX(position.x() - 1.0f);
-    event->accept();
+    inputClass->keyPressEvent(event);
     this->repaint();
 }
 
 void MyOpenGLWidget::keyReleaseEvent(QKeyEvent* event)
 {
     inputClass->keyReleaseEvent(event);
+    this->repaint();
 }
 
 void MyOpenGLWidget::mousePressEvent(QMouseEvent* event)
 {
     inputClass->mousePressEvent(event);
+    this->repaint();
 }
 
 void MyOpenGLWidget::mouseMoveEvent(QMouseEvent* event)
 {
     inputClass->mouseMoveEvent(event);
+    this->repaint();
 }
 
 void MyOpenGLWidget::mouseReleaseEvent(QMouseEvent* event)
 {
     inputClass->mouseReleaseEvent(event);
+    this->repaint();
 }
 
 void MyOpenGLWidget::enterEvent(QEvent* event)
 {
     inputClass->enterEvent(event);
+    this->repaint();
 }
 
 void MyOpenGLWidget::leaveEvent(QEvent* event)
 {
     inputClass->leaveEvent(event);
+    this->repaint();
 }

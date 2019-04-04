@@ -8,6 +8,7 @@
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLShaderProgram>
 #include "gglinput.h"
+#include <QTimer>
 
 class Mesh;
 class QKeyEvent;
@@ -23,10 +24,20 @@ public:
     void initializeGL();
     void resizeGL(int width, int height) override;
     void paintGL() override;
+
     void UpdateMeshs();
 
     QVector<Mesh*> myMeshScene;
 
+
+    void Update();
+
+    Mesh *myMesh = nullptr;
+    QVector3D position = QVector3D(0.0f, 0.0f, -3.0f);
+    QVector3D reference = QVector3D(0.0f, 0.0f, -3.0f);
+    QVector3D X = QVector3D(0.0f, 0.0f, -3.0f);
+    QVector3D Y = QVector3D(0.0f, 0.0f, -3.0f);
+    QVector3D Z = QVector3D(0.0f, 0.0f, -3.0f);
 
 private:
     void keyPressEvent(QKeyEvent* event) override;
@@ -38,8 +49,8 @@ private:
     void leaveEvent(QEvent* event) override;
 
 private:
+    QTimer timer;
     gGLInput* inputClass = nullptr;
-    QVector3D position = QVector3D(0.0f, 0.0f, -3.0f);
     //Stuff
     QOpenGLBuffer vbo;
     QOpenGLVertexArrayObject vao;
