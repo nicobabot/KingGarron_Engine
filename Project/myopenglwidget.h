@@ -7,6 +7,7 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLShaderProgram>
+#include "gglinput.h"
 
 class Mesh;
 class QKeyEvent;
@@ -36,6 +37,7 @@ private:
     void leaveEvent(QEvent* event) override;
 
 private:
+    gGLInput* inputClass = nullptr;
     QVector3D position = QVector3D(0.0f, 0.0f, -3.0f);
     //Stuff
     QOpenGLBuffer vbo;

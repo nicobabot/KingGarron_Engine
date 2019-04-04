@@ -36,7 +36,8 @@ SOURCES += \
     gscene.cpp \
     vertexformat.cpp \
     submesh.cpp \
-    mesh.cpp
+    mesh.cpp \
+    gglinput.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -51,7 +52,8 @@ HEADERS += \
     gscene.h \
     vertexformat.h \
     submesh.h \
-    mesh.h
+    mesh.h \
+    gglinput.h
 
 FORMS += \
     mainwindow.ui \

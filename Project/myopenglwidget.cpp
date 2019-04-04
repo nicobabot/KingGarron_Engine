@@ -16,6 +16,7 @@ MyOpenGLWidget::MyOpenGLWidget(QWidget *parent)
 {
     this->setFocus();
     this->setFocusPolicy(Qt::FocusPolicy::StrongFocus);
+    inputClass = new gGLInput();
 }
 
 MyOpenGLWidget::~MyOpenGLWidget()
@@ -29,6 +30,7 @@ void MyOpenGLWidget::initializeGL()
 
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
+    glEnable(GL_DEPTH_TEST);
 
     myMesh = new Mesh();
     myMesh->loadModel("./Models/Patrick/Patrick.obj");
@@ -180,30 +182,30 @@ void MyOpenGLWidget::keyPressEvent(QKeyEvent* event)
 
 void MyOpenGLWidget::keyReleaseEvent(QKeyEvent* event)
 {
-
+    inputClass->keyReleaseEvent(event);
 }
 
 void MyOpenGLWidget::mousePressEvent(QMouseEvent* event)
 {
-
+    inputClass->mousePressEvent(event);
 }
 
 void MyOpenGLWidget::mouseMoveEvent(QMouseEvent* event)
 {
-
+    inputClass->mouseMoveEvent(event);
 }
 
 void MyOpenGLWidget::mouseReleaseEvent(QMouseEvent* event)
 {
-
+    inputClass->mouseReleaseEvent(event);
 }
 
 void MyOpenGLWidget::enterEvent(QEvent* event)
 {
-
+    inputClass->enterEvent(event);
 }
 
 void MyOpenGLWidget::leaveEvent(QEvent* event)
 {
-
+    inputClass->leaveEvent(event);
 }
