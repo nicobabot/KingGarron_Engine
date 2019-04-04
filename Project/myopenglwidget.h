@@ -23,8 +23,9 @@ public:
     void initializeGL();
     void resizeGL(int width, int height) override;
     void paintGL() override;
+    void UpdateMeshs();
 
-    Mesh *myMesh = nullptr;
+    QVector<Mesh*> myMeshScene;
 
 
 private:

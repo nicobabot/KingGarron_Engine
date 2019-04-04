@@ -32,19 +32,12 @@ void MyOpenGLWidget::initializeGL()
     glCullFace(GL_BACK);
     glEnable(GL_DEPTH_TEST);
 
-    myMesh = new Mesh();
-    myMesh->loadModel("./Models/Patrick/Patrick.obj");
+    //Mesh* objMesh = new Mesh();
+    //objMesh->loadModel("./Models/Patrick/Patrick.obj");
 
-    qDebug("Number of submeshes: %i", myMesh->submeshes.count());
+    //myMeshScene.push_back(objMesh);
 
-    for(int i=0; i<myMesh->submeshes.count(); i++)
-     {
-         if(myMesh->submeshes[i]!=nullptr)
-         {
-             myMesh->submeshes[i]->update();
-
-         }
-     }
+    //UpdateMeshs();
 
     // Program
     program.create();
@@ -146,24 +139,40 @@ void MyOpenGLWidget::paintGL()
     vbo.release();
 
 
-
-   for(int i=0; i<myMesh->submeshes.count(); i++)
+    for(Mesh* myMesh : myMeshScene)
     {
-        if(myMesh->submeshes[i]!=nullptr)
-        {
-
-            myMesh->submeshes[i]->draw();
-
-            qDebug("SubMesh %i is your time", i);
-        }
-        else{
+        for(int i=0; i<myMesh->submeshes.count(); i++)
+         {
+            if(myMesh->submeshes[i]!=nullptr)
+               {
+                myMesh->submeshes[i]->draw();
+                qDebug("SubMesh %i is your time", i);
+               }
+            else{
                 qDebug("SubMesh %i is nullptr", i);
+            }
         }
-
     }
 
        program. release();
 
+}
+
+void MyOpenGLWidget::UpdateMeshs()
+{
+
+    for(Mesh* myMesh : myMeshScene)
+    {
+        for(int i=0; i<myMesh->submeshes.count(); i++)
+        {
+            if(myMesh->submeshes[i]!=nullptr)
+            {
+             myMesh->submeshes[i]->update();
+
+            }
+        }
+
+    }
 }
 
 void MyOpenGLWidget::keyPressEvent(QKeyEvent* event)
