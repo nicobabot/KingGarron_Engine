@@ -7,13 +7,14 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLShaderProgram>
-#include "gglinput.h"
 #include <QTimer>
 
 class Mesh;
 class QKeyEvent;
 class QMouseEvent;
 class QEvent;
+class gGLInput;
+class gEditorCamera;
 
 class MyOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
 {
@@ -24,20 +25,8 @@ public:
     void initializeGL();
     void resizeGL(int width, int height) override;
     void paintGL() override;
-
     void UpdateMeshs();
-
-    QVector<Mesh*> myMeshScene;
-
-
     void Update();
-
-    Mesh *myMesh = nullptr;
-    QVector3D position = QVector3D(0.0f, 0.0f, -3.0f);
-    QVector3D reference = QVector3D(0.0f, 0.0f, -3.0f);
-    QVector3D X = QVector3D(0.0f, 0.0f, -3.0f);
-    QVector3D Y = QVector3D(0.0f, 0.0f, -3.0f);
-    QVector3D Z = QVector3D(0.0f, 0.0f, -3.0f);
 
 private:
     void keyPressEvent(QKeyEvent* event) override;
@@ -48,9 +37,15 @@ private:
     void enterEvent(QEvent* event) override;
     void leaveEvent(QEvent* event) override;
 
+public:
+    QVector<Mesh*> myMeshScene;
+    Mesh *myMesh = nullptr;
+
+    gGLInput* inputClass = nullptr;
+    gEditorCamera* editorCamera = nullptr;
+
 private:
     QTimer timer;
-    gGLInput* inputClass = nullptr;
     //Stuff
     QOpenGLBuffer vbo;
     QOpenGLVertexArrayObject vao;

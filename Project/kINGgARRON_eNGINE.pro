@@ -37,7 +37,8 @@ SOURCES += \
     vertexformat.cpp \
     submesh.cpp \
     mesh.cpp \
-    gglinput.cpp
+    gglinput.cpp \
+    geditorcamera.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -53,7 +54,8 @@ HEADERS += \
     vertexformat.h \
     submesh.h \
     mesh.h \
-    gglinput.h
+    gglinput.h \
+    geditorcamera.h
 
 FORMS += \
     mainwindow.ui \

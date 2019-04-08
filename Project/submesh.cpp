@@ -45,9 +45,11 @@ void SubMesh::update()
     //qDebug("1");
 
     // VAO: Vertex format description and state of VBOs
+    if (!vao.isCreated())
     vao.create();
     vao.bind();
     // VBO: Buffer with vertex data
+    if (!vbo.isCreated())
     vbo.create();
     vbo.bind();
     vbo.setUsagePattern(QOpenGLBuffer::UsagePattern::StaticDraw);
@@ -58,6 +60,7 @@ void SubMesh::update()
     data = nullptr;
     //qDebug("4");
     // IBO: Buffer with indexes if (indices != nullptr)
+    if (!ibo.isCreated())
     ibo.create();
     //qDebug("5");
     ibo.bind();

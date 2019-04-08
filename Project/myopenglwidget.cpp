@@ -8,6 +8,8 @@
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <QEvent>
+#include "gglinput.h"
+#include "geditorcamera.h"
 
 #pragma comment(lib, "OpenGL32.lib")
 
@@ -17,8 +19,9 @@ MyOpenGLWidget::MyOpenGLWidget(QWidget *parent)
     this->setFocus();
     this->setFocusPolicy(Qt::FocusPolicy::StrongFocus);
     inputClass = new gGLInput();
+    editorCamera = new gEditorCamera();
 
-    connect(&timer, SIGNAL(timeout()), this, SLOT(update()));
+    QObject::connect(&timer, SIGNAL(timeout()), this, SLOT(update()));
     if (format().swapInterval() == -1)
         timer.setInterval(17);
     else
@@ -29,6 +32,8 @@ MyOpenGLWidget::MyOpenGLWidget(QWidget *parent)
 
 MyOpenGLWidget::~MyOpenGLWidget()
 {
+    delete inputClass;
+    delete editorCamera;
     makeCurrent();
 }
 
@@ -80,7 +85,7 @@ void MyOpenGLWidget::paintGL()
     model.scale(QVector3D(1.0f, 1.0f, 1.0f));
     QMatrix4x4 view;
     view.setToIdentity();
-    model.translate(position);
+    model.translate(editorCamera->position);
     model.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
     model.scale(QVector3D(1.0f, 1.0f, 1.0f));
     //view.setColumn(3, QVector4D(position,1));
@@ -98,12 +103,13 @@ void MyOpenGLWidget::paintGL()
 
     int projecLoc = glGetUniformLocation(program.programId(), "projection_view");
     glUniformMatrix4fv(projecLoc, 1, GL_TRUE, mvp.data());
-
+    if (!vbo.isCreated())
     vbo.create();
     vbo.bind();
     vbo.setUsagePattern(QOpenGLBuffer::UsagePattern::StaticDraw);
     vbo.allocate(vertices, 6 * sizeof(QVector3D));
     // VAO: Captures state of VBOs
+    if (!vao.isCreated())
     vao.create();
     vao.bind();
     const GLint compCount = 3;
@@ -168,6 +174,7 @@ void MyOpenGLWidget::UpdateMeshs()
 void MyOpenGLWidget::Update()
 {
     inputClass->Update();
+    editorCamera->Update();
 }
 
 void MyOpenGLWidget::keyPressEvent(QKeyEvent* event)
