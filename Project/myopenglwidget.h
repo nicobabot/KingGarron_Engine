@@ -39,6 +39,8 @@ public:
     QVector3D Y = QVector3D(0.0f, 0.0f, -3.0f);
     QVector3D Z = QVector3D(0.0f, 0.0f, -3.0f);
 
+    bool needUpdate = false;
+
 private:
     void keyPressEvent(QKeyEvent* event) override;
     void keyReleaseEvent(QKeyEvent* event) override;
