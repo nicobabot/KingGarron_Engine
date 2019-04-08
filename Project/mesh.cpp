@@ -36,8 +36,6 @@ void Mesh::loadModel(const char *filename)
     }
 
    processNode(scene->mRootNode, scene);
-   //needsUpdate = true;
-
 }
 
 

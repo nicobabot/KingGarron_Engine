@@ -40,7 +40,7 @@ private:
 public:
     QVector<Mesh*> myMeshScene;
     Mesh *myMesh = nullptr;
-
+    bool needUpdate = false;
     gGLInput* inputClass = nullptr;
     gEditorCamera* editorCamera = nullptr;
 

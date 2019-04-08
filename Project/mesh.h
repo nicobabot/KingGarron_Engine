@@ -20,6 +20,7 @@ void addSubMesh(VertexFormat vertexFormat, void *data, int bytes);
 void addSubMesh(VertexFormat vertexFormat, void *data, int bytes, unsigned int *indexes, int bytes_indexes);
 void loadModel(const char *filename);
 QVector<SubMesh*> submeshes;
+
 private:
 // Assimp stuff
 void processNode(aiNode *node, const aiScene *scene);

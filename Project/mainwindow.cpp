@@ -61,13 +61,15 @@ void MainWindow::dropEvent(QDropEvent* event)
 
     QList<QUrl> myList = event->mimeData()->urls();
 
+    Mesh* myMesh = nullptr;
+
     for(QUrl url: myList)
     {
-        Mesh* myMesh = new Mesh();
+        myMesh = new Mesh();
         qDebug("My path: %s", url.path().toStdString().substr(1).c_str());
         myMesh->loadModel(url.path().toStdString().substr(1).c_str());
         mainWindow->openGLWidget->myMeshScene.push_back(myMesh);
     }
 
-    mainWindow->openGLWidget->UpdateMeshs();
+    mainWindow->openGLWidget->needUpdate = true;
 }

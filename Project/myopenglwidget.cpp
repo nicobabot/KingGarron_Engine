@@ -45,12 +45,14 @@ void MyOpenGLWidget::initializeGL()
     glCullFace(GL_BACK);
     glEnable(GL_DEPTH_TEST);
 
-    //Mesh* objMesh = new Mesh();
-    //objMesh->loadModel("./Models/Patrick/Patrick.obj");
+    /*Mesh* objMesh = new Mesh();
+    objMesh->loadModel("D:/CITM/4rto/Prog Grafica/KingGarron/KingGarron_Engine/Project/Models/Patrick/Patrick.obj");
 
-    //myMeshScene.push_back(objMesh);
+    myMeshScene.push_back(objMesh);
 
     //UpdateMeshs();
+
+    needUpdate = true;*/
 
     // Program
     program.create();
@@ -103,14 +105,14 @@ void MyOpenGLWidget::paintGL()
 
     int projecLoc = glGetUniformLocation(program.programId(), "projection_view");
     glUniformMatrix4fv(projecLoc, 1, GL_TRUE, mvp.data());
-    if (!vbo.isCreated())
-    vbo.create();
+    if(!vbo.isCreated())
+        vbo.create();
     vbo.bind();
     vbo.setUsagePattern(QOpenGLBuffer::UsagePattern::StaticDraw);
     vbo.allocate(vertices, 6 * sizeof(QVector3D));
     // VAO: Captures state of VBOs
-    if (!vao.isCreated())
-    vao.create();
+    if(!vao.isCreated())
+        vao.create();
     vao.bind();
     const GLint compCount = 3;
     const int strideBytes = 2 * sizeof(QVector3D);
@@ -123,7 +125,6 @@ void MyOpenGLWidget::paintGL()
 
     if(program.bind())
     {
-
         vao.bind();
         glDrawArrays(GL_TRIANGLES, 0,3);
     }
@@ -132,10 +133,15 @@ void MyOpenGLWidget::paintGL()
     vao.release();
     vbo.release();
 
+    if(needUpdate)
+    {
+        qDebug("UPDATE MESH");
+        UpdateMeshs();
+        needUpdate = false;
+    }
 
     for(Mesh* myMesh : myMeshScene)
     {
-
         for(int i=0; i<myMesh->submeshes.count(); i++)
          {
             if(myMesh->submeshes[i]!=nullptr)
@@ -148,15 +154,12 @@ void MyOpenGLWidget::paintGL()
             }
         }
     }
-
-       program. release();
-
+    program. release();
 }
 
 
 void MyOpenGLWidget::UpdateMeshs()
 {
-
     for(Mesh* myMesh : myMeshScene)
     {
         for(int i=0; i<myMesh->submeshes.count(); i++)
@@ -164,10 +167,8 @@ void MyOpenGLWidget::UpdateMeshs()
             if(myMesh->submeshes[i]!=nullptr)
             {
              myMesh->submeshes[i]->update();
-
             }
         }
-
     }
 }
 
