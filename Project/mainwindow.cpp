@@ -7,6 +7,8 @@
 #include <QUrl>
 #include <QFileInfo>
 #include <mesh.h>
+#include <gobject.h>
+#include <gcomponentrender.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -68,7 +70,15 @@ void MainWindow::dropEvent(QDropEvent* event)
         myMesh = new Mesh();
         qDebug("My path: %s", url.path().toStdString().substr(1).c_str());
         myMesh->loadModel(url.path().toStdString().substr(1).c_str());
-        mainWindow->openGLWidget->myMeshScene.push_back(myMesh);
+        std::string name = "Object_";
+        name += std::to_string(objectNum++);
+        gObject* newObject = new gObject(QString(name.c_str()), true);
+        gComponentRender *render = (gComponentRender*)newObject->GetComponent(gComponentType::COMP_RENDER);
+        if(render!=nullptr)
+        {
+            render->myMesh = myMesh;
+        }
+        mainWindow->openGLWidget->myObjectsScene.push_back(newObject);
     }
 
     mainWindow->openGLWidget->needUpdate = true;

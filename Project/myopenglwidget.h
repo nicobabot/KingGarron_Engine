@@ -15,6 +15,7 @@ class QMouseEvent;
 class QEvent;
 class gGLInput;
 class gEditorCamera;
+class gObject;
 
 class MyOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
 {
@@ -39,6 +40,7 @@ private:
 
 public:
     QVector<Mesh*> myMeshScene;
+    QVector<gObject*> myObjectsScene;
     Mesh *myMesh = nullptr;
     bool needUpdate = false;
     gGLInput* inputClass = nullptr;

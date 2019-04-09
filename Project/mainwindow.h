@@ -20,6 +20,7 @@ public:
     void dragEnterEvent(QDragEnterEvent* event) override;
     bool DetectValidFiles(QList<QUrl> myList);
     void dropEvent(QDropEvent* event) override;
+    int objectNum = 0;
 };
 
 extern Ui::MainWindow* mainWindow;

@@ -10,6 +10,8 @@
 #include <QEvent>
 #include "gglinput.h"
 #include "geditorcamera.h"
+#include <gobject.h>
+#include <gcomponentrender.h>
 
 #pragma comment(lib, "OpenGL32.lib")
 
@@ -140,19 +142,25 @@ void MyOpenGLWidget::paintGL()
         needUpdate = false;
     }
 
-    for(Mesh* myMesh : myMeshScene)
+    for(gObject* myObject : myObjectsScene)
     {
-        for(int i=0; i<myMesh->submeshes.count(); i++)
-         {
-            if(myMesh->submeshes[i]!=nullptr)
-               {
-                myMesh->submeshes[i]->draw();
-                qDebug("SubMesh %i is your time", i);
-               }
-            else{
-                qDebug("SubMesh %i is nullptr", i);
+        if(myObject==nullptr)
+            continue;
+
+           gComponentRender *render = (gComponentRender*)myObject->GetComponent(gComponentType::COMP_RENDER);
+
+         if(render==nullptr)
+             continue;
+
+          Mesh* meshTemp = render->myMesh;
+
+          for(int i=0; i<meshTemp->submeshes.count(); i++)
+          {
+            if(meshTemp->submeshes[i]!=nullptr)
+            {
+                meshTemp->submeshes[i]->draw();
             }
-        }
+          }
     }
     program. release();
 }
@@ -160,15 +168,25 @@ void MyOpenGLWidget::paintGL()
 
 void MyOpenGLWidget::UpdateMeshs()
 {
-    for(Mesh* myMesh : myMeshScene)
+    for(gObject* myObject : myObjectsScene)
     {
-        for(int i=0; i<myMesh->submeshes.count(); i++)
-        {
-            if(myMesh->submeshes[i]!=nullptr)
+        if(myObject==nullptr)
+            continue;
+
+           gComponentRender *render = (gComponentRender*)myObject->GetComponent(gComponentType::COMP_RENDER);
+
+         if(render==nullptr)
+             continue;
+
+          Mesh* meshTemp = render->myMesh;
+
+          for(int i=0; i<meshTemp->submeshes.count(); i++)
+          {
+            if(meshTemp->submeshes[i]!=nullptr)
             {
-             myMesh->submeshes[i]->update();
+                meshTemp->submeshes[i]->update();
             }
-        }
+          }
     }
 }
 
