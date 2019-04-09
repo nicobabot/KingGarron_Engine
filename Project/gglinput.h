@@ -21,13 +21,13 @@ class gGLInput
 {
 public:
     gGLInput();
+    ~gGLInput();
     void Update();
 
     KEY_STATE GetKey(int id) const;
     KEY_STATE GetMouseButton(int id) const;
     int GetMouseX() const;
     int GetMouseY() const;
-    int GetMouseZ() const;
     int GetMouseXMotion() const;
     int GetMouseYMotion() const;
 
@@ -40,12 +40,12 @@ public:
     void leaveEvent(QEvent* event);
 
 private:
-    KEY_STATE keyboard[MAX_KEYS];
-    KEY_STATE keyboardOld[MAX_KEYS];
-    KEY_STATE mouse_buttons[MAX_BUTTONS];
+    KEY_STATE* keyboard = nullptr;
+    KEY_STATE* keyboardOld = nullptr;
+    KEY_STATE* mouse_buttons = nullptr;
+    KEY_STATE* mouse_buttonsOld = nullptr;
     int mouse_x = 0;
     int mouse_y = 0;
-    int mouse_z = 0;
     int mouse_x_motion = 0;
     int mouse_y_motion = 0;
 };
