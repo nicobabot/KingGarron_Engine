@@ -23,13 +23,12 @@ MyOpenGLWidget::MyOpenGLWidget(QWidget *parent)
     inputClass = new gGLInput();
     editorCamera = new gEditorCamera();
 
-    QObject::connect(&timer, SIGNAL(timeout()), this, SLOT(update()));
+    QObject::connect(&timer, SIGNAL(timeout()), this, SLOT(Update()));
     if (format().swapInterval() == -1)
         timer.setInterval(17);
     else
         timer.setInterval(0);
     timer.start();
-
 }
 
 MyOpenGLWidget::~MyOpenGLWidget()

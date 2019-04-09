@@ -27,6 +27,8 @@ public:
     void resizeGL(int width, int height) override;
     void paintGL() override;
     void UpdateMeshs();
+
+public slots:
     void Update();
 
 private:
