@@ -2,10 +2,6 @@
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <QEvent>
-#include "myopenglwidget.h"
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "geditorcamera.h"
 
 gGLInput::gGLInput()
 {
@@ -79,17 +75,6 @@ void gGLInput::keyPressEvent(QKeyEvent* event)
 {
     if (event->isAutoRepeat()) return;
     keyboard[event->key()] = KEY_STATE::KEY_DOWN;
-    if (MyOpenGLWidget* OGLWidget = mainWindow->openGLWidget)
-    {
-        if (event->key() == Qt::Key_W)
-            OGLWidget->editorCamera->position.setZ(OGLWidget->editorCamera->position.z() + 1.0f);
-        if (event->key() == Qt::Key_S)
-            OGLWidget->editorCamera->position.setZ(OGLWidget->editorCamera->position.z() - 1.0f);
-        if (event->key() == Qt::Key_A)
-            OGLWidget->editorCamera->position.setX(OGLWidget->editorCamera->position.x() + 1.0f);
-        if (event->key() == Qt::Key_D)
-            OGLWidget->editorCamera->position.setX(OGLWidget->editorCamera->position.x() - 1.0f);
-    }
 }
 
 void gGLInput::keyReleaseEvent(QKeyEvent* event)
