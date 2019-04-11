@@ -19,8 +19,9 @@ GRenderWidget::GRenderWidget(QWidget *parent) :
     modelResources.insert("Patrick",
     "C:/Users/nicolasba1/Desktop/PG/GARRONPARATI/kINGgARRON_eNGINE/KingGarron_Engine/Project/Models/Patrick/Patrick.obj");
 
-    ui->Shapebox->addItem("PalmTree");
     ui->Shapebox->addItem("Patrick");
+    ui->Shapebox->addItem("PalmTree");
+
     connect(ui->Shapebox,SIGNAL(currentTextChanged(const QString&)), this,SLOT(ModifyShapeComponent(const QString&)));
     connect(ui->SizeValue, SIGNAL(valueChanged(double)), this, SLOT(ModifySizeComponent(double)));
     connect(ui->ColorButton, SIGNAL(clicked()), this, SLOT(ColorPicker()));

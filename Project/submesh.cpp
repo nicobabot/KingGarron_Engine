@@ -42,7 +42,7 @@ void SubMesh::update()
     mat.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));*/
 
     //glRotatef()
-    qDebug("1");
+    //qDebug("1");
 
     // VAO: Vertex format description and state of VBOs
     if (!vao.isCreated())
@@ -54,24 +54,24 @@ void SubMesh::update()
     vbo.bind();
     vbo.setUsagePattern(QOpenGLBuffer::UsagePattern::StaticDraw);
     vbo.allocate(data, int(data_size));
-    qDebug("2");
+    //qDebug("2");
     //delete[] data;
-    qDebug("3");
+    //qDebug("3");
     data = nullptr;
-    qDebug("4");
+    //qDebug("4");
     // IBO: Buffer with indexes if (indices != nullptr)
     if (!ibo.isCreated())
         ibo.create();
-    qDebug("5");
+    //qDebug("5");
     ibo.bind();
-    qDebug("6");
+    //qDebug("6");
     ibo.setUsagePattern(QOpenGLBuffer::UsagePattern::StaticDraw);
 
     qDebug("MY INDICES ARE %i", indices_count);
 
     ibo.allocate(indices, int(indices_count * sizeof(unsigned int)));
     //delete[] indices;
-    qDebug("7");
+    //qDebug("7");
     indices = nullptr;
     for (int location = 0; location < MAX_VERTEX_ATTRIBUTES; ++location)
     {
@@ -95,20 +95,20 @@ void SubMesh::update()
 }
 void SubMesh::draw()
 {
-    qDebug("8");
+    //qDebug("8");
     int num_vertices = data_size / vertexFormat.size;
-    qDebug("9");
+    //qDebug("9");
     vao.bind();
     if (indices_count > 0) {
-        qDebug("10");
+        //qDebug("10");
     glfuncs->glDrawElements(GL_TRIANGLES, indices_count, GL_UNSIGNED_INT, nullptr);
-        qDebug("10.5");
+        //qDebug("10.5");
     }
     else {
-        qDebug("11");
+        //qDebug("11");
     glfuncs->glDrawArrays(GL_TRIANGLES, 0, num_vertices);
     }
-    qDebug("12");
+    //qDebug("12");
     vao.release();
 }
 void SubMesh::destroy()
