@@ -12,6 +12,9 @@
 #include "geditorcamera.h"
 #include <gobject.h>
 #include <gcomponentrender.h>
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include "inspectorwidget.h"
 
 #pragma comment(lib, "OpenGL32.lib")
 
@@ -23,7 +26,15 @@ MyOpenGLWidget::MyOpenGLWidget(QWidget *parent)
     inputClass = new gGLInput();
     editorCamera = new gEditorCamera();
 
+    inspectorWidget = new InspectorWidget();
+    mainWindow->Inspector->setWidget(inspectorWidget);
+
+    connect(mainWindow->HierarchyAdd, SIGNAL(clicked()), this, SLOT(HierarchyAdd()));
+    connect(mainWindow->HierarchyRemove, SIGNAL(clicked()), this, SLOT(HierarchyRemove()));
+    connect(mainWindow->HierarchyList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(HierarchyClicked(QListWidgetItem*)));
+
     QObject::connect(&timer, SIGNAL(timeout()), this, SLOT(Update()));
+
     if (format().swapInterval() == -1)
         timer.setInterval(17);
     else
@@ -152,13 +163,15 @@ void MyOpenGLWidget::paintGL()
              continue;
 
           Mesh* meshTemp = render->myMesh;
-
-          for(int i=0; i<meshTemp->submeshes.count(); i++)
+          if(meshTemp!=nullptr)
           {
-            if(meshTemp->submeshes[i]!=nullptr)
-            {
-                meshTemp->submeshes[i]->draw();
-            }
+                for(int i=0; i<meshTemp->submeshes.count(); i++)
+                {
+                    if(meshTemp->submeshes[i]!=nullptr)
+                    {
+                        meshTemp->submeshes[i]->draw();
+                    }
+                }
           }
     }
     program. release();
@@ -179,14 +192,56 @@ void MyOpenGLWidget::UpdateMeshs()
 
           Mesh* meshTemp = render->myMesh;
 
-          for(int i=0; i<meshTemp->submeshes.count(); i++)
-          {
-            if(meshTemp->submeshes[i]!=nullptr)
+          if(meshTemp!=nullptr){
+
+            for(int i=0; i<meshTemp->submeshes.count(); i++)
             {
+                if(meshTemp->submeshes[i]!=nullptr)
+                {
                 meshTemp->submeshes[i]->update();
+                }
             }
-          }
+        }
     }
+}
+
+void MyOpenGLWidget::HierarchyAdd()
+{
+    std::string name = "Object_";
+    name += std::to_string(objectNum++);
+    mainWindow->HierarchyList->addItem(QString(name.c_str()));
+    myObjectsScene.append(new gObject(QString(name.c_str()), true));
+    this->repaint();
+}
+
+void MyOpenGLWidget::HierarchyRemove()
+{
+    QModelIndexList indexes = mainWindow->HierarchyList->selectionModel()->selectedIndexes();
+    std::vector<int> indexList;
+    for(QModelIndex index : indexes)
+        indexList.push_back(index.row());
+    for (int i = 0; i < static_cast<int>(indexList.size()); i++)
+    {
+        delete myObjectsScene.at(indexList.at(i));
+            myObjectsScene.remove(indexList.at(i));
+    }
+    qDeleteAll(mainWindow->HierarchyList->selectedItems());
+    HierarchyClicked();
+    this->repaint();
+}
+
+void MyOpenGLWidget::HierarchyClicked(QListWidgetItem* item)
+{
+    QModelIndexList indexes = mainWindow->HierarchyList->selectionModel()->selectedIndexes();
+    if (indexes.size() == 0)
+        clickedIndex = -1;
+    else
+        clickedIndex = indexes[0].row();
+    if (clickedIndex >= 0)
+        inspectorWidget->UpdateInspectorValues(myObjectsScene.at(clickedIndex));
+    else
+        inspectorWidget->UpdateInspectorValues(nullptr);
+    //qDebug("index: %i", clickedIndex);
 }
 
 void MyOpenGLWidget::Update()

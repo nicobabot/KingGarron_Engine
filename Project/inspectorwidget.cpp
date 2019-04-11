@@ -17,7 +17,7 @@ InspectorWidget::InspectorWidget(QWidget *parent) :
     setLayout(layout_temp);
 }
 
-void InspectorWidget::UpdateInspectorValues(gObject *object, GScene* scene)
+void InspectorWidget::UpdateInspectorValues(gObject *object)
 {
     //QSignalBlocker posx_blocker(transform->ui->pos_x);
     if(object!=nullptr)
@@ -32,7 +32,6 @@ void InspectorWidget::UpdateInspectorValues(gObject *object, GScene* scene)
             }
             case gComponentType::COMP_TRANSFORM:
             {
-                transform->scene = scene;
                 transform->transformComponent = static_cast<gComponentTransform*>(comp);
                 transform->ui->pos_x->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->position.x()));
                 transform->ui->pos_y->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->position.y()));
@@ -41,7 +40,6 @@ void InspectorWidget::UpdateInspectorValues(gObject *object, GScene* scene)
             }
             case gComponentType::COMP_RENDER:
             {
-                render_widget->scene = scene;
                 render_widget->renderComponent = static_cast<gComponentRender*>(comp);
                 QString* strShape = new QString(((static_cast<gComponentRender*>(comp))->shape).c_str());
                 int combIndex = render_widget->ui->Shapebox->findText(*strShape);

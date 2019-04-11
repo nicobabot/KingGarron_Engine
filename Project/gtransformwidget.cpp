@@ -22,22 +22,16 @@ void GTransformWidget::PosXWidget(double item)
 {
     if (transformComponent != nullptr)
         transformComponent->position.setX(static_cast<float>(item));
-    if(scene != nullptr)
-        scene->repaint();
 }
 
 void GTransformWidget::PosYWidget(double item)
 {
     if(transformComponent!=nullptr)
         transformComponent->position.setY(static_cast<float>(item));
-    if (scene != nullptr)
-        scene->repaint();
 }
 
 void GTransformWidget::PosZWidget(double item)
 {
     if(transformComponent!=nullptr)
         transformComponent->position.setZ(static_cast<float>(item));
-    if (scene != nullptr)
-        scene->repaint();
 }

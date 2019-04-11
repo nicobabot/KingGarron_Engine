@@ -71,7 +71,8 @@ void MainWindow::dropEvent(QDropEvent* event)
         qDebug("My path: %s", url.path().toStdString().substr(1).c_str());
         myMesh->loadModel(url.path().toStdString().substr(1).c_str());
         std::string name = "Object_";
-        name += std::to_string(objectNum++);
+        name += std::to_string(mainWindow->openGLWidget->objectNum++);
+         mainWindow->HierarchyList->addItem(QString(name.c_str()));
         gObject* newObject = new gObject(QString(name.c_str()), true);
         gComponentRender *render = (gComponentRender*)newObject->GetComponent(gComponentType::COMP_RENDER);
         if(render!=nullptr)
@@ -82,4 +83,5 @@ void MainWindow::dropEvent(QDropEvent* event)
     }
 
     mainWindow->openGLWidget->needUpdate = true;
+    this->repaint();
 }

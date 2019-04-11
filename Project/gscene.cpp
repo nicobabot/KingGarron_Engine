@@ -7,11 +7,6 @@
 
 GScene::GScene(QWidget *parent) : QWidget(parent)
 {
-    inspectorWidget = new InspectorWidget();
-    mainWindow->Inspector->setWidget(inspectorWidget);
-    connect(mainWindow->HierarchyAdd, SIGNAL(clicked()), this, SLOT(HierarchyAdd()));
-    connect(mainWindow->HierarchyRemove, SIGNAL(clicked()), this, SLOT(HierarchyRemove()));
-    connect(mainWindow->HierarchyList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(HierarchyClicked(QListWidgetItem*)));
 }
 
 QSize GScene::sizeHint() const
@@ -28,43 +23,4 @@ void GScene::paintEvent(QPaintEvent* event)
 {
     for (gObject* object : scenegObjectVector)
         object->PaintGGObject(this);
-}
-
-void GScene::HierarchyAdd()
-{
-    std::string name = "Object_";
-    name += std::to_string(objectNum++);
-    mainWindow->HierarchyList->addItem(QString(name.c_str()));
-    scenegObjectVector.append(new gObject(QString(name.c_str()), true));
-    this->repaint();
-}
-
-void GScene::HierarchyRemove()
-{
-    QModelIndexList indexes = mainWindow->HierarchyList->selectionModel()->selectedIndexes();
-    std::vector<int> indexList;
-    for(QModelIndex index : indexes)
-        indexList.push_back(index.row());
-    for (int i = 0; i < static_cast<int>(indexList.size()); i++)
-    {
-        delete scenegObjectVector.at(indexList.at(i));
-        scenegObjectVector.remove(indexList.at(i));
-    }
-    qDeleteAll(mainWindow->HierarchyList->selectedItems());
-    HierarchyClicked();
-    this->repaint();
-}
-
-void GScene::HierarchyClicked(QListWidgetItem* item)
-{
-    QModelIndexList indexes = mainWindow->HierarchyList->selectionModel()->selectedIndexes();
-    if (indexes.size() == 0)
-        clickedIndex = -1;
-    else
-        clickedIndex = indexes[0].row();
-    if (clickedIndex >= 0)
-        inspectorWidget->UpdateInspectorValues(scenegObjectVector.at(clickedIndex), this);
-    else
-        inspectorWidget->UpdateInspectorValues(nullptr, this);
-    //qDebug("index: %i", clickedIndex);
 }

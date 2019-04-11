@@ -14,7 +14,7 @@ class InspectorWidget : public QWidget
 public:
     explicit InspectorWidget(QWidget *parent = nullptr);
     ~InspectorWidget();
-    void UpdateInspectorValues(gObject *object = nullptr, GScene* scene = nullptr);
+    void UpdateInspectorValues(gObject *object = nullptr);
 public:
     GTransformWidget *transform = nullptr;
     GRenderWidget *render_widget = nullptr;

@@ -27,7 +27,7 @@ public:
     float size = 50.0f;
     QColor color = QColor(1,1,1,255);
 
-    Mesh* myMesh;
+    Mesh* myMesh = nullptr;
 
 private:
     QColor blueColor = QColor::fromRgb(127,190,220);

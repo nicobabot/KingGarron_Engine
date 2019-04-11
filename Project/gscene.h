@@ -16,16 +16,10 @@ public:
     QSize minimumSizeHint() const override;
 private:
     void paintEvent(QPaintEvent *event) override;
-public slots:
-    void HierarchyAdd();
-    void HierarchyRemove();
-    void HierarchyClicked(QListWidgetItem* item = nullptr);
 public:
     QVector<gObject*> scenegObjectVector;
 private:
-    InspectorWidget *inspectorWidget = nullptr;
     int objectNum = 0;
-    int clickedIndex = 0;
 };
 
 #endif // GSCENE_H

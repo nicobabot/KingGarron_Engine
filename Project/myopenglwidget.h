@@ -8,6 +8,7 @@
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLShaderProgram>
 #include <QTimer>
+#include <QListWidgetItem>
 
 class Mesh;
 class QKeyEvent;
@@ -16,6 +17,7 @@ class QEvent;
 class gGLInput;
 class gEditorCamera;
 class gObject;
+class InspectorWidget;
 
 class MyOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
 {
@@ -30,6 +32,9 @@ public:
 
 public slots:
     void Update();
+    void HierarchyAdd();
+    void HierarchyRemove();
+    void HierarchyClicked(QListWidgetItem* item = nullptr);
 
 private:
     void keyPressEvent(QKeyEvent* event) override;
@@ -47,8 +52,11 @@ public:
     bool needUpdate = false;
     gGLInput* inputClass = nullptr;
     gEditorCamera* editorCamera = nullptr;
+    int objectNum = 0;
+    int clickedIndex = 0;
 
 private:
+    InspectorWidget *inspectorWidget = nullptr;
     QTimer timer;
     //Stuff
     QOpenGLBuffer vbo;
