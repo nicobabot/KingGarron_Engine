@@ -25,7 +25,9 @@ public:
     void Update();
 
     KEY_STATE GetKey(int id) const;
+    bool GetKeyIsState(int id, KEY_STATE state) const;
     KEY_STATE GetMouseButton(int id) const;
+    bool GetMouseButtonIsState(int id, KEY_STATE state) const;
     int GetMouseX() const;
     int GetMouseY() const;
     int GetMouseXMotion() const;

@@ -46,9 +46,19 @@ KEY_STATE gGLInput::GetKey(int id) const
     return keyboard[id];
 }
 
+bool gGLInput::GetKeyIsState(int id, KEY_STATE state) const
+{
+    return keyboard[id] == state;
+}
+
 KEY_STATE gGLInput::GetMouseButton(int id) const
 {
     return mouse_buttons[id];
+}
+
+bool gGLInput::GetMouseButtonIsState(int id, KEY_STATE state) const
+{
+    return mouse_buttons[id] == state;
 }
 
 int gGLInput::GetMouseX() const
