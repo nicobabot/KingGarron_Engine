@@ -13,13 +13,13 @@ void gEditorCamera::Update()
 {
     if (gGLInput* input = mainWindow->openGLWidget->inputClass)
     {
-        if((input->GetKey(Qt::Key_W) == KEY_STATE::KEY_UP)||(input->GetKey(Qt::Key_W) == KEY_STATE::KEY_REPEAT))
+        if(input->GetKeyIsState(Qt::Key_W, KEY_STATE::KEY_UP) || input->GetKeyIsState(Qt::Key_W, KEY_STATE::KEY_REPEAT))
             position.setZ(position.z() + camSpeed);
-        if((input->GetKey(Qt::Key_S) == KEY_STATE::KEY_UP)||(input->GetKey(Qt::Key_S) == KEY_STATE::KEY_REPEAT))
+        if(input->GetKeyIsState(Qt::Key_S, KEY_STATE::KEY_UP) || input->GetKeyIsState(Qt::Key_S, KEY_STATE::KEY_REPEAT))
             position.setZ(position.z() - camSpeed);
-        if((input->GetKey(Qt::Key_A) == KEY_STATE::KEY_UP)||(input->GetKey(Qt::Key_A) == KEY_STATE::KEY_REPEAT))
+        if(input->GetKeyIsState(Qt::Key_A,KEY_STATE::KEY_UP) || input->GetKeyIsState(Qt::Key_A, KEY_STATE::KEY_REPEAT))
             position.setX(position.x() + camSpeed);
-        if((input->GetKey(Qt::Key_D) == KEY_STATE::KEY_UP)||(input->GetKey(Qt::Key_D) == KEY_STATE::KEY_REPEAT))
+        if(input->GetKeyIsState(Qt::Key_D, KEY_STATE::KEY_UP) || input->GetKeyIsState(Qt::Key_D, KEY_STATE::KEY_REPEAT))
             position.setX(position.x() - camSpeed);
     }
 }
