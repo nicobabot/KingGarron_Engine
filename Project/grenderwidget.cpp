@@ -4,14 +4,23 @@
 #include "mainwindow.h"
 #include "gscene.h"
 #include <QColorDialog>
+#include "mesh.h"
 
 GRenderWidget::GRenderWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::GRenderWidget)
 {
     ui->setupUi(this);
-    ui->Shapebox->addItem("Quad");
-    ui->Shapebox->addItem("Circle");
+    //modelResources = new QMap<QString, QString>();
+
+    modelResources.insert("PalmTree",
+    "C:/Users/nicolasba1/Desktop/PG/GARRONPARATI/kINGgARRON_eNGINE/KingGarron_Engine/Project/Models/PalmTree/PalmTree.obj");
+
+    modelResources.insert("Patrick",
+    "C:/Users/nicolasba1/Desktop/PG/GARRONPARATI/kINGgARRON_eNGINE/KingGarron_Engine/Project/Models/Patrick/Patrick.obj");
+
+    ui->Shapebox->addItem("PalmTree");
+    ui->Shapebox->addItem("Patrick");
     connect(ui->Shapebox,SIGNAL(currentTextChanged(const QString&)), this,SLOT(ModifyShapeComponent(const QString&)));
     connect(ui->SizeValue, SIGNAL(valueChanged(double)), this, SLOT(ModifySizeComponent(double)));
     connect(ui->ColorButton, SIGNAL(clicked()), this, SLOT(ColorPicker()));
@@ -25,11 +34,13 @@ GRenderWidget::~GRenderWidget()
 void GRenderWidget::ModifyShapeComponent(const QString& text)
 {
     if (renderComponent != nullptr)
+    {
         renderComponent->shape = text.toStdString();
-    if (scene != nullptr)
-        scene->repaint();
-    else
-        qDebug("Scene is nullptr");
+        //renderComponent->myMesh->destroy();
+        QString path = modelResources.value(text);
+        renderComponent->myMesh->loadModel(path.toStdString().c_str());
+    }
+
 }
 
 void GRenderWidget::ModifySizeComponent(double item)

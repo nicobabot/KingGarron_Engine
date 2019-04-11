@@ -157,22 +157,9 @@ void MyOpenGLWidget::paintGL()
         if(myObject==nullptr)
             continue;
 
-           gComponentRender *render = (gComponentRender*)myObject->GetComponent(gComponentType::COMP_RENDER);
+        gComponentRender *render = (gComponentRender*)myObject->GetComponent(gComponentType::COMP_RENDER);
 
-         if(render==nullptr)
-             continue;
-
-          Mesh* meshTemp = render->myMesh;
-          if(meshTemp!=nullptr)
-          {
-                for(int i=0; i<meshTemp->submeshes.count(); i++)
-                {
-                    if(meshTemp->submeshes[i]!=nullptr)
-                    {
-                        meshTemp->submeshes[i]->draw();
-                    }
-                }
-          }
+        render->Render();
     }
     program. release();
 }
@@ -190,18 +177,8 @@ void MyOpenGLWidget::UpdateMeshs()
          if(render==nullptr)
              continue;
 
-          Mesh* meshTemp = render->myMesh;
+         render->Update();
 
-          if(meshTemp!=nullptr){
-
-            for(int i=0; i<meshTemp->submeshes.count(); i++)
-            {
-                if(meshTemp->submeshes[i]!=nullptr)
-                {
-                meshTemp->submeshes[i]->update();
-                }
-            }
-        }
     }
 }
 

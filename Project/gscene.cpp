@@ -18,9 +18,3 @@ QSize GScene::minimumSizeHint() const
 {
     return QSize(64,64);
 }
-
-void GScene::paintEvent(QPaintEvent* event)
-{
-    for (gObject* object : scenegObjectVector)
-        object->PaintGGObject(this);
-}

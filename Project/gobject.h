@@ -19,7 +19,6 @@ public:
     ~gObject();
     void AddComponentTransform();
     void AddComponentRenderShape();
-    void PaintGGObject(GScene* obj);
     gComponent* GetComponent(gComponentType type);
 private:
     QString name = "";

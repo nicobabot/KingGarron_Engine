@@ -29,13 +29,6 @@ void gObject::AddComponentRenderShape()
     gComponentVector.push_back(new gComponentRender(this));
 }
 
-void gObject::PaintGGObject(GScene* obj)
-{
-    for (gComponent* component : gComponentVector)
-        if(component->compType == gComponentType::COMP_RENDER)
-            static_cast<gComponentRender*>(component)->gPaintObject(obj);
-}
-
 gComponent* gObject::GetComponent(gComponentType type)
 {
     for (gComponent* component : gComponentVector)

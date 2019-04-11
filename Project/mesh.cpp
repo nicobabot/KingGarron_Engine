@@ -7,6 +7,9 @@
 #include <iostream>
 #include <vertexformat.h>
 #include "submesh.h"
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include "inspectorwidget.h"
 
 Mesh::Mesh()
 {
@@ -36,6 +39,7 @@ void Mesh::loadModel(const char *filename)
     }
 
    processNode(scene->mRootNode, scene);
+   mainWindow->openGLWidget->needUpdate = true;
 }
 
 

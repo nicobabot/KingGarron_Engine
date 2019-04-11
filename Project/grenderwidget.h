@@ -2,6 +2,7 @@
 #define GRENDERWIDGET_H
 
 #include <QWidget>
+#include <QMap>
 
 namespace Ui
 {
@@ -25,6 +26,7 @@ public:
     Ui::GRenderWidget *ui= nullptr;
     gComponentRender *renderComponent = nullptr;
     GScene *scene = nullptr;
+    QMap<QString, QString> modelResources;
 };
 
 #endif // GRENDERWIDGET_H

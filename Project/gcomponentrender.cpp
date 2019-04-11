@@ -3,59 +3,54 @@
 #include <QPainter>
 #include "gscene.h"
 #include "gcomponenttransform.h"
+#include "mesh.h"
+#include "submesh.h"
 
 gComponentRender::gComponentRender(gObject *parent) : gComponent (parent)
 {
     compType = gComponentType::COMP_RENDER;
-    shape = "Quad";
+    shape = "Patrick";
+    myMesh = new Mesh();
+    myMesh->loadModel("C:/Users/nicolasba1/Desktop/PG/GARRONPARATI/kINGgARRON_eNGINE/KingGarron_Engine/Project/Models/Patrick/Patrick.obj");
+    //Update();
 }
 
 gComponentRender::gComponentRender(gObject *parent, gShape newShape, float newsize): gComponent (parent)
 {
     compType = gComponentType::COMP_RENDER;
+    shape = "Patrick";
     shape = newShape;
     size = newsize;
 }
 
-void gComponentRender::gPaintObject(GScene* obj)
+void gComponentRender::Update()
 {
-    painter.begin(obj);
-    brush.setColor(blueColor);
-    brush.setStyle(Qt::BrushStyle::SolidPattern);
-    pen.setStyle(Qt::PenStyle::NoPen);
-    painter.setBrush(brush);
-    painter.setPen(pen);
-    brush.setColor(color);
-    pen.setWidth(4);
-    pen.setColor(blackColor);
-    pen.setStyle(Qt::PenStyle::NoPen);
-    painter.setBrush(brush);
-    painter.setPen(pen);
-    RenderShapeType(&painter);
-    painter.end();
+    Mesh* meshTemp = myMesh;
+
+    if(meshTemp!=nullptr){
+
+      for(int i=0; i<meshTemp->submeshes.count(); i++)
+      {
+          if(meshTemp->submeshes[i]!=nullptr)
+          {
+          meshTemp->submeshes[i]->update();
+          }
+      }
+  }
 }
 
-void gComponentRender::RenderShapeType(QPainter *painter)
+void gComponentRender::Render()
 {
-    gComponentTransform* trans = static_cast<gComponentTransform*>(parent->GetComponent(gComponentType::COMP_TRANSFORM));
-    int x = 0;
-    int y = 0;
-    if (trans != nullptr)
-    {
-        x = static_cast<int>(trans->position.x());
-        y = static_cast<int>(trans->position.y());
-    }
-    int r = static_cast<int>(size);
-    int w = r * 2;
-    int h = r * 2;
-    if (shape.compare("Circle") == 0)
-    {
-        QRect circleRect(x,y,w,h);
-        painter->drawEllipse(circleRect);
-    }
-    else if (shape.compare("Quad") == 0)
-    {
-        QRect QuadeRect(x,y,w,h);
-        painter->drawRect(QuadeRect);
+  Mesh* meshTemp = myMesh;
+
+  if(meshTemp!=nullptr)
+  {
+        for(int i=0; i<meshTemp->submeshes.count(); i++)
+        {
+            if(meshTemp->submeshes[i]!=nullptr)
+            {
+                meshTemp->submeshes[i]->draw();
+            }
+        }
     }
 }
