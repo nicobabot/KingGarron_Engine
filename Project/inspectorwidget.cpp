@@ -36,6 +36,14 @@ void InspectorWidget::UpdateInspectorValues(gObject *object)
                 transform->ui->pos_x->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->position.x()));
                 transform->ui->pos_y->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->position.y()));
                 transform->ui->pos_z->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->position.z()));
+
+                transform->ui->scale_x->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->scale.x()));
+                transform->ui->scale_y->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->scale.y()));
+                transform->ui->scale_z->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->scale.z()));
+
+                transform->ui->rot_x->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->rotation.x()));
+                transform->ui->rot_y->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->rotation.y()));
+                transform->ui->rot_z->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->rotation.z()));
                 break;
             }
             case gComponentType::COMP_RENDER:

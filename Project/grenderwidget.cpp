@@ -59,8 +59,6 @@ void GRenderWidget::LoadAllModelsRecursive(QString filename)
                 modelResources.insert(infoList[i].fileName(), nameComplete.toStdString().c_str());
 
             }
-
-
         }
     }
 
