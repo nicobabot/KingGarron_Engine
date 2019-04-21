@@ -18,6 +18,10 @@ class GRenderWidget : public QWidget
 public:
     explicit GRenderWidget(QWidget *parent = nullptr);
     ~GRenderWidget();
+
+    void LoadAllModelsRecursive(QString filename);
+    void AddResourcesToUI();
+
 public slots:
     void ModifyShapeComponent(const QString&);
     void ModifySizeComponent(double item);

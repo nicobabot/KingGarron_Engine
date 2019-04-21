@@ -105,3 +105,14 @@ SubMesh* Mesh::processMesh(aiMesh *mesh, const aiScene *scene)
             &indices[0], indices.size());
 
 }
+
+void Mesh::destroy()
+{
+
+    qDebug("Destroying mesh");
+
+    for(int i=0; i<submeshes.length(); i++)
+    {
+        submeshes[i]->destroy();
+    }
+}

@@ -9,16 +9,16 @@
 gComponentRender::gComponentRender(gObject *parent) : gComponent (parent)
 {
     compType = gComponentType::COMP_RENDER;
-    shape = "Patrick";
+    //shape = "Patrick";
     myMesh = new Mesh();
-    myMesh->loadModel("C:/Users/nicolasba1/Desktop/PG/GARRONPARATI/kINGgARRON_eNGINE/KingGarron_Engine/Project/Models/Patrick/Patrick.obj");
+    //myMesh->loadModel("Models/Patrick/Patrick.obj");
     //Update();
 }
 
 gComponentRender::gComponentRender(gObject *parent, gShape newShape, float newsize): gComponent (parent)
 {
     compType = gComponentType::COMP_RENDER;
-    shape = "Patrick";
+    //shape = "Patrick";
     shape = newShape;
     size = newsize;
 }
