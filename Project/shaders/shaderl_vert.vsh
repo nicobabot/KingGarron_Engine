@@ -8,11 +8,15 @@ out Data
     vec3 color;
 } VSOut;
 
-uniform mat4 mat_model;
-uniform mat4 projection_view;
+uniform mat4 model;
+uniform mat4 projection;
+uniform mat4 view;
+
+mat4 pvm;
 
 void main(void)
 {
     VSOut.color = color;
-    gl_Position = projection_view * vec4(position, 1.0f);
+    pvm = projection * view * model ;
+    gl_Position = pvm * vec4(position, 1.0f);
 }

@@ -14,6 +14,7 @@
 #include <gcomponentrender.h>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "gcomponenttransform.h"
 #include "inspectorwidget.h"
 
 #pragma comment(lib, "OpenGL32.lib")
@@ -92,32 +93,22 @@ void MyOpenGLWidget::paintGL()
                              QVector3D( 0.5f, -0.5f, 0.0f), QVector3D(0.0f, 1.0f, 0.0f),
                              QVector3D( 0.0f, 0.5f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f) };
 
-    QMatrix4x4 model;
-    model.setToIdentity();
-    model.translate(QVector3D(1.0f, 0.0f, 0.0f));
-    model.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
-    model.scale(QVector3D(1.0f, 1.0f, 1.0f));
+
     QMatrix4x4 view;
     view.setToIdentity();
-    model.translate(editorCamera->position);
-    model.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
-    model.scale(QVector3D(1.0f, 1.0f, 1.0f));
+    view.translate(editorCamera->position);
+    view.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
+    view.scale(QVector3D(1.0f, 1.0f, 1.0f));
     //view.setColumn(3, QVector4D(position,1));
     //model.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
     QMatrix4x4 proj;
     proj.setToIdentity();
     proj.perspective(90.0f, static_cast<float>(width()) / static_cast<float>(height()), 0.1f, 100.0f);
 
-    QMatrix4x4 mvp = (proj * view * model);
-    mvp = mvp.transposed();
-    program.bind();
+    //QMatrix4x4 mvp = (proj * view * model);
+    //mvp = mvp.transposed();
 
-    int modelLoc = glGetUniformLocation(program.programId(), "mat_model");
-    glUniformMatrix4fv(modelLoc, 1, GL_TRUE, model.data());
-
-    int projecLoc = glGetUniformLocation(program.programId(), "projection_view");
-    glUniformMatrix4fv(projecLoc, 1, GL_TRUE, mvp.data());
-    if(!vbo.isCreated())
+ if(!vbo.isCreated())
         vbo.create();
     vbo.bind();
     vbo.setUsagePattern(QOpenGLBuffer::UsagePattern::StaticDraw);
@@ -145,6 +136,16 @@ void MyOpenGLWidget::paintGL()
     vao.release();
     vbo.release();
 
+
+    program.bind();
+
+    int projecLoc = glGetUniformLocation(program.programId(), "projection");
+    glUniformMatrix4fv(projecLoc, 1, GL_TRUE, proj.transposed().data());
+
+    int viewLoc = glGetUniformLocation(program.programId(), "view");
+    glUniformMatrix4fv(viewLoc, 1, GL_TRUE, view.transposed().data());
+
+
     if(needUpdate)
     {
         qDebug("UPDATE MESH");
@@ -156,6 +157,25 @@ void MyOpenGLWidget::paintGL()
     {
         if(myObject==nullptr)
             continue;
+
+        gComponentTransform *trans = (gComponentTransform*)myObject->GetComponent(gComponentType::COMP_TRANSFORM);
+
+        QMatrix4x4 model;
+        model.setToIdentity();
+
+        QVector3D position = trans->position;
+
+        float rotx, roty, rotz;
+        trans->rotation.getEulerAngles(&rotx, &roty, &rotz);
+
+        QVector3D scale = trans->scale;
+
+        model.translate(QVector3D(position.x(), position.y(), position.z()));
+        model.rotate(trans->rotation);
+        model.scale(QVector3D(scale.x(), scale.y(), scale.z()));
+
+        int modelLoc = glGetUniformLocation(program.programId(), "model");
+        glUniformMatrix4fv(modelLoc, 1, GL_TRUE, model.transposed().data());
 
         gComponentRender *render = (gComponentRender*)myObject->GetComponent(gComponentType::COMP_RENDER);
 

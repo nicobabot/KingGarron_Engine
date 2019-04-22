@@ -50,7 +50,7 @@ void GRenderWidget::LoadAllModelsRecursive(QString filename)
             QFileInfo file;
             file.setFile(infoList[i].filePath());
             QString extension = file.completeSuffix();
-            qDebug("The extension is: %s", extension.toStdString().c_str());
+            //qDebug("The extension is: %s", extension.toStdString().c_str());
 
             if(extension.compare("obj") == 0 || extension.compare("fbx") == 0)
             {
@@ -69,7 +69,7 @@ void GRenderWidget::AddResourcesToUI()
 
     for(std::pair<QString,QString> resource : modelResources.toStdMap())
     {
-      qDebug("%s added to UI", resource.first.toStdString().c_str());
+      //qDebug("%s added to UI", resource.first.toStdString().c_str());
       ui->Shapebox->addItem(resource.first);
     }
 
