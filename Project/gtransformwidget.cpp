@@ -63,15 +63,24 @@ void GTransformWidget::ScaleZWidget(double item)
 void GTransformWidget::RotXWidget(double item)
 {
     if(transformComponent!=nullptr)
-        transformComponent->rotation.setX(static_cast<float>(item));
+    {
+        transformComponent->UIrotation.setX(static_cast<float>(item));
+        transformComponent->rotation = QQuaternion::fromEulerAngles(transformComponent->UIrotation);
+    }
 }
 void GTransformWidget::RotYWidget(double item)
 {
     if(transformComponent!=nullptr)
-        transformComponent->rotation.setY(static_cast<float>(item));
+    {
+        transformComponent->UIrotation.setY(static_cast<float>(item));
+        transformComponent->rotation = QQuaternion::fromEulerAngles(transformComponent->UIrotation);
+    }
 }
 void GTransformWidget::RotZWidget(double item)
 {
     if(transformComponent!=nullptr)
-        transformComponent->rotation.setZ(static_cast<float>(item));
+    {
+        transformComponent->UIrotation.setZ(static_cast<float>(item));
+        transformComponent->rotation = QQuaternion::fromEulerAngles(transformComponent->UIrotation);
+    }
 }

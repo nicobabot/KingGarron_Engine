@@ -41,9 +41,11 @@ void InspectorWidget::UpdateInspectorValues(gObject *object)
                 transform->ui->scale_y->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->scale.y()));
                 transform->ui->scale_z->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->scale.z()));
 
-                transform->ui->rot_x->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->rotation.x()));
-                transform->ui->rot_y->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->rotation.y()));
-                transform->ui->rot_z->setValue(static_cast<double>(static_cast<gComponentTransform*>(comp)->rotation.z()));
+                QVector3D eulerAng = static_cast<gComponentTransform*>(comp)->rotation.toEulerAngles();
+
+                transform->ui->rot_x->setValue(static_cast<double>(eulerAng.x()));
+                transform->ui->rot_y->setValue(static_cast<double>(eulerAng.y()));
+                transform->ui->rot_z->setValue(static_cast<double>(eulerAng.z()));
                 break;
             }
             case gComponentType::COMP_RENDER:

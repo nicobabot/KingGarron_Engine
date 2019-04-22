@@ -14,6 +14,7 @@ public:
 public:
     QVector3D position = QVector3D(0.0f, 0.0f, 0.0f);
     QVector3D scale = QVector3D(1.0f, 1.0f, 1.0f);
+    QVector3D UIrotation = QVector3D(0.0f, 0.0f, 0.0f);
     QQuaternion rotation = QQuaternion(0.0f, 0.0f, 0.0f, 0.0f);
 };
 
