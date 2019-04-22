@@ -21,6 +21,7 @@ public:
 
     void LoadAllModelsRecursive(QString filename);
     void AddResourcesToUI();
+    void AddTexturesResourcesToUI();
 
 public slots:
     void ModifyShapeComponent(const QString&);
@@ -31,6 +32,7 @@ public:
     gComponentRender *renderComponent = nullptr;
     GScene *scene = nullptr;
     QMap<QString, QString> modelResources;
+    QMap<QString, QString> texturesResources;
 };
 
 #endif // GRENDERWIDGET_H

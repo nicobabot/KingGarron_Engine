@@ -19,6 +19,7 @@ GRenderWidget::GRenderWidget(QWidget *parent) :
     LoadAllModelsRecursive("D:/CITM/4rto/Prog Grafica/KingGarron/KingGarron_Engine/Project/Models/");
 
     AddResourcesToUI();
+    AddTexturesResourcesToUI();
 
     connect(ui->Shapebox,SIGNAL(currentTextChanged(const QString&)), this,SLOT(ModifyShapeComponent(const QString&)));
     connect(ui->SizeValue, SIGNAL(valueChanged(double)), this, SLOT(ModifySizeComponent(double)));
@@ -57,6 +58,12 @@ void GRenderWidget::LoadAllModelsRecursive(QString filename)
                 QString nameComplete = infoList[i].filePath();
                 qDebug("%s into model resources", infoList[i].fileName().toStdString().c_str());
                 modelResources.insert(infoList[i].fileName(), nameComplete.toStdString().c_str());
+            }
+            else if(extension.compare("png") == 0 || extension.compare("jpg") == 0)
+            {
+                QString nameComplete = infoList[i].filePath();
+                qDebug("%s into model resources", infoList[i].fileName().toStdString().c_str());
+                texturesResources.insert(infoList[i].fileName(), nameComplete.toStdString().c_str());
 
             }
         }
@@ -71,6 +78,17 @@ void GRenderWidget::AddResourcesToUI()
     {
       //qDebug("%s added to UI", resource.first.toStdString().c_str());
       ui->Shapebox->addItem(resource.first);
+    }
+
+}
+
+void GRenderWidget::AddTexturesResourcesToUI()
+{
+
+    for(std::pair<QString,QString> resource : texturesResources.toStdMap())
+    {
+      //qDebug("%s added to UI", resource.first.toStdString().c_str());
+      ui->Materialbox->addItem(resource.first);
     }
 
 }

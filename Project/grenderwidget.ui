@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>154</width>
-    <height>123</height>
+    <width>219</width>
+    <height>150</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,8 +18,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>131</width>
-     <height>111</height>
+     <width>211</width>
+     <height>141</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -31,13 +31,13 @@
    <property name="title">
     <string>Render</string>
    </property>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>20</y>
-      <width>111</width>
-      <height>85</height>
+      <width>191</width>
+      <height>113</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -68,6 +68,20 @@
          </item>
          <item>
           <widget class="QDoubleSpinBox" name="SizeValue"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Material</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="Materialbox"/>
          </item>
         </layout>
        </item>

@@ -24,6 +24,7 @@ public:
 
 public:
     std::string shape;
+    std::string material;
     float size = 50.0f;
     QColor color = QColor(1,1,1,255);
 
