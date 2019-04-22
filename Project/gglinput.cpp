@@ -83,13 +83,11 @@ int gGLInput::GetMouseYMotion() const
 
 void gGLInput::keyPressEvent(QKeyEvent* event)
 {
-    if (event->isAutoRepeat()) return;
     keyboard[event->key()] = KEY_STATE::KEY_DOWN;
 }
 
 void gGLInput::keyReleaseEvent(QKeyEvent* event)
 {
-    if (event->isAutoRepeat()) return;
     keyboard[event->key()] = KEY_STATE::KEY_UP;
 }
 
