@@ -40,6 +40,8 @@ MyOpenGLWidget::MyOpenGLWidget(QWidget *parent)
     else
         timer.setInterval(0);
     timer.start();
+
+    this->setUpdatesEnabled(true);
 }
 
 MyOpenGLWidget::~MyOpenGLWidget()
@@ -225,46 +227,48 @@ void MyOpenGLWidget::Update()
 {
     inputClass->Update();
     editorCamera->Update();
+    this->update();
+    //this->repaint();
 }
 
 void MyOpenGLWidget::keyPressEvent(QKeyEvent* event)
 {
+    if (event->isAutoRepeat()) return;
     inputClass->keyPressEvent(event);
-    this->repaint();
 }
 
 void MyOpenGLWidget::keyReleaseEvent(QKeyEvent* event)
 {
+    if (event->isAutoRepeat()) return;
     inputClass->keyReleaseEvent(event);
-    this->repaint();
 }
 
 void MyOpenGLWidget::mousePressEvent(QMouseEvent* event)
 {
+    //if (event->isAutoRepeat()) return;
     inputClass->mousePressEvent(event);
-    this->repaint();
 }
 
 void MyOpenGLWidget::mouseMoveEvent(QMouseEvent* event)
 {
+    //if (event->isAutoRepeat()) return;
     inputClass->mouseMoveEvent(event);
-    this->repaint();
 }
 
 void MyOpenGLWidget::mouseReleaseEvent(QMouseEvent* event)
 {
+    //if (event->isAutoRepeat()) return;
     inputClass->mouseReleaseEvent(event);
-    this->repaint();
 }
 
 void MyOpenGLWidget::enterEvent(QEvent* event)
 {
+    //if (event->isAutoRepeat()) return;
     inputClass->enterEvent(event);
-    this->repaint();
 }
 
 void MyOpenGLWidget::leaveEvent(QEvent* event)
 {
+    //if (event->isAutoRepeat()) return;
     inputClass->leaveEvent(event);
-    this->repaint();
 }
