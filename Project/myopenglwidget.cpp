@@ -95,7 +95,6 @@ void MyOpenGLWidget::paintGL()
                              QVector3D( 0.5f, -0.5f, 0.0f), QVector3D(0.0f, 1.0f, 0.0f),
                              QVector3D( 0.0f, 0.5f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f) };
 
-
     QMatrix4x4 view;
     view.setToIdentity();
     view.translate(editorCamera->position);
@@ -107,8 +106,17 @@ void MyOpenGLWidget::paintGL()
     proj.setToIdentity();
     proj.perspective(90.0f, static_cast<float>(width()) / static_cast<float>(height()), 0.1f, 100.0f);
 
+    program.bind();
+
+    int projecLoc = glGetUniformLocation(program.programId(), "projection");
+    glUniformMatrix4fv(projecLoc, 1, GL_TRUE, proj.transposed().data());
+
+    int viewLoc = glGetUniformLocation(program.programId(), "view");
+    glUniformMatrix4fv(viewLoc, 1, GL_TRUE, view.transposed().data());
+
+
     //QMatrix4x4 mvp = (proj * view * model);
-    //mvp = mvp.transposed();
+    //mvp = mvp.transposed();    
 
  if(!vbo.isCreated())
         vbo.create();
@@ -139,14 +147,6 @@ void MyOpenGLWidget::paintGL()
     vbo.release();
 
 
-    program.bind();
-
-    int projecLoc = glGetUniformLocation(program.programId(), "projection");
-    glUniformMatrix4fv(projecLoc, 1, GL_TRUE, proj.transposed().data());
-
-    int viewLoc = glGetUniformLocation(program.programId(), "view");
-    glUniformMatrix4fv(viewLoc, 1, GL_TRUE, view.transposed().data());
-
 
     if(needUpdate)
     {
@@ -162,16 +162,13 @@ void MyOpenGLWidget::paintGL()
 
         gComponentTransform *trans = (gComponentTransform*)myObject->GetComponent(gComponentType::COMP_TRANSFORM);
 
-        QMatrix4x4 model;
-        model.setToIdentity();
-
         QVector3D position = trans->position;
 
         float rotx, roty, rotz;
         trans->rotation.getEulerAngles(&rotx, &roty, &rotz);
 
         QVector3D scale = trans->scale;
-
+        QMatrix4x4 model;
         model.translate(QVector3D(position.x(), position.y(), position.z()));
         model.rotate(trans->rotation);
         model.scale(QVector3D(scale.x(), scale.y(), scale.z()));
