@@ -16,7 +16,7 @@ GRenderWidget::GRenderWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    LoadAllModelsRecursive("D:/CITM/4rto/Prog Grafica/KingGarron/KingGarron_Engine/Project/Models/");
+    LoadAllModelsRecursive("Models/");
 
     AddResourcesToUI();
     AddTexturesResourcesToUI();
