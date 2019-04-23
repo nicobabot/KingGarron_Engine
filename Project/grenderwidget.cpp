@@ -120,7 +120,7 @@ void GRenderWidget::ModifyTextureComponent(const QString& text)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        int width, height, nrChannels;
+        /*int width, height, nrChannels;
          unsigned char *data = stbi_load(renderComponent->material.c_str(), &width, &height, &nrChannels, 0);
         if (data)
         {
@@ -133,7 +133,7 @@ void GRenderWidget::ModifyTextureComponent(const QString& text)
            qDebug("Failed to load texture");
            renderComponent->textureSample = -1;
         }
-        stbi_image_free(data);
+        stbi_image_free(data);*/
 
 
 
