@@ -97,11 +97,10 @@ void MyOpenGLWidget::paintGL()
 
     QMatrix4x4 view;
     view.setToIdentity();
-    view.translate(editorCamera->position);
-    view.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
-    view.scale(QVector3D(1.0f, 1.0f, 1.0f));
-    //view.setColumn(3, QVector4D(position,1));
-    //model.rotate(0.0f, QVector3D(0.0f, 1.0f, 0.0f));
+    view.setColumn(0, QVector4D(editorCamera->X,0));
+    view.setColumn(1, QVector4D(editorCamera->Y,0));
+    view.setColumn(2, QVector4D(editorCamera->Z,0));
+    view.setColumn(3, QVector4D(editorCamera->position,1));
     QMatrix4x4 proj;
     proj.setToIdentity();
     proj.perspective(90.0f, static_cast<float>(width()) / static_cast<float>(height()), 0.1f, 100.0f);

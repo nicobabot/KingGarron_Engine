@@ -12,9 +12,9 @@ public:
 public:
     QVector3D position = QVector3D(0.0f, 0.0f, -3.0f);
     QVector3D reference = QVector3D(0.0f, 0.0f, 0.0f);
-    QVector3D X = QVector3D(0.0f, 0.0f, 0.0f);
-    QVector3D Y = QVector3D(0.0f, 0.0f, 0.0f);
-    QVector3D Z = QVector3D(0.0f, 0.0f, 0.0f);
+    QVector3D X = QVector3D(1.0f, 0.0f, 0.0f);
+    QVector3D Y = QVector3D(0.0f, 1.0f, 0.0f);
+    QVector3D Z = QVector3D(0.0f, 0.0f, 1.0f);
     float camSpeed = 0.01f;
 };
 

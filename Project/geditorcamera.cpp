@@ -11,15 +11,48 @@ gEditorCamera::gEditorCamera()
 
 void gEditorCamera::Update()
 {
-    if (gGLInput* input = mainWindow->openGLWidget->inputClass)
+    gGLInput* input = mainWindow->openGLWidget->inputClass;
+    if (!input) return;
+    QVector3D newPos = QVector3D(0.0f, 0.0f, 0.0f);
+    if (input->GetKeyIsState(Qt::Key_W, KEY_STATE::KEY_REPEAT)) newPos += Z * camSpeed;
+    if (input->GetKeyIsState(Qt::Key_S, KEY_STATE::KEY_REPEAT)) newPos -= Z * camSpeed;
+    if (input->GetKeyIsState(Qt::Key_A, KEY_STATE::KEY_REPEAT)) newPos += X * camSpeed;
+    if (input->GetKeyIsState(Qt::Key_D, KEY_STATE::KEY_REPEAT)) newPos -= X * camSpeed;
+    if (input->GetKeyIsState(Qt::Key_Q, KEY_STATE::KEY_REPEAT)) newPos.setY(newPos.y() - camSpeed);
+    if (input->GetKeyIsState(Qt::Key_E, KEY_STATE::KEY_REPEAT)) newPos.setY(newPos.y() + camSpeed);
+    position += newPos;
+    position -= reference;
+    if (input->GetKeyIsState(Qt::Key_Alt, KEY_STATE::KEY_REPEAT))
     {
-        if (input->GetKeyIsState(Qt::Key_W, KEY_STATE::KEY_REPEAT))
-            position.setZ(position.z() + camSpeed);
-        if (input->GetKeyIsState(Qt::Key_S, KEY_STATE::KEY_REPEAT))
-            position.setZ(position.z() - camSpeed);
-        if (input->GetKeyIsState(Qt::Key_A, KEY_STATE::KEY_REPEAT))
-            position.setX(position.x() + camSpeed);
-        if (input->GetKeyIsState(Qt::Key_D, KEY_STATE::KEY_REPEAT))
-            position.setX(position.x() - camSpeed);
+        /*
+        int dx = -input->GetMouseXMotion();
+        int dy = -input->GetMouseYMotion();
+        float Sensitivity = 0.0001f;
+        if (dx != 0)
+        {
+            float deltaX = static_cast<float>(dx) * Sensitivity;
+            QMatrix4x4 rotate;
+            rotate.setToIdentity();
+            rotate.rotate(deltaX, QVector3D(0.0f, 1.0f, 0.0f));
+            X = rotate * X;
+            Y = rotate * Y;
+            Z = rotate * Z;
+        }
+        if (dy != 0)
+        {
+            float deltaY = static_cast<float>(dy) * Sensitivity;
+            QMatrix4x4 rotate;
+            rotate.setToIdentity();
+            rotate.rotate(deltaY, X);
+            Y = rotate * Y;
+            Z = rotate * Z;
+            if (Y.y() < 0.0f)
+            {
+                Z = QVector3D(0.0f, Z.y() > 0.0f ? 1.0f : -1.0f, 0.0f);
+                Y = QVector3D::crossProduct(Z, X);
+            }
+        }
+        position = reference + -Z * position.length();
+        */
     }
 }
