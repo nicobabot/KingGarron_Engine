@@ -16,6 +16,7 @@ public:
     QVector3D Y = QVector3D(0.0f, 1.0f, 0.0f);
     QVector3D Z = QVector3D(0.0f, 0.0f, 1.0f);
     float camSpeed = 0.01f;
+    float sensitivity = 0.01f;
 };
 
 #endif // GEDITORCAMERA_H
