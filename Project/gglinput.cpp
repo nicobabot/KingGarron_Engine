@@ -102,7 +102,7 @@ void gGLInput::mouseMoveEvent(QMouseEvent* event)
     mouse_y_motion = event->y() - mouse_y;
     mouse_x = event->x();
     mouse_y = event->y();
-    //qDebug("MOVE, mouse_x_motion = %.2f, mouse_y_motion = %.2f, mouse_x = %.2f, mouse_y = %.2f", mouse_x_motion, mouse_y_motion, mouse_x, mouse_y);
+    //qDebug("MOVE, mouse_x_motion = %i, mouse_y_motion = %i, mouse_x = %i, mouse_y = %i", mouse_x_motion, mouse_y_motion, mouse_x, mouse_y);
 }
 
 void gGLInput::mouseReleaseEvent(QMouseEvent* event)

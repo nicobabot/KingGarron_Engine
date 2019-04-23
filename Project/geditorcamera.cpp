@@ -21,15 +21,16 @@ void gEditorCamera::Update()
     if (input->GetKeyIsState(Qt::Key_Q, KEY_STATE::KEY_REPEAT)) newPos.setY(newPos.y() - camSpeed);
     if (input->GetKeyIsState(Qt::Key_E, KEY_STATE::KEY_REPEAT)) newPos.setY(newPos.y() + camSpeed);
     position += newPos;
-    position -= reference;
-    if (input->GetKeyIsState(Qt::Key_Alt, KEY_STATE::KEY_REPEAT))
+    if (input->GetMouseButtonIsState(1, KEY_STATE::KEY_REPEAT))
     {
-        /*
+        qDebug("ROTATE");
         int dx = -input->GetMouseXMotion();
         int dy = -input->GetMouseYMotion();
-        float Sensitivity = 0.0001f;
+        float Sensitivity = 0.01f;
+        position -= reference;
         if (dx != 0)
         {
+            qDebug("DX");
             float deltaX = static_cast<float>(dx) * Sensitivity;
             QMatrix4x4 rotate;
             rotate.setToIdentity();
@@ -40,6 +41,7 @@ void gEditorCamera::Update()
         }
         if (dy != 0)
         {
+            qDebug("DY");
             float deltaY = static_cast<float>(dy) * Sensitivity;
             QMatrix4x4 rotate;
             rotate.setToIdentity();
@@ -53,6 +55,5 @@ void gEditorCamera::Update()
             }
         }
         position = reference + -Z * position.length();
-        */
     }
 }
