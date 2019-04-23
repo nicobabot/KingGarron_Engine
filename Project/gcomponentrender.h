@@ -28,6 +28,7 @@ public:
     float size = 50.0f;
     QColor color = QColor(1,1,1,255);
 
+    int textureSample = 0;
     Mesh* myMesh = nullptr;
 
 private:

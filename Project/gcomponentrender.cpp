@@ -6,6 +6,7 @@
 #include "mesh.h"
 #include "submesh.h"
 
+
 gComponentRender::gComponentRender(gObject *parent) : gComponent (parent)
 {
     compType = gComponentType::COMP_RENDER;

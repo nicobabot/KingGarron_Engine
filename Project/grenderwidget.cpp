@@ -8,7 +8,8 @@
 #include <QtDebug>
 #include <QFile>
 #include <qdir.h>
-
+#include "stb_image.h"
+#include "myopenglwidget.h"
 
 GRenderWidget::GRenderWidget(QWidget *parent) :
     QWidget(parent),
@@ -22,6 +23,7 @@ GRenderWidget::GRenderWidget(QWidget *parent) :
     AddTexturesResourcesToUI();
 
     connect(ui->Shapebox,SIGNAL(currentTextChanged(const QString&)), this,SLOT(ModifyShapeComponent(const QString&)));
+    connect(ui->Materialbox,SIGNAL(currentTextChanged(const QString&)), this,SLOT(ModifyTextureComponent(const QString&)));
     connect(ui->SizeValue, SIGNAL(valueChanged(double)), this, SLOT(ModifySizeComponent(double)));
     connect(ui->ColorButton, SIGNAL(clicked()), this, SLOT(ColorPicker()));
 }
@@ -101,6 +103,40 @@ void GRenderWidget::ModifyShapeComponent(const QString& text)
         renderComponent->myMesh->destroy();
         QString path = modelResources.value(text);
         renderComponent->myMesh->loadModel(path.toStdString().c_str());
+    }
+}
+
+void GRenderWidget::ModifyTextureComponent(const QString& text)
+{
+    if (renderComponent != nullptr)
+    {
+        renderComponent->material = texturesResources.value(text).toStdString();
+
+        unsigned int texture;
+        glGenTextures(1, &texture);
+        glBindTexture(GL_TEXTURE_2D, texture);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        int width, height, nrChannels;
+         unsigned char *data = stbi_load(renderComponent->material.c_str(), &width, &height, &nrChannels, 0);
+        if (data)
+        {
+          glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+          //glGenerateMipmap(GL_TEXTURE_2D);
+          renderComponent->textureSample = texture;
+        }
+        else
+        {
+           qDebug("Failed to load texture");
+           renderComponent->textureSample = -1;
+        }
+        stbi_image_free(data);
+
+
+
     }
 }
 

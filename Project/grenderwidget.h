@@ -25,6 +25,7 @@ public:
 
 public slots:
     void ModifyShapeComponent(const QString&);
+    void ModifyTextureComponent(const QString&);
     void ModifySizeComponent(double item);
     void ColorPicker();
 public:
@@ -33,6 +34,7 @@ public:
     GScene *scene = nullptr;
     QMap<QString, QString> modelResources;
     QMap<QString, QString> texturesResources;
+
 };
 
 #endif // GRENDERWIDGET_H
