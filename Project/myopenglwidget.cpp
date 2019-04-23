@@ -104,7 +104,7 @@ void MyOpenGLWidget::paintGL()
     view.setColumn(3, QVector4D(editorCamera->position,1));
     QMatrix4x4 proj;
     proj.setToIdentity();
-    proj.perspective(60.0f, static_cast<float>(width()) / static_cast<float>(height()), 0.1f, 100.0f);
+    proj.perspective(90.0f, static_cast<float>(width()) / static_cast<float>(height()), 0.1f, 100.0f);
 
     program.bind();
 
