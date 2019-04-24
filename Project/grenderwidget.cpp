@@ -8,8 +8,9 @@
 #include <QtDebug>
 #include <QFile>
 #include <qdir.h>
-#include "stb_image.h"
 #include "myopenglwidget.h"
+#include <qopengltexture.h>
+#include <qimage.h>
 
 GRenderWidget::GRenderWidget(QWidget *parent) :
     QWidget(parent),
@@ -112,31 +113,14 @@ void GRenderWidget::ModifyTextureComponent(const QString& text)
     {
         renderComponent->material = texturesResources.value(text).toStdString();
 
-        unsigned int texture;
-        glGenTextures(1, &texture);
-        glBindTexture(GL_TEXTURE_2D, texture);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        /*int width, height, nrChannels;
-         unsigned char *data = stbi_load(renderComponent->material.c_str(), &width, &height, &nrChannels, 0);
-        if (data)
+        if(renderComponent->textureOpenGL!=nullptr)
         {
-          glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-          //glGenerateMipmap(GL_TEXTURE_2D);
-          renderComponent->textureSample = texture;
+        qDebug("Path to load image: %s", renderComponent->material.c_str());
+        renderComponent->textureOpenGL = new QOpenGLTexture(QImage(renderComponent->material.c_str()).mirrored());
         }
-        else
-        {
-           qDebug("Failed to load texture");
-           renderComponent->textureSample = -1;
+        else {
+            qDebug("TextureOpenGL Nullptr");
         }
-        stbi_image_free(data);*/
-
-
-
     }
 }
 

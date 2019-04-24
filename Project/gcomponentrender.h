@@ -4,6 +4,8 @@
 #include "qrect.h"
 #include <QPainter>
 #include <QColorDialog>
+#include <qopengltexture.h>
+#include <qimage.h>
 
 class GScene;
 class Mesh;
@@ -27,6 +29,8 @@ public:
     std::string material;
     float size = 50.0f;
     QColor color = QColor(1,1,1,255);
+
+    QOpenGLTexture *textureOpenGL = nullptr;
 
     int textureSample = 0;
     Mesh* myMesh = nullptr;

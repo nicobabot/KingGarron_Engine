@@ -178,6 +178,17 @@ void MyOpenGLWidget::paintGL()
 
         gComponentRender *render = (gComponentRender*)myObject->GetComponent(gComponentType::COMP_RENDER);
 
+        if(render->textureOpenGL!=nullptr)
+        {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, render->textureOpenGL->textureId());
+        int texturePos = glGetUniformLocation(program.programId(), "ourTexture");
+        glUniform1i(texturePos, render->textureOpenGL->textureId());
+
+        qDebug("Texture pos: %i, and texture id: %i", texturePos, render->textureOpenGL->textureId());
+
+        //render->textureOpenGL->bind();
+        }
         render->Render();
     }
     program. release();

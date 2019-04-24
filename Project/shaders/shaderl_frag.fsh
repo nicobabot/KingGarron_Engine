@@ -11,7 +11,6 @@ out vec4 outColor;
 
 void main(void)
 {
-    //FSIn
     outColor = vec4(FSIn.color,1.0);
-    //outColor = texture(ourTexture, FSIn.textCoord);
+    //outColor = texture2D(ourTexture, FSIn.textCoord);
 }
