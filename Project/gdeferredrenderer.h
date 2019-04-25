@@ -8,9 +8,9 @@ class gDeferredRenderer : gRenderer
 public:
     gDeferredRenderer();
     ~gDeferredRenderer();
-    void initialize();
-    void resize(int w, int h);
-    void render();
+    void Initialize();
+    void Resize(int w, int h);
+    //void Render();
 private:
     void PassMaterials();
     void PassLights();

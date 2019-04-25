@@ -10,12 +10,12 @@ gDeferredRenderer::~gDeferredRenderer()
 
 }
 
-void gDeferredRenderer::initialize()
+void gDeferredRenderer::Initialize()
 {
 
 }
 
-void gDeferredRenderer::resize(int w, int h)
+void gDeferredRenderer::Resize(int w, int h)
 {
 
 }
