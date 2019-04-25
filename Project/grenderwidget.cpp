@@ -24,7 +24,7 @@ GRenderWidget::GRenderWidget(QWidget *parent) :
     AddTexturesResourcesToUI();
 
     connect(ui->Shapebox,SIGNAL(currentTextChanged(const QString&)), this,SLOT(ModifyShapeComponent(const QString&)));
-    connect(ui->Materialbox,SIGNAL(currentTextChanged(const QString&)), this,SLOT(ModifyTextureComponent(const QString&)));
+    connect(ui->Material1Box,SIGNAL(currentTextChanged(const QString&)), this,SLOT(ModifyTextureComponent(const QString&)));
     connect(ui->SizeValue, SIGNAL(valueChanged(double)), this, SLOT(ModifySizeComponent(double)));
     connect(ui->ColorButton, SIGNAL(clicked()), this, SLOT(ColorPicker()));
 }
@@ -91,7 +91,7 @@ void GRenderWidget::AddTexturesResourcesToUI()
     for(std::pair<QString,QString> resource : texturesResources.toStdMap())
     {
       //qDebug("%s added to UI", resource.first.toStdString().c_str());
-      ui->Materialbox->addItem(resource.first);
+      ui->Material1Box->addItem(resource.first);
     }
 
 }

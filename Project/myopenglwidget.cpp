@@ -136,6 +136,8 @@ void MyOpenGLWidget::paintGL()
     glVertexAttribPointer(0, compCount, GL_FLOAT, GL_FALSE, strideBytes, (void*)(offsetBytesO));
     glVertexAttribPointer(1, compCount, GL_FLOAT, GL_FALSE, strideBytes, (void*)(offsetBytesl));
 
+
+
     if(program.bind())
     {
         vao.bind();
@@ -182,10 +184,10 @@ void MyOpenGLWidget::paintGL()
         {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, render->textureOpenGL->textureId());
-        int texturePos = glGetUniformLocation(program.programId(), "ourTexture");
-        glUniform1i(texturePos, render->textureOpenGL->textureId());
+        //int texturePos = glGetUniformLocation(program.programId(), "ourTexture");
+        //glUniform1i(texturePos, render->textureOpenGL->textureId());
 
-        qDebug("Texture pos: %i, and texture id: %i", texturePos, render->textureOpenGL->textureId());
+        //qDebug("Texture pos: %i, and texture id: %i", texturePos, render->textureOpenGL->textureId());
 
         //render->textureOpenGL->bind();
         }
