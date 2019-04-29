@@ -1,6 +1,7 @@
 #include "gglinput.h"
 #include <QKeyEvent>
 #include <QMouseEvent>
+#include <QWheelEvent>
 #include <QEvent>
 
 gGLInput::gGLInput()
@@ -107,6 +108,29 @@ void gGLInput::mouseMoveEvent(QMouseEvent* event)
 void gGLInput::mouseReleaseEvent(QMouseEvent* event)
 {
     mouse_buttons[event->button()] = KEY_STATE::KEY_UP;
+}
+
+void gGLInput::wheelEvent(QWheelEvent* event)
+{
+    /*
+    QVector3D disVec = QVector3D(0.0f, 0.0f, 0.0f);
+    if(event->delta() > 0)
+    {
+        disVec += QVector3D(-sinf(qDegreesToRadians(yaw)) * cosf(qDegreesToRadians(pitch)),
+                            sinf(qDegreesToRadians(pitch)),
+                            -cosf(qDegreesToRadians(yaw)) * cosf(qDegreesToRadians(pitch)));
+        disVec *= DT * speed;
+    }
+    else if(event->delta() < 0)
+    {
+        disVec += QVector3D(sinf(qDegreesToRadians(yaw)) * cosf(qDegreesToRadians(pitch)),
+                            -sinf(qDegreesToRadians(pitch)),
+                            cosf(qDegreesToRadians(yaw)) * cosf(qDegreesToRadians(pitch)));
+        disVec *= DT * speed;
+    }
+    if(event->delta() != 0)
+        position += disVec;
+    */
 }
 
 void gGLInput::enterEvent(QEvent* event)

@@ -7,6 +7,7 @@
 #include "submesh.h"
 #include <QKeyEvent>
 #include <QMouseEvent>
+#include <QWheelEvent>
 #include <QEvent>
 #include "gglinput.h"
 #include "geditorcamera.h"
@@ -96,24 +97,13 @@ void MyOpenGLWidget::paintGL()
                              QVector3D( 0.5f, -0.5f, 0.0f), QVector3D(0.0f, 1.0f, 0.0f),
                              QVector3D( 0.0f, 0.5f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f) };
 
-    QMatrix4x4 view;
-    view.setToIdentity();
-    view.setColumn(0, QVector4D(editorCamera->X,0));
-    view.setColumn(1, QVector4D(editorCamera->Y,0));
-    view.setColumn(2, QVector4D(editorCamera->Z,0));
-    view.setColumn(3, QVector4D(editorCamera->position,1));
-    QMatrix4x4 proj;
-    proj.setToIdentity();
-    proj.perspective(90.0f, static_cast<float>(width()) / static_cast<float>(height()), 0.1f, 100.0f);
-
     program.bind();
 
     int projecLoc = glGetUniformLocation(program.programId(), "projection");
-    glUniformMatrix4fv(projecLoc, 1, GL_TRUE, proj.transposed().data());
+    glUniformMatrix4fv(projecLoc, 1, GL_TRUE, editorCamera->projMatrix.transposed().data());
 
     int viewLoc = glGetUniformLocation(program.programId(), "view");
-    glUniformMatrix4fv(viewLoc, 1, GL_TRUE, view.transposed().data());
-
+    glUniformMatrix4fv(viewLoc, 1, GL_TRUE, editorCamera->viewMatrix.transposed().data());
 
     //QMatrix4x4 mvp = (proj * view * model);
     //mvp = mvp.transposed();    
@@ -253,6 +243,8 @@ void MyOpenGLWidget::Update()
 {
     inputClass->Update();
     editorCamera->Update();
+    editorCamera->CalcWorldViewMatrices();
+    editorCamera->CalcProjMatrix(width(), height());
     this->update();
     //this->repaint();
 }
@@ -285,6 +277,12 @@ void MyOpenGLWidget::mouseReleaseEvent(QMouseEvent* event)
 {
     //if (event->isAutoRepeat()) return;
     inputClass->mouseReleaseEvent(event);
+}
+
+void MyOpenGLWidget::wheelEvent(QWheelEvent* event)
+{
+    //if (event->isAutoRepeat()) return;
+    inputClass->wheelEvent(event);
 }
 
 void MyOpenGLWidget::enterEvent(QEvent* event)

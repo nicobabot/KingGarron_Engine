@@ -3,6 +3,7 @@
 
 class QKeyEvent;
 class QMouseEvent;
+class QWheelEvent;
 class QEvent;
 class MyOpenGLWidget;
 
@@ -38,6 +39,7 @@ public:
     void mousePressEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
+    void wheelEvent(QWheelEvent* event);
     void enterEvent(QEvent* event);
     void leaveEvent(QEvent* event);
 
