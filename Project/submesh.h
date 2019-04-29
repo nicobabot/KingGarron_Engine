@@ -15,6 +15,10 @@ public:
     void draw();
     void destroy();
 
+public:
+
+    QOpenGLTexture *textureOpenGL = nullptr;
+
 private:
     unsigned char *data = nullptr;
     size_t data_size = 0;

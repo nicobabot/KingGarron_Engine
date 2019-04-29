@@ -22,10 +22,22 @@ public:
     void LoadAllModelsRecursive(QString filename);
     void AddResourcesToUI();
     void AddTexturesResourcesToUI();
-
+    void TestNumTexture(int num,const QString& texture);
 public slots:
     void ModifyShapeComponent(const QString&);
     void ModifyTextureComponent(const QString&);
+
+    void ModifyTexture0(const QString&);
+    void ModifyTexture1(const QString&);
+    void ModifyTexture2(const QString&);
+    void ModifyTexture3(const QString&);
+    void ModifyTexture4(const QString&);
+    void ModifyTexture5(const QString&);
+    void ModifyTexture6(const QString&);
+    void ModifyTexture7(const QString&);
+    void ModifyTexture8(const QString&);
+    void ModifyTexture9(const QString&);
+
     void ModifySizeComponent(double item);
     void ColorPicker();
 public:
