@@ -10,9 +10,12 @@
 #include <QTimer>
 #include <QListWidgetItem>
 
+#define DT 0.0166666666666667f
+
 class Mesh;
 class QKeyEvent;
 class QMouseEvent;
+class QWheelEvent;
 class QEvent;
 class gGLInput;
 class gEditorCamera;
@@ -42,6 +45,7 @@ private:
     void mousePressEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
+    void wheelEvent(QWheelEvent* event) override;
     void enterEvent(QEvent* event) override;
     void leaveEvent(QEvent* event) override;
 
