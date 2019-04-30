@@ -33,6 +33,7 @@ public:
     int GetMouseY() const;
     int GetMouseXMotion() const;
     int GetMouseYMotion() const;
+    int GetMouseZMotion() const;
 
     void keyPressEvent(QKeyEvent* event);
     void keyReleaseEvent(QKeyEvent* event);
@@ -52,6 +53,7 @@ private:
     int mouse_y = 0;
     int mouse_x_motion = 0;
     int mouse_y_motion = 0;
+    int mouse_z_motion = 0;
 };
 
 #endif // GGLINPUT_H

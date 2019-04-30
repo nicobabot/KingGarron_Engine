@@ -24,6 +24,7 @@ public:
     QVector3D position = QVector3D(0.0f, 0.0f, 10.0f);
     float camSpeed = 1.0f;
     float camRotSpeed = 3.0f;
+    float camScrollSpeed = 3.0f;
 
     QMatrix4x4 worldMatrix;
     QMatrix4x4 viewMatrix;

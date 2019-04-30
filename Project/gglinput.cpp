@@ -3,6 +3,7 @@
 #include <QMouseEvent>
 #include <QWheelEvent>
 #include <QEvent>
+#include <QtMath>
 
 gGLInput::gGLInput()
 {
@@ -40,6 +41,9 @@ void gGLInput::Update()
             if (mouse_buttonsOld[id] == KEY_STATE::KEY_UP && mouse_buttons[id] == KEY_STATE::KEY_UP) mouse_buttons[id] = KEY_STATE::KEY_IDLE;
         }
     memcpy(mouse_buttonsOld, mouse_buttons, sizeof(KEY_STATE) * MAX_BUTTONS);
+    mouse_x_motion = 0;
+    mouse_y_motion = 0;
+    mouse_z_motion = 0;
 }
 
 KEY_STATE gGLInput::GetKey(int id) const
@@ -82,6 +86,11 @@ int gGLInput::GetMouseYMotion() const
     return mouse_y_motion;
 }
 
+int gGLInput::GetMouseZMotion() const
+{
+    return mouse_z_motion;
+}
+
 void gGLInput::keyPressEvent(QKeyEvent* event)
 {
     if ((event->key() >= 0) && (event->key() <= MAX_KEYS))
@@ -116,25 +125,7 @@ void gGLInput::mouseReleaseEvent(QMouseEvent* event)
 
 void gGLInput::wheelEvent(QWheelEvent* event)
 {
-    /*
-    QVector3D disVec = QVector3D(0.0f, 0.0f, 0.0f);
-    if(event->delta() > 0)
-    {
-        disVec += QVector3D(-sinf(qDegreesToRadians(yaw)) * cosf(qDegreesToRadians(pitch)),
-                            sinf(qDegreesToRadians(pitch)),
-                            -cosf(qDegreesToRadians(yaw)) * cosf(qDegreesToRadians(pitch)));
-        disVec *= DT * speed;
-    }
-    else if(event->delta() < 0)
-    {
-        disVec += QVector3D(sinf(qDegreesToRadians(yaw)) * cosf(qDegreesToRadians(pitch)),
-                            -sinf(qDegreesToRadians(pitch)),
-                            cosf(qDegreesToRadians(yaw)) * cosf(qDegreesToRadians(pitch)));
-        disVec *= DT * speed;
-    }
-    if(event->delta() != 0)
-        position += disVec;
-    */
+    mouse_z_motion = event->delta() / qFabs(event->delta());
 }
 
 void gGLInput::enterEvent(QEvent* event)

@@ -62,6 +62,32 @@ void gEditorCamera::Update()
             if (pitch > 89.0f) pitch = 89.0f;
             if (pitch < -89.0f) pitch = -89.0f;
         }
+        if (input->GetMouseZMotion())
+        {
+            camSpeed += 1.0f;
+        }
+    }
+    else
+    {
+        if (input->GetMouseZMotion())
+        {
+            QVector3D disVec = QVector3D(0.0f, 0.0f, 0.0f);
+            if(input->GetMouseZMotion() > 0)
+            {
+                disVec += QVector3D(-sinf(qDegreesToRadians(yaw)) * cosf(qDegreesToRadians(pitch)),
+                                    sinf(qDegreesToRadians(pitch)),
+                                    -cosf(qDegreesToRadians(yaw)) * cosf(qDegreesToRadians(pitch)));
+                disVec *= DT * camScrollSpeed;
+            }
+            else if(input->GetMouseZMotion() < 0)
+            {
+                disVec += QVector3D(sinf(qDegreesToRadians(yaw)) * cosf(qDegreesToRadians(pitch)),
+                                    -sinf(qDegreesToRadians(pitch)),
+                                    cosf(qDegreesToRadians(yaw)) * cosf(qDegreesToRadians(pitch)));
+                disVec *= DT * camScrollSpeed;
+            }
+            position += disVec;
+        }
     }
 }
 

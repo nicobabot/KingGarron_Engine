@@ -241,10 +241,10 @@ void MyOpenGLWidget::HierarchyClicked(QListWidgetItem* item)
 
 void MyOpenGLWidget::Update()
 {
-    inputClass->Update();
     editorCamera->Update();
     editorCamera->CalcWorldViewMatrices();
     editorCamera->CalcProjMatrix(width(), height());
+    inputClass->Update(); //keep input at the bottom
     this->update();
     //this->repaint();
 }
