@@ -20,6 +20,11 @@ void gDeferredRenderer::Resize(int w, int h)
 
 }
 
+void gDeferredRenderer::Render()
+{
+
+}
+
 void gDeferredRenderer::PassMaterials()
 {
 

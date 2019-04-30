@@ -10,8 +10,9 @@ public:
     ~gDeferredRenderer();
     void Initialize();
     void Resize(int w, int h);
-    //void Render();
+    void Render();
 private:
+    void PassMesh();
     void PassMaterials();
     void PassLights();
     void PassSelectionOutline();
