@@ -174,7 +174,7 @@ void GRenderWidget::TestNumTexture(int num, const QString& texture)
     {
         renderComponent->material = texturesResources.value(texture).toStdString();
         qDebug("Texture loading %s", renderComponent->material.c_str());
-        renderComponent->myMesh->submeshes[num]->textureOpenGL = new QOpenGLTexture(QImage(renderComponent->material.c_str()).mirrored());
+        renderComponent->myMesh->submeshes[num]->textureOpenGL = new QOpenGLTexture(QImage(renderComponent->material.c_str()));
     }
 }
 
