@@ -84,17 +84,20 @@ int gGLInput::GetMouseYMotion() const
 
 void gGLInput::keyPressEvent(QKeyEvent* event)
 {
-    keyboard[event->key()] = KEY_STATE::KEY_DOWN;
+    if ((event->key() >= 0) && (event->key() <= MAX_KEYS))
+        keyboard[event->key()] = KEY_STATE::KEY_DOWN;
 }
 
 void gGLInput::keyReleaseEvent(QKeyEvent* event)
 {
-    keyboard[event->key()] = KEY_STATE::KEY_UP;
+    if ((event->key() >= 0) && (event->key() <= MAX_KEYS))
+        keyboard[event->key()] = KEY_STATE::KEY_UP;
 }
 
 void gGLInput::mousePressEvent(QMouseEvent* event)
 {
-    mouse_buttons[event->button()] = KEY_STATE::KEY_DOWN;
+    if ((event->button() >= 0) && (event->button() <= MAX_BUTTONS))
+        mouse_buttons[event->button()] = KEY_STATE::KEY_DOWN;
 }
 
 void gGLInput::mouseMoveEvent(QMouseEvent* event)
@@ -107,7 +110,8 @@ void gGLInput::mouseMoveEvent(QMouseEvent* event)
 
 void gGLInput::mouseReleaseEvent(QMouseEvent* event)
 {
-    mouse_buttons[event->button()] = KEY_STATE::KEY_UP;
+    if ((event->button() >= 0) && (event->button() <= MAX_BUTTONS))
+        mouse_buttons[event->button()] = KEY_STATE::KEY_UP;
 }
 
 void gGLInput::wheelEvent(QWheelEvent* event)
