@@ -26,19 +26,28 @@ GRenderWidget::GRenderWidget(QWidget *parent) :
 
     connect(ui->Shapebox,SIGNAL(currentTextChanged(const QString&)), this,SLOT(ModifyShapeComponent(const QString&)));
 
+    //-----------------------------------------------------------------------------------
+    QVBoxLayout* myVvox = new QVBoxLayout(this);
+    myVvox->addLayout(ui->horizontalLayoutShape);
 
-    connect(ui->Material1Box,SIGNAL(currentTextChanged(const QString&)), this,SLOT(ModifyTexture0(const QString&)));
-    connect(ui->Material2Box,SIGNAL(currentTextChanged(const QString&)), this,SLOT(ModifyTexture1(const QString&)));
-    connect(ui->Material3Box,SIGNAL(currentTextChanged(const QString&)), this,SLOT(ModifyTexture2(const QString&)));
-    connect(ui->Material4Box,SIGNAL(currentTextChanged(const QString&)), this,SLOT(ModifyTexture3(const QString&)));
-    connect(ui->Material5Box,SIGNAL(currentTextChanged(const QString&)), this,SLOT(ModifyTexture4(const QString&)));
-    connect(ui->Material6Box,SIGNAL(currentTextChanged(const QString&)), this,SLOT(ModifyTexture5(const QString&)));
-    connect(ui->Material7Box,SIGNAL(currentTextChanged(const QString&)), this,SLOT(ModifyTexture6(const QString&)));
-    connect(ui->Material8Box,SIGNAL(currentTextChanged(const QString&)), this,SLOT(ModifyTexture7(const QString&)));
-    connect(ui->Material9Box,SIGNAL(currentTextChanged(const QString&)), this,SLOT(ModifyTexture8(const QString&)));
+    QLabel *myLabel = new QLabel("suc0", this);
+    QComboBox *myButton = new QComboBox(this);
+    connect(myButton,SIGNAL(currentTextChanged(const QString&)), this, SLOT(ModifyTexture0(const QString&)));
+    QHBoxLayout* myvox = new QHBoxLayout(this);
+    myvox->addWidget(myLabel);
+    myvox->addWidget(myButton);
+    myVvox->addLayout(myvox);
 
-    connect(ui->SizeValue, SIGNAL(valueChanged(double)), this, SLOT(ModifySizeComponent(double)));
-    connect(ui->ColorButton, SIGNAL(clicked()), this, SLOT(ColorPicker()));
+    QLabel *myLabel0 = new QLabel("suc1", this);
+    QComboBox *myButton0 = new QComboBox(this);
+    QHBoxLayout* myvox0 = new QHBoxLayout(this);
+    myvox0->addWidget(myLabel0);
+    myvox0->addWidget(myButton0);
+    myVvox->addLayout(myvox0);
+
+    QSpacerItem* space = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    myVvox->addItem(space);
+
 }
 
 GRenderWidget::~GRenderWidget()
@@ -103,6 +112,7 @@ void GRenderWidget::AddTexturesResourcesToUI()
     for(std::pair<QString,QString> resource : texturesResources.toStdMap())
     {
       //qDebug("%s added to UI", resource.first.toStdString().c_str());
+        /*
       ui->Material1Box->addItem(resource.first);
       ui->Material2Box->addItem(resource.first);
       ui->Material3Box->addItem(resource.first);
@@ -110,7 +120,7 @@ void GRenderWidget::AddTexturesResourcesToUI()
       ui->Material5Box->addItem(resource.first);
       ui->Material6Box->addItem(resource.first);
       ui->Material7Box->addItem(resource.first);
-      ui->Material8Box->addItem(resource.first);
+      ui->Material8Box->addItem(resource.first);*/
     }
 
 }
@@ -126,46 +136,9 @@ void GRenderWidget::ModifyShapeComponent(const QString& text)
     }
 }
 
-void GRenderWidget::ModifyTexture0(const QString& texture)
+void GRenderWidget::ModifyTexture(const QString& texture)
 {
     TestNumTexture(1,texture);
-}
-
-void GRenderWidget::ModifyTexture1(const QString& texture)
-{
-    TestNumTexture(2,texture);
-}
-void GRenderWidget::ModifyTexture2(const QString& texture)
-{
-    TestNumTexture(3,texture);
-}
-void GRenderWidget::ModifyTexture3(const QString& texture)
-{
-    TestNumTexture(4,texture);
-}
-void GRenderWidget::ModifyTexture4(const QString& texture)
-{
-    TestNumTexture(5,texture);
-}
-void GRenderWidget::ModifyTexture5(const QString& texture)
-{
-    TestNumTexture(6,texture);
-}
-void GRenderWidget::ModifyTexture6(const QString& texture)
-{
-    TestNumTexture(7,texture);
-}
-void GRenderWidget::ModifyTexture7(const QString& texture)
-{
-    TestNumTexture(8,texture);
-}
-void GRenderWidget::ModifyTexture8(const QString& texture)
-{
-    TestNumTexture(9,texture);
-}
-void GRenderWidget::ModifyTexture9(const QString& texture)
-{
-    TestNumTexture(10,texture);
 }
 
 void GRenderWidget::TestNumTexture(int num, const QString& texture)
@@ -176,49 +149,4 @@ void GRenderWidget::TestNumTexture(int num, const QString& texture)
         qDebug("Texture loading %s", renderComponent->material.c_str());
         renderComponent->myMesh->submeshes[num]->textureOpenGL = new QOpenGLTexture(QImage(renderComponent->material.c_str()));
     }
-}
-
-void GRenderWidget::ModifyTextureComponent(const QString& text)
-{
-    if (renderComponent != nullptr)
-    {
-        renderComponent->material = texturesResources.value(text).toStdString();
-
-        for(int i=0; i<renderComponent->myMesh->submeshes.count(); i++)
-        {
-            //if(renderComponent->myMesh->submeshes[i]->textureOpenGL != nullptr)
-            //{
-            renderComponent->myMesh->submeshes[i]->textureOpenGL = new QOpenGLTexture(QImage(renderComponent->material.c_str()).mirrored());
-            //}
-            //else
-            //{
-            //    qDebug("TextureOpenGL Nullptr");
-            //}
-        }
-
-    }
-}
-
-void GRenderWidget::ModifySizeComponent(double item)
-{
-    if(renderComponent!=nullptr)
-        renderComponent->size = static_cast<float>(item);
-    if (scene != nullptr)
-        scene->repaint();
-    else
-        qDebug("Scene is nullptr");
-}
-
-void GRenderWidget::ColorPicker()
-{
-    QColor color = QColorDialog::getColor();
-    if (renderComponent != nullptr)
-    {
-        renderComponent->color = color;
-        ui->ColorButton->setStyleSheet(QString("Background-Color: %0;").arg(renderComponent->color.name()));
-    }
-    if (scene != nullptr)
-        scene->repaint();
-    else
-        qDebug("Scene is nullptr");
 }

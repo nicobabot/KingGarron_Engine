@@ -64,7 +64,7 @@ void gEditorCamera::Update()
         }
         if (input->GetMouseZMotion())
         {
-            camSpeed += 1.0f;
+            camSpeed += input->GetMouseZMotion() * 1.0f;
         }
     }
     else
