@@ -5,6 +5,7 @@
 #include "ui_gtransformwidget.h"
 #include "gcomponentrender.h"
 #include "ui_grenderwidget.h"
+#include <QComboBox>
 
 InspectorWidget::InspectorWidget(QWidget *parent) :
     QWidget(parent)
@@ -52,10 +53,10 @@ void InspectorWidget::UpdateInspectorValues(gObject *object)
             {
                 render_widget->renderComponent = static_cast<gComponentRender*>(comp);
                 QString* strShape = new QString(((static_cast<gComponentRender*>(comp))->shape).c_str());
-                int combIndex = render_widget->ui->Shapebox->findText(*strShape);
+                int combIndex = render_widget->shapeComboBox->findText(*strShape);
                 if ( combIndex != -1 ) // -1 for not found
                 {
-                   render_widget->ui->Shapebox->setCurrentIndex(combIndex);
+                   render_widget->shapeComboBox->setCurrentIndex(combIndex);
                    //render_widget->ui->SizeValue->setValue(static_cast<double>(static_cast<gComponentRender*>(comp)->size));
                    //render_widget->ui->ColorButton->setStyleSheet(QString("Background-Color: %0;").arg(static_cast<gComponentRender*>(comp)->color.name()));
                 }

@@ -11,6 +11,9 @@ class GRenderWidget;
 
 class gComponentRender;
 class GScene;
+class QVBoxLayout;
+class QLabel;
+class QComboBox;
 
 class GRenderWidget : public QWidget
 {
@@ -34,6 +37,10 @@ public:
     GScene *scene = nullptr;
     QMap<QString, QString> modelResources;
     QMap<QString, QString> texturesResources;
+
+    QVBoxLayout* verticalLayout = nullptr;
+    QLabel* shapeButton = nullptr;
+    QComboBox* shapeComboBox = nullptr;
 
 };
 
