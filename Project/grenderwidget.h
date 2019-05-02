@@ -12,8 +12,22 @@ class GRenderWidget;
 class gComponentRender;
 class GScene;
 class QVBoxLayout;
+class QHBoxLayout;
+class QSpacerItem;
 class QLabel;
 class QComboBox;
+class Mesh;
+class SubMesh;
+
+struct MaterialSelector
+{
+    MaterialSelector() {}
+    MaterialSelector(QLabel* label, QComboBox* comboBox, QHBoxLayout* hLayout) : label(label), comboBox(comboBox), hLayout(hLayout) {}
+    void Delete();
+    QLabel* label = nullptr;
+    QComboBox* comboBox = nullptr;
+    QHBoxLayout* hLayout = nullptr;
+};
 
 class GRenderWidget : public QWidget
 {
@@ -25,6 +39,8 @@ public:
     void LoadAllModelsRecursive(QString filename);
     void AddResourcesToUI();
     void AddTexturesResourcesToUI();
+    void AddMaterialSelectors(Mesh* mesh);
+    void AddButton(SubMesh* submesh);
     void TestNumTexture(int num,const QString& texture);
 
 public slots:
@@ -41,6 +57,8 @@ public:
     QVBoxLayout* verticalLayout = nullptr;
     QLabel* shapeButton = nullptr;
     QComboBox* shapeComboBox = nullptr;
+    QSpacerItem* spacer = nullptr;
+    QList<MaterialSelector> materialSelectorList;
 
 };
 

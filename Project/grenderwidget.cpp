@@ -23,8 +23,8 @@ GRenderWidget::GRenderWidget(QWidget *parent) :
     verticalLayout->setParent(ui->groupBox);
     shapeButton = new QLabel("shape", this);
     shapeComboBox = new QComboBox(this);
-    connect(shapeComboBox,SIGNAL(currentTextChanged(const QString&)), this,SLOT(ModifyShapeComponent(const QString&)));
-    connect(shapeComboBox,SIGNAL(currentTextChanged(const QString&)), this, SLOT(ModifyTexture(const QString&)));
+    connect(shapeComboBox, SIGNAL(currentTextChanged(const QString&)), this, SLOT(ModifyShapeComponent(const QString&)));
+    //connect(shapeComboBox,SIGNAL(currentTextChanged(const QString&)), this, SLOT(ModifyTexture(const QString&)));
     QHBoxLayout* hBoxLayout = new QHBoxLayout();
     hBoxLayout->addWidget(shapeButton);
     hBoxLayout->addWidget(shapeComboBox);
@@ -32,14 +32,13 @@ GRenderWidget::GRenderWidget(QWidget *parent) :
 
     //------------------------------------------------------------------------------------
 
-    modelResources.insert(QString("-"),QString("-"));
-    texturesResources.insert(QString("-"),QString("-"));
+    modelResources.insert(QString("-"), QString("-"));
+    texturesResources.insert(QString("-"), QString("-"));
     LoadAllModelsRecursive("Models/");
     AddResourcesToUI();
-    AddTexturesResourcesToUI();
 
     //------------------------------------------------------------------------------------
-
+    /*
     QLabel* myLabel = new QLabel("suc0", this);
     QComboBox* myButton = new QComboBox(this);
     connect(myButton,SIGNAL(currentTextChanged(const QString&)), this, SLOT(ModifyTexture(const QString&)));
@@ -57,9 +56,9 @@ GRenderWidget::GRenderWidget(QWidget *parent) :
     verticalLayout->addLayout(myvox0);
 
     //------------------------------------------------------------------------------------
-
-    QSpacerItem* space = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
-    verticalLayout->addItem(space);
+    */
+    //QSpacerItem* space = new QSpacerItem(10, 10, QSizePolicy::Expanding, QSizePolicy::Expanding);
+    //verticalLayout->addItem(space);
 
 }
 
@@ -96,7 +95,6 @@ void GRenderWidget::LoadAllModelsRecursive(QString filename)
                 QString nameComplete = infoList[i].filePath();
                 //qDebug("%s into model resources", infoList[i].fileName().toStdString().c_str());
                 texturesResources.insert(infoList[i].fileName(), nameComplete.toStdString().c_str());
-
             }
         }
     }
@@ -110,20 +108,33 @@ void GRenderWidget::AddResourcesToUI()
 
 void GRenderWidget::AddTexturesResourcesToUI()
 {
-    for(std::pair<QString,QString> resource : texturesResources.toStdMap())
-    {
-      //qDebug("%s added to UI", resource.first.toStdString().c_str());
-      /*
-      ui->Material1Box->addItem(resource.first);
-      ui->Material2Box->addItem(resource.first);
-      ui->Material3Box->addItem(resource.first);
-      ui->Material4Box->addItem(resource.first);
-      ui->Material5Box->addItem(resource.first);
-      ui->Material6Box->addItem(resource.first);
-      ui->Material7Box->addItem(resource.first);
-      ui->Material8Box->addItem(resource.first);
-      */
-    }
+    for (std::pair<QString,QString> resource : texturesResources.toStdMap())
+        for (MaterialSelector& item : materialSelectorList)
+            item.comboBox->addItem(resource.first);
+}
+
+void GRenderWidget::AddMaterialSelectors(Mesh* mesh)
+{
+    for(MaterialSelector& item : materialSelectorList)
+        item.Delete();
+    delete spacer;
+    materialSelectorList.clear();
+    for (int i = 0; i < mesh->submeshes.length(); i++)
+        AddButton(mesh->submeshes[i]);
+    spacer = new QSpacerItem(10, 10, QSizePolicy::Expanding, QSizePolicy::Expanding);
+    verticalLayout->addItem(spacer);
+}
+
+void GRenderWidget::AddButton(SubMesh* submesh)
+{
+    MaterialSelector selector;
+    selector.label = new QLabel("suc1", this);
+    selector.comboBox = new QComboBox(this);
+    connect(selector.comboBox,SIGNAL(currentTextChanged(const QString&)), this, SLOT(ModifyTexture(const QString&)));
+    selector.hLayout = new QHBoxLayout();
+    selector.hLayout->addWidget(selector.label);
+    selector.hLayout->addWidget(selector.comboBox);
+    verticalLayout->addLayout(selector.hLayout);
 }
 
 void GRenderWidget::ModifyShapeComponent(const QString& text)
@@ -133,6 +144,8 @@ void GRenderWidget::ModifyShapeComponent(const QString& text)
     renderComponent->myMesh->destroy();
     QString path = modelResources.value(text);
     renderComponent->myMesh->loadModel(path.toStdString().c_str());
+    AddMaterialSelectors(renderComponent->myMesh);
+    AddTexturesResourcesToUI();
 }
 
 void GRenderWidget::ModifyTexture(const QString& texture)
@@ -149,4 +162,11 @@ void GRenderWidget::TestNumTexture(int num, const QString& texture)
             qDebug("Texture loading %s", renderComponent->material.c_str());
             renderComponent->myMesh->submeshes[num]->textureOpenGL = new QOpenGLTexture(QImage(renderComponent->material.c_str()));
         }
+}
+
+void MaterialSelector::Delete()
+{
+    delete label;
+    delete comboBox;
+    delete hLayout;
 }
