@@ -17,6 +17,7 @@
 #include "ui_mainwindow.h"
 #include "gcomponenttransform.h"
 #include "inspectorwidget.h"
+#include "gdeferredrenderer.h"
 
 #pragma comment(lib, "OpenGL32.lib")
 
@@ -42,6 +43,8 @@ MyOpenGLWidget::MyOpenGLWidget(QWidget *parent)
     else
         timer.setInterval(0);
     timer.start();
+
+    deferredRendering = new gDeferredRenderer();
 
     this->setUpdatesEnabled(true);
     this->setMouseTracking(true);

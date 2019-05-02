@@ -9,6 +9,7 @@
 #include <QOpenGLShaderProgram>
 #include <QTimer>
 #include <QListWidgetItem>
+//#include "gdeferredrenderer.h"
 
 #define DT 0.0166666666666667f
 
@@ -21,6 +22,7 @@ class gGLInput;
 class gEditorCamera;
 class gObject;
 class InspectorWidget;
+class gDeferredRenderer;
 
 class MyOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
 {
@@ -61,6 +63,9 @@ public:
 
 private:
     InspectorWidget *inspectorWidget = nullptr;
+
+    gDeferredRenderer *deferredRendering = nullptr;
+
     QTimer timer;
     //Stuff
     QOpenGLBuffer vbo;

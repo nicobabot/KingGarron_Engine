@@ -2,6 +2,7 @@
 #define GDEFERREDRENDERER_H
 
 #include "grenderer.h"
+#include "myopenglwidget.h"
 
 class gDeferredRenderer : gRenderer
 {
@@ -17,6 +18,16 @@ private:
     void PassLights();
     void PassSelectionOutline();
     void PassGrid();
+
+private:
+
+    GLuint colorTexture;
+    GLuint depthTexture;
+    GLuint fbo;
+
+    float width;
+    float height;
+
 };
 
 #endif // GDEFERREDRENDERER_H
