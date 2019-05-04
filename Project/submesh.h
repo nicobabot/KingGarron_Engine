@@ -7,8 +7,8 @@
 class SubMesh
 {
 public:
-    SubMesh(VertexFormat vertexFormat,	void *data, int	size);
-    SubMesh(VertexFormat vertexFormat,	void *data, int	size, unsigned int *indices, int indices_count);
+    SubMesh(QString name, VertexFormat vertexFormat,	void *data, int	size);
+    SubMesh(QString name, VertexFormat vertexFormat,	void *data, int	size, unsigned int *indices, int indices_count);
     ~SubMesh();
 
     void update();
@@ -18,6 +18,7 @@ public:
 public:
 
     QOpenGLTexture *textureOpenGL = nullptr;
+    QString name = "none";
 
 private:
     unsigned char *data = nullptr;

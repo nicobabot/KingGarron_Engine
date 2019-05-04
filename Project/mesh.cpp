@@ -59,22 +59,17 @@ void Mesh::processNode(aiNode *node, const aiScene *scene)
 SubMesh* Mesh::processMesh(aiMesh *mesh, const aiScene *scene)
 {
     bool hasTexCoords = false;
-
     QVector<float> vertices;
     QVector<unsigned int> indices;
-
     // process vertices
     for(unsigned int i = 0; i < mesh->mNumVertices; i++) {
         vertices.push_back(mesh->mVertices[i].x);
         vertices.push_back(mesh->mVertices[i].y);
         vertices.push_back(mesh->mVertices[i].z);
-
         vertices.push_back(mesh->mNormals[i].x);
         vertices.push_back(mesh->mNormals[i].y);
         vertices.push_back(mesh->mNormals[i].z);
-
         hasTexCoords = true;
-
         if(mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
         {
             vertices.push_back(mesh->mTextureCoords[0][i].x);
@@ -82,37 +77,24 @@ SubMesh* Mesh::processMesh(aiMesh *mesh, const aiScene *scene)
         }
 
     }
-
     // process indices
     for(unsigned int i = 0; i < mesh->mNumFaces; i++)
     {
         aiFace face = mesh->mFaces[i];
         for(unsigned int j = 0; j < face.mNumIndices; j++)
-        {
             indices.push_back(face.mIndices[j]);
-        }
     }
-
     VertexFormat vertexFormat;
     vertexFormat.setVertexAttribute(0, 0, 3); vertexFormat.setVertexAttribute(1, 3 * sizeof(float), 3);
-
     if (hasTexCoords)
-    {
-    vertexFormat.setVertexAttribute(2, 6 * sizeof(float), 2);
-    }
-    return new SubMesh(vertexFormat,
-        &vertices[0], vertices.size() * sizeof(float),
-            &indices[0], indices.size());
-
+        vertexFormat.setVertexAttribute(2, 6 * sizeof(float), 2);
+    return new SubMesh(QString(mesh->mName.C_Str()), vertexFormat, &vertices[0], vertices.size() * sizeof(float), &indices[0], indices.size());
 }
 
 void Mesh::destroy()
 {
-
     qDebug("Destroying mesh");
-
     for(int i=0; i<submeshes.length(); i++)
-    {
         submeshes[i]->destroy();
-    }
+    submeshes.clear();
 }

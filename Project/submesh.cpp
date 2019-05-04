@@ -3,23 +3,23 @@
 #include<QOpenGLFunctions_3_3_Core>
 #include<QMatrix4x4>
 
-SubMesh::SubMesh(VertexFormat vertexFormat,	void *data, int	size): ibo(QOpenGLBuffer::IndexBuffer)
+SubMesh::SubMesh(QString name, VertexFormat vertexFormat, void *data, int size): name(name), ibo(QOpenGLBuffer::IndexBuffer)
 {
     this->vertexFormat = vertexFormat;
     this->data = static_cast<unsigned char*>(data);
-    this->data_size = size;
+    this->data_size = static_cast<size_t>(size);
     glfuncs = QOpenGLContext::currentContext()->functions();
 }
-SubMesh::SubMesh(VertexFormat vertexFormat,	void *data, int	size, unsigned int *indices, int indices_count):ibo(QOpenGLBuffer::IndexBuffer)
+SubMesh::SubMesh(QString name, VertexFormat vertexFormat, void *data, int size, unsigned int *indices, int indices_count) : name(name), ibo(QOpenGLBuffer::IndexBuffer)
 {
     this->vertexFormat = vertexFormat;
     //this->data = static_cast<unsigned char*>(data);
-    this->data = new unsigned char[size];
-    std::memcpy(this->data, data, size);
-    this->data_size = size;
-    this->indices_count = indices_count;
-    this->indices = new unsigned int[indices_count];
-    std::memcpy(this->indices, indices, indices_count * sizeof(unsigned int));
+    this->data_size = static_cast<size_t>(size);
+    this->data = new unsigned char[this->data_size];
+    std::memcpy(this->data, data, this->data_size);
+    this->indices_count = static_cast<size_t>(indices_count);
+    this->indices = new unsigned int[this->indices_count];
+    std::memcpy(this->indices, indices, this->indices_count * sizeof(unsigned int));
     glfuncs = QOpenGLContext::currentContext()->functions();
 }
 SubMesh::~SubMesh()
@@ -99,9 +99,10 @@ void SubMesh::draw()
     int num_vertices = data_size / vertexFormat.size;
     //qDebug("9");
     vao.bind();
-    if (indices_count > 0) {
+    if (indices_count > 0)
+    {
         //qDebug("10");
-    glfuncs->glDrawElements(GL_TRIANGLES, indices_count, GL_UNSIGNED_INT, nullptr);
+        glfuncs->glDrawElements(GL_TRIANGLES, indices_count, GL_UNSIGNED_INT, nullptr);
         //qDebug("10.5");
     }
     else {
