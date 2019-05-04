@@ -143,8 +143,8 @@ void MyOpenGLWidget::paintGL()
         glUniformMatrix4fv(viewLoc, 1, GL_TRUE, editorCamera->viewMatrix.transposed().data());
 
         program.setUniformValue(program.uniformLocation("ourTexture"), 0);
-                glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, deferredRendering->colorTexture);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, deferredRendering->colorTexture);
 
         vao.bind();
         glDrawArrays(GL_TRIANGLES, 0,3);
