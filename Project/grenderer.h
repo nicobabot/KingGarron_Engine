@@ -1,6 +1,8 @@
 #ifndef GRENDERER_H
 #define GRENDERER_H
 
+class gEditorCamera;
+
 class gRenderer
 {
 public:
@@ -8,8 +10,9 @@ public:
     virtual ~gRenderer() {}
     virtual void Initialize() = 0;
     virtual void Resize(int w, int h) = 0;
-    virtual void Render() = 0;
+    virtual void Render(gEditorCamera *editorCamera) = 0;
 protected:
+    virtual void PassMesh(gEditorCamera *editorCamera) = 0;
     virtual void PassMaterials() = 0;
     virtual void PassLights() = 0;
     virtual void PassSelectionOutline() = 0;

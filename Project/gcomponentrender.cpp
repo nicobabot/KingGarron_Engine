@@ -13,6 +13,10 @@ gComponentRender::gComponentRender(gObject *parent) : gComponent (parent)
     compType = gComponentType::COMP_RENDER;
     //shape = "Patrick";
     myMesh = new Mesh();
+    myProgram.create();
+    myProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, "shaders/shaderl_vert.vsh");
+    myProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, "shaders/shaderl_frag.fsh");
+    myProgram.link();
 
     InitializeTextures();
 
@@ -31,6 +35,10 @@ gComponentRender::gComponentRender(gObject *parent, gShape newShape, float newsi
     //shape = "Patrick";
     shape = newShape;
     size = newsize;
+    myProgram.create();
+    myProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, "shaders/shaderl_vert.vsh");
+    myProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, "shaders/shaderl_frag.fsh");
+    myProgram.link();
 
     InitializeTextures();
 

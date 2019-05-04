@@ -6,6 +6,7 @@
 #include <QColorDialog>
 #include <qopengltexture.h>
 #include <qimage.h>
+#include <QOpenGLShaderProgram>
 
 class GScene;
 class Mesh;
@@ -33,6 +34,8 @@ public:
 
     int textureSample = 0;
     Mesh* myMesh = nullptr;
+    QOpenGLShaderProgram myProgram;
+
 
 private:
 

@@ -71,7 +71,8 @@ QT += opengl
 
 DISTFILES += \
     shaders/shaderl_vert.vsh \
-    shaders/shaderl_frag.fsh
+    shaders/shaderl_frag.fsh \
+    shaders/shaderl_frag_copy.fsh
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/ThirdParty/Assimp/lib -lassimp
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/ThirdParty/Assimp/lib -lassimpd

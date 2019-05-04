@@ -44,7 +44,8 @@ MyOpenGLWidget::MyOpenGLWidget(QWidget *parent)
         timer.setInterval(0);
     timer.start();
 
-    deferredRendering = new gDeferredRenderer();
+    deferredRendering = new gDeferredRenderer(100,100);
+
 
     this->setUpdatesEnabled(true);
     this->setMouseTracking(true);
@@ -77,10 +78,11 @@ void MyOpenGLWidget::initializeGL()
     // Program
     program.create();
     program.addShaderFromSourceFile(QOpenGLShader::Vertex, "shaders/shaderl_vert.vsh");
-    program.addShaderFromSourceFile(QOpenGLShader::Fragment, "shaders/shaderl_frag.fsh");
+    program.addShaderFromSourceFile(QOpenGLShader::Fragment, "shaders/shaderl_frag_copy.fsh");
     program.link();
 
     // VB0
+        deferredRendering->Initialize();
 
     //glDisable(GL_CULL_FACE);
 
@@ -96,45 +98,58 @@ void MyOpenGLWidget::paintGL()
     glClearColor(0.0f, 0.0f, 0.0f,1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    QVector3D vertices[] = { QVector3D(-0.5f, -0.5f, 0.0f), QVector3D(1.0f, 0.0f, 0.0f),
-                             QVector3D( 0.5f, -0.5f, 0.0f), QVector3D(0.0f, 1.0f, 0.0f),
-                             QVector3D( 0.0f, 0.5f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f) };
 
-    program.bind();
 
-    int projecLoc = glGetUniformLocation(program.programId(), "projection");
-    glUniformMatrix4fv(projecLoc, 1, GL_TRUE, editorCamera->projMatrix.transposed().data());
+    float  vertices[] = {
+        -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+        1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+        -1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+        1.0f, -1.0f, 0.0f, 1.0f, 0.0f
+    };
 
-    int viewLoc = glGetUniformLocation(program.programId(), "view");
-    glUniformMatrix4fv(viewLoc, 1, GL_TRUE, editorCamera->viewMatrix.transposed().data());
 
-    //QMatrix4x4 mvp = (proj * view * model);
-    //mvp = mvp.transposed();    
+ //QMatrix4x4 mvp = (proj * view * model);
+ //mvp = mvp.transposed();
+
 
  if(!vbo.isCreated())
         vbo.create();
     vbo.bind();
     vbo.setUsagePattern(QOpenGLBuffer::UsagePattern::StaticDraw);
-    vbo.allocate(vertices, 6 * sizeof(QVector3D));
+    vbo.allocate(vertices, 6 * sizeof(float));
     // VAO: Captures state of VBOs
     if(!vao.isCreated())
         vao.create();
     vao.bind();
     const GLint compCount = 3;
-    const int strideBytes = 2 * sizeof(QVector3D);
+    const int strideBytes = 2 * sizeof(float);
     const int offsetBytesO = 0;
-    const int offsetBytesl = sizeof(QVector3D);
+    const int offsetBytesl = sizeof(float);
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(0, compCount, GL_FLOAT, GL_FALSE, strideBytes, (void*)(offsetBytesO));
     glVertexAttribPointer(1, compCount, GL_FLOAT, GL_FALSE, strideBytes, (void*)(offsetBytesl));
 
 
+    deferredRendering->Render(editorCamera);
+
 
     if(program.bind())
     {
+        int projecLoc = glGetUniformLocation(program.programId(), "projection");
+        glUniformMatrix4fv(projecLoc, 1, GL_TRUE, editorCamera->projMatrix.transposed().data());
+
+        int viewLoc = glGetUniformLocation(program.programId(), "view");
+        glUniformMatrix4fv(viewLoc, 1, GL_TRUE, editorCamera->viewMatrix.transposed().data());
+
+        program.setUniformValue(program.uniformLocation("ourTexture"), 0);
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, deferredRendering->colorTexture);
+
         vao.bind();
         glDrawArrays(GL_TRIANGLES, 0,3);
+
+        program.release();
     }
 
     // Release
@@ -143,7 +158,7 @@ void MyOpenGLWidget::paintGL()
 
 
 
-    if(needUpdate)
+    /*if(needUpdate)
     {
         qDebug("UPDATE MESH");
         UpdateMeshs();
@@ -173,16 +188,20 @@ void MyOpenGLWidget::paintGL()
 
         gComponentRender *render = (gComponentRender*)myObject->GetComponent(gComponentType::COMP_RENDER);
 
-        glActiveTexture(GL_TEXTURE0);
+        glActiveTexture(GL_TEXTURE0);*/
 
         /*if(render->textureOpenGL!=nullptr)
         {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, render->textureOpenGL->textureId());
         }*/
-        render->Render();
+       /* render->Render();
     }
-    program. release();
+    program. release();*/
+
+
+
+
 }
 
 

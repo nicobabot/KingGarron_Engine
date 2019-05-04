@@ -4,24 +4,33 @@
 #include "grenderer.h"
 #include "myopenglwidget.h"
 
+class gEditorCamera;
+
 class gDeferredRenderer : gRenderer
 {
 public:
-    gDeferredRenderer();
+    gDeferredRenderer(int newWitdth, int newHeight);
     ~gDeferredRenderer();
     void Initialize();
     void Resize(int w, int h);
-    void Render();
+    void Render(gEditorCamera *editorCamera);
+
 private:
-    void PassMesh();
+    void PassMesh(gEditorCamera *editorCamera);
     void PassMaterials();
     void PassLights();
     void PassSelectionOutline();
     void PassGrid();
+    void UpdateMeshsDeferred();
+
+public:
+    //QVector<gObject*> myObjectsScene;
+
+     GLuint colorTexture;
 
 private:
 
-    GLuint colorTexture;
+
     GLuint depthTexture;
     GLuint fbo;
 
