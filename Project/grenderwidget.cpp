@@ -18,7 +18,7 @@ GRenderWidget::GRenderWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     //-----------------------------------------------------------------------------------
-    verticalLayout = new QVBoxLayout(this);
+    verticalLayout = new QVBoxLayout();
     //verticalLayout->setParent(ui->groupBox);
     shapeButton = new QLabel("shape", this);
     shapeComboBox = new QComboBox(this);
@@ -32,6 +32,7 @@ GRenderWidget::GRenderWidget(QWidget *parent) :
     texturesResources.insert(QString("-"), QString("-"));
     LoadAllModelsRecursive("Models/");
     AddResourcesToUI();
+    ui->groupBox->setLayout(verticalLayout);
 }
 
 GRenderWidget::~GRenderWidget()
@@ -95,31 +96,22 @@ void GRenderWidget::AddMaterialSelectors(Mesh* mesh)
         item->Delete();
     }
     materialSelectorList.clear();
-    //verticalLayout->removeItem(spacer);
-    //delete spacer;
     verticalLayout->update();
     for (int i = 0; i < mesh->submeshes.length(); i++)
-    {
-        AddButton(mesh->submeshes[i]);
-        //this->adjustSize();
-    }
-    //spacer = new QSpacerItem(10, 10, QSizePolicy::Expanding, QSizePolicy::Expanding);
-    //verticalLayout->addItem(spacer);
-    //verticalLayout->update();
+        AddButton(i, mesh->submeshes[i]);
 }
 
-void GRenderWidget::AddButton(SubMesh* submesh)
+void GRenderWidget::AddButton(int submeshnum, SubMesh* submesh)
 {
     MaterialSelector selector;
     selector.label = new QLabel(submesh->name, this);
     selector.comboBox = new QComboBox(this);
+    selector.comboBox->setObjectName(QString::fromStdString(std::to_string(submeshnum)));
     connect(selector.comboBox,SIGNAL(currentTextChanged(const QString&)), this, SLOT(ModifyTexture(const QString&)));
     selector.hLayout = new QHBoxLayout();
     selector.hLayout->addWidget(selector.label);
     selector.hLayout->addWidget(selector.comboBox);
-    //selector.hLayout->update();
     verticalLayout->addLayout(selector.hLayout);
-    //verticalLayout->update();
     materialSelectorList.push_back(selector);
 }
 
@@ -137,7 +129,11 @@ void GRenderWidget::ModifyShapeComponent(const QString& text)
 
 void GRenderWidget::ModifyTexture(const QString& texture)
 {
-    TestNumTexture(1,texture);
+    //qDebug("Texture loading %s", texture.toStdString().c_str());
+    //qDebug("Texture loading %s", sender()->objectName().toStdString().c_str());
+    int index = std::stoi(sender()->objectName().toStdString());
+    //qDebug("Texture loading %i", index);
+    TestNumTexture(index, texture);
 }
 
 void GRenderWidget::TestNumTexture(int num, const QString& texture)

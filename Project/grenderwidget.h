@@ -40,7 +40,7 @@ public:
     void AddResourcesToUI();
     void AddTexturesResourcesToUI();
     void AddMaterialSelectors(Mesh* mesh);
-    void AddButton(SubMesh* submesh);
+    void AddButton(int submeshnum, SubMesh* submesh);
     void TestNumTexture(int num,const QString& texture);
 
 public slots:
