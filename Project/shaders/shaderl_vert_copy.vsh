@@ -16,7 +16,7 @@ mat4 pvm;
 
 void main(void)
 {
-    VSOut.color = color;
+    //VSOut.color = color;
     VSOut.textCoord = textCoord;
     gl_Position = vec4(position, 1.0f);
 }

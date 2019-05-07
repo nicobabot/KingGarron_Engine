@@ -83,51 +83,15 @@ void MyOpenGLWidget::initializeGL()
     deferredRendering = new gDeferredRenderer(width(), height());
     deferredRendering->Initialize();
 
-    glDisable(GL_CULL_FACE);
 
-}
+    float verticesQuad[] = {     /*Position*/-1.0f, -1.0f, 0.0f, /*Color*/ 1.0f, 1.0f, 1.0f,  /*TextureCoord*/ 0.0f, 0.0f,
+                                              1.0f, 1.0f, 0.0f,            1.0f, 1.0f, 1.0f,                   1.0f, 1.0f,
+                                              -1.0f, 1.0f, 0.0f,           1.0f, 1.0f, 1.0f,                   0.0f, 1.0f,
+                                              -1.0f, -1.0f, 0.0f,          1.0f, 1.0f, 1.0f,                   0.0f, 0.0f,
+                                               1.0f, -1.0f, 0.0f,          1.0f, 1.0f, 1.0f,                   1.0f, 0.0f,
+                                               1.0f, 1.0f, 0.0f,           1.0f, 1.0f, 1.0f,                   1.0f, 1.0f };
 
-void MyOpenGLWidget::resizeGL(int width, int height)
-{
-    deferredRendering->Resize(width, height);
-}
-
-void MyOpenGLWidget::paintGL()
-{
-    glClearColor(0.0f, 0.0f, 0.0f,1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    deferredRendering->Render(editorCamera);
-
-    QVector3D vertices[] = { QVector3D(-0.5f, -0.5f, 0.0f), QVector3D(1.0f, 0.0f, 0.0f), //QVector3D(0.0f, 0.0f, 0.0f),
-                             QVector3D( 0.5f, -0.5f, 0.0f), QVector3D(0.0f, 1.0f, 0.0f), //QVector3D(1.0f, 0.0f, 0.0f),
-                             QVector3D( 0.0f, 0.5f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f)}; //QVector3D(0.0f, 1.0f, 0.0f)};
-
-    float verticesQuad[] = {     /*Position*/-1.0f, -1.0f, 0.0f, /*Color*/ 1.0f, 0.0f, 0.0f,  /*TextureCoord*/ 0.0f, 0.0f,
-                                              1.0f, 1.0f, 0.0f,            1.0f, 0.0f, 0.0f,                   1.0f, 1.0f,
-                                              -1.0f, 1.0f, 0.0f,           1.0f, 0.0f, 0.0f,                   0.0f, 1.0f,
-                                              -1.0f, -1.0f, 0.0f,          1.0f, 0.0f, 0.0f,                   0.0f, 0.0f,
-                                               1.0f, -1.0f, 0.0f,          1.0f, 0.0f, 0.0f,                   1.0f, 0.0f,
-                                               1.0f, 1.0f, 0.0f,           1.0f, 0.0f, 0.0f,                   1.0f, 1.0f };
-
-    program.bind();
-
-    int projecLoc = glGetUniformLocation(program.programId(), "projection");
-    glUniformMatrix4fv(projecLoc, 1, GL_TRUE, editorCamera->projMatrix.transposed().data());
-
-    QMatrix4x4 matrix;
-    matrix.setToIdentity();
-
-    int viewLoc = glGetUniformLocation(program.programId(), "view");
-    glUniformMatrix4fv(viewLoc, 1, GL_TRUE, editorCamera->viewMatrix.transposed().data());
-
-
-
-    int modelLoc = glGetUniformLocation(program.programId(), "model");
-    glUniformMatrix4fv(modelLoc, 1, GL_TRUE, matrix.data());
-
-    //QMatrix4x4 mvp = (proj * view * model);
-    //mvp = mvp.transposed();
+ program.bind();
 
  if(!vbo.isCreated())
         vbo.create();
@@ -150,12 +114,32 @@ void MyOpenGLWidget::paintGL()
     glVertexAttribPointer(1, compCount, GL_FLOAT, GL_FALSE, strideBytes, (void*)(offsetBytesl));
     glVertexAttribPointer(2, compCount, GL_FLOAT, GL_FALSE, strideBytes, (void*)(offsetBytes2));
 
+    //glDisable(GL_CULL_FACE);
+
+}
+
+void MyOpenGLWidget::resizeGL(int width, int height)
+{
+    deferredRendering->Resize(width, height);
+}
+
+void MyOpenGLWidget::paintGL()
+{
+    glClearColor(0.0f, 0.0f, 0.0f,1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    deferredRendering->Render(editorCamera);
+
+  /*  QVector3D vertices[] = { QVector3D(-0.5f, -0.5f, 0.0f), QVector3D(1.0f, 0.0f, 0.0f), //QVector3D(0.0f, 0.0f, 0.0f),
+                             QVector3D( 0.5f, -0.5f, 0.0f), QVector3D(0.0f, 1.0f, 0.0f), //QVector3D(1.0f, 0.0f, 0.0f),
+                             QVector3D( 0.0f, 0.5f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f)}; //QVector3D(0.0f, 1.0f, 0.0f)};
+*/
 
     if(program.bind())
     {
         program.setUniformValue(program.uniformLocation("ourTexture"), 0);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, deferredRendering->colorTexture);
+        glBindTexture(GL_TEXTURE_2D, deferredRendering->GetColorTexture());
 
         vao.bind();
         glDrawArrays(GL_TRIANGLES, 0,6);

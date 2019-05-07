@@ -14,6 +14,9 @@ public:
     void Initialize();
     void Resize(int w, int h);
     void Render(gEditorCamera *editorCamera);
+    GLuint GetColorTexture(){ return colorTexture;};
+    GLuint GetDepthTexture(){ return colorTexture;};
+    GLuint GetNormalTexture(){ return normalTexture;};
 
 private:
     void PassMesh(gEditorCamera *editorCamera);
@@ -23,15 +26,10 @@ private:
     void PassGrid();
     void UpdateMeshsDeferred();
 
-public:
-    //QVector<gObject*> myObjectsScene;
-
-     GLuint colorTexture;
-
 private:
-
-
+    GLuint colorTexture;
     GLuint depthTexture;
+    GLuint normalTexture;
     GLuint fbo;
 
     float width;

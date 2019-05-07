@@ -7,8 +7,8 @@ in Data
 } FSIn;
 
 uniform sampler2D ourTexture;
-out vec4 outColor;
-
+layout(location = 0)out vec4 outColor;
+layout(location = 1) out vec4 normals;
 void main(void)
 {
     //outColor = vec4(FSIn.color,1.0);
