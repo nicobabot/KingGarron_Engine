@@ -74,6 +74,18 @@ void gDeferredRenderer::Initialize()
 void gDeferredRenderer::Resize(int w, int h)
 {
 
+    QOpenGLFunctions* gl_functions = QOpenGLContext::currentContext()->functions();
+
+    gl_functions->glDeleteTextures(1, &colorTexture);
+    gl_functions->glDeleteTextures(1, &depthTexture);
+    gl_functions->glDeleteFramebuffers(1, &fbo);
+
+    width = w;
+    height = h;
+
+    Initialize();
+
+
 }
 
 void gDeferredRenderer::Render(gEditorCamera* editorCamera)
@@ -83,7 +95,7 @@ void gDeferredRenderer::Render(gEditorCamera* editorCamera)
     gl_functions->glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 
     glClearDepth(1.0);
-    gl_functions->glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+    gl_functions->glClearColor(0.0f, 0.0f, 0.0f,1.0f);
     gl_functions->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 

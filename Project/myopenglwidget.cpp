@@ -75,7 +75,7 @@ void MyOpenGLWidget::initializeGL()
 
     // Program
     program.create();
-    program.addShaderFromSourceFile(QOpenGLShader::Vertex, "shaders/shaderl_vert.vsh");
+    program.addShaderFromSourceFile(QOpenGLShader::Vertex, "shaders/shaderl_vert_copy.vsh");
     program.addShaderFromSourceFile(QOpenGLShader::Fragment, "shaders/shaderl_frag_copy.fsh");
     program.link();
 
@@ -89,7 +89,7 @@ void MyOpenGLWidget::initializeGL()
 
 void MyOpenGLWidget::resizeGL(int width, int height)
 {
-
+    deferredRendering->Resize(width, height);
 }
 
 void MyOpenGLWidget::paintGL()
@@ -103,23 +103,25 @@ void MyOpenGLWidget::paintGL()
                              QVector3D( 0.5f, -0.5f, 0.0f), QVector3D(0.0f, 1.0f, 0.0f), //QVector3D(1.0f, 0.0f, 0.0f),
                              QVector3D( 0.0f, 0.5f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f)}; //QVector3D(0.0f, 1.0f, 0.0f)};
 
-    QVector3D verticesQuad[] = {     QVector3D(-0.5f, -0.5f, 0.0f),  QVector3D(1.0f, 0.0f, 0.0f),   QVector3D(0.0f, 0.0f, 0.0f),
-                                     QVector3D(0.5f, 0.5f, 0.0f),   QVector3D(1.0f, 0.0f, 0.0f),    QVector3D(1.0f, 1.0f, 0.0f),
-                                     QVector3D(-0.5f, 0.5f, 0.0f), QVector3D(1.0f, 0.0f, 0.0f),     QVector3D(0.0f, 1.0f, 0.0f),
-                                     QVector3D(-0.5f, -0.5f, 0.0f),  QVector3D(1.0f, 0.0f, 0.0f),   QVector3D(0.0f, 0.0f, 0.0f),
-                                     QVector3D(0.5f, -0.5f, 0.0f),  QVector3D(1.0f, 0.0f, 0.0f),    QVector3D(1.0f, 0.0f, 0.0f),
-                                     QVector3D(0.5f, 0.5f, 0.0f),  QVector3D(1.0f, 0.0f, 0.0f),    QVector3D(1.0f, 1.0f, 0.0f) };
+    float verticesQuad[] = {     /*Position*/-1.0f, -1.0f, 0.0f, /*Color*/ 1.0f, 0.0f, 0.0f,  /*TextureCoord*/ 0.0f, 0.0f,
+                                              1.0f, 1.0f, 0.0f,            1.0f, 0.0f, 0.0f,                   1.0f, 1.0f,
+                                              -1.0f, 1.0f, 0.0f,           1.0f, 0.0f, 0.0f,                   0.0f, 1.0f,
+                                              -1.0f, -1.0f, 0.0f,          1.0f, 0.0f, 0.0f,                   0.0f, 0.0f,
+                                               1.0f, -1.0f, 0.0f,          1.0f, 0.0f, 0.0f,                   1.0f, 0.0f,
+                                               1.0f, 1.0f, 0.0f,           1.0f, 0.0f, 0.0f,                   1.0f, 1.0f };
 
     program.bind();
 
     int projecLoc = glGetUniformLocation(program.programId(), "projection");
     glUniformMatrix4fv(projecLoc, 1, GL_TRUE, editorCamera->projMatrix.transposed().data());
 
+    QMatrix4x4 matrix;
+    matrix.setToIdentity();
+
     int viewLoc = glGetUniformLocation(program.programId(), "view");
     glUniformMatrix4fv(viewLoc, 1, GL_TRUE, editorCamera->viewMatrix.transposed().data());
 
-    QMatrix4x4 matrix;
-    matrix.setToIdentity();
+
 
     int modelLoc = glGetUniformLocation(program.programId(), "model");
     glUniformMatrix4fv(modelLoc, 1, GL_TRUE, matrix.data());
@@ -131,21 +133,22 @@ void MyOpenGLWidget::paintGL()
         vbo.create();
     vbo.bind();
     vbo.setUsagePattern(QOpenGLBuffer::UsagePattern::StaticDraw);
-    vbo.allocate(verticesQuad, 18 * sizeof(QVector3D));
+    vbo.allocate(verticesQuad, 49 * sizeof(float));
     // VAO: Captures state of VBOs
     if(!vao.isCreated())
         vao.create();
     vao.bind();
     const GLint compCount = 3;
-    const int strideBytes = 2 * sizeof(QVector3D);
+    const int strideBytes = 8 * sizeof(float);
     const int offsetBytesO = 0;
-    const int offsetBytesl = sizeof(QVector3D);
+    const int offsetBytesl = sizeof(float)*3;
+    const int offsetBytes2 = sizeof(float)*6;
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(0, compCount, GL_FLOAT, GL_FALSE, strideBytes, (void*)(offsetBytesO));
     glVertexAttribPointer(1, compCount, GL_FLOAT, GL_FALSE, strideBytes, (void*)(offsetBytesl));
-    glVertexAttribPointer(2, compCount, GL_FLOAT, GL_FALSE, strideBytes, (void*)(offsetBytesl*2));
+    glVertexAttribPointer(2, compCount, GL_FLOAT, GL_FALSE, strideBytes, (void*)(offsetBytes2));
 
 
     if(program.bind())
