@@ -24,6 +24,12 @@ class gObject;
 class InspectorWidget;
 class gDeferredRenderer;
 
+enum RenderType{
+    ALBEDO_RENDER,
+    NORMAL_RENDER,
+    DEPTH_RENDER
+};
+
 class MyOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
 {
     Q_OBJECT
@@ -40,6 +46,9 @@ public slots:
     void HierarchyAdd();
     void HierarchyRemove();
     void HierarchyClicked(QListWidgetItem* item = nullptr);
+    void ChangeRenderToAlbedo();
+    void ChangeRenderToNormal();
+    void ChangeRenderToDepth();
 
 private:
     void keyPressEvent(QKeyEvent* event) override;
@@ -50,6 +59,9 @@ private:
     void wheelEvent(QWheelEvent* event) override;
     void enterEvent(QEvent* event) override;
     void leaveEvent(QEvent* event) override;
+
+private:
+    void BindTypeOfRender();
 
 public:
     QVector<Mesh*> myMeshScene;
@@ -65,6 +77,7 @@ private:
     InspectorWidget *inspectorWidget = nullptr;
 
     gDeferredRenderer *deferredRendering = nullptr;
+    RenderType renderType = RenderType::ALBEDO_RENDER;
 
     QTimer timer;
     //Stuff

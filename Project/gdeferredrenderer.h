@@ -15,7 +15,7 @@ public:
     void Resize(int w, int h);
     void Render(gEditorCamera *editorCamera);
     GLuint GetColorTexture(){ return colorTexture;};
-    GLuint GetDepthTexture(){ return colorTexture;};
+    GLuint GetDepthTexture(){ return depthTexture;};
     GLuint GetNormalTexture(){ return normalTexture;};
 
 private:

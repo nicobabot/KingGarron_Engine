@@ -36,6 +36,12 @@ MyOpenGLWidget::MyOpenGLWidget(QWidget *parent)
     connect(mainWindow->HierarchyRemove, SIGNAL(clicked()), this, SLOT(HierarchyRemove()));
     connect(mainWindow->HierarchyList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(HierarchyClicked(QListWidgetItem*)));
 
+    //connect(mainWindow->mainToolBar, SIGNAL(triggered(QAction *action)), this,SLOT(ChangeRenderType(QAction *action)));
+
+    connect(mainWindow->actionAlbedo, &QAction::triggered, this, &MyOpenGLWidget::ChangeRenderToAlbedo);
+    connect(mainWindow->actionNormal, &QAction::triggered, this, &MyOpenGLWidget::ChangeRenderToNormal);
+    connect(mainWindow->actionDepth, &QAction::triggered, this, &MyOpenGLWidget::ChangeRenderToDepth);
+
     QObject::connect(&timer, SIGNAL(timeout()), this, SLOT(Update()));
 
     if (format().swapInterval() == -1)
@@ -139,7 +145,7 @@ void MyOpenGLWidget::paintGL()
     {
         program.setUniformValue(program.uniformLocation("ourTexture"), 0);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, deferredRendering->GetColorTexture());
+        BindTypeOfRender();
 
         vao.bind();
         glDrawArrays(GL_TRIANGLES, 0,6);
@@ -151,46 +157,39 @@ void MyOpenGLWidget::paintGL()
     program.release();
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    /*if(needUpdate)
-    {
-        qDebug("UPDATE MESH");
-        UpdateMeshs();
-        needUpdate = false;
-    }
-
-    for(gObject* myObject : myObjectsScene)
-    {
-        if(myObject==nullptr)
-            continue;
-
-        gComponentTransform *trans = (gComponentTransform*)myObject->GetComponent(gComponentType::COMP_TRANSFORM);
-
-        QVector3D position = trans->position;
-
-        float rotx, roty, rotz;
-        trans->rotation.getEulerAngles(&rotx, &roty, &rotz);
-
-        QVector3D scale = trans->scale;
-        QMatrix4x4 model;
-        model.translate(QVector3D(position.x(), position.y(), position.z()));
-        model.rotate(trans->rotation);
-        model.scale(QVector3D(scale.x(), scale.y(), scale.z()));
-
-        int modelLoc = glGetUniformLocation(program.programId(), "model");
-        glUniformMatrix4fv(modelLoc, 1, GL_TRUE, model.transposed().data());
-
-        gComponentRender *render = (gComponentRender*)myObject->GetComponent(gComponentType::COMP_RENDER);
-
-        glActiveTexture(GL_TEXTURE0);
-        render->Render();
-    }
-    program. release();*/
-
-
-
-
 }
 
+void MyOpenGLWidget::BindTypeOfRender()
+{
+    switch (renderType)
+    {
+        case RenderType::ALBEDO_RENDER:
+               glBindTexture(GL_TEXTURE_2D, deferredRendering->GetColorTexture());
+        break;
+        case RenderType::NORMAL_RENDER:
+               //qDebug("Normal texture: %i",deferredRendering->GetNormalTexture());
+               //glBindTexture(GL_TEXTURE_2D, deferredRendering->GetNormalTexture());
+        break;
+        case RenderType::DEPTH_RENDER:
+               glBindTexture(GL_TEXTURE_2D, deferredRendering->GetDepthTexture());
+        break;
+
+    }
+}
+
+void MyOpenGLWidget::ChangeRenderToAlbedo()
+{
+    renderType = RenderType::ALBEDO_RENDER;
+}
+
+void MyOpenGLWidget::ChangeRenderToNormal()
+{
+    renderType = RenderType::NORMAL_RENDER;
+}
+void MyOpenGLWidget::ChangeRenderToDepth()
+{
+    renderType = RenderType::DEPTH_RENDER;
+}
 
 void MyOpenGLWidget::UpdateMeshs()
 {

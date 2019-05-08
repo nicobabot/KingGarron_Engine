@@ -23,6 +23,15 @@
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="DeferredType">
+    <property name="title">
+     <string>Deferred</string>
+    </property>
+    <addaction name="actionAlbedo"/>
+    <addaction name="actionNormal"/>
+    <addaction name="actionDepth"/>
+   </widget>
+   <addaction name="DeferredType"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -142,6 +151,26 @@
   <action name="actionRedo">
    <property name="text">
     <string>Redo</string>
+   </property>
+  </action>
+  <action name="actionDeferred">
+   <property name="text">
+    <string>Deferred</string>
+   </property>
+  </action>
+  <action name="actionAlbedo">
+   <property name="text">
+    <string>Albedo</string>
+   </property>
+  </action>
+  <action name="actionNormal">
+   <property name="text">
+    <string>Normal</string>
+   </property>
+  </action>
+  <action name="actionDepth">
+   <property name="text">
+    <string>Depth</string>
    </property>
   </action>
  </widget>
