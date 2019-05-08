@@ -22,10 +22,11 @@ class SubMesh;
 struct MaterialSelector
 {
     MaterialSelector() {}
-    MaterialSelector(QLabel* label, QComboBox* comboBox, QHBoxLayout* hLayout) : label(label), comboBox(comboBox), hLayout(hLayout) {}
+    MaterialSelector(QLabel* label, QComboBox* comboBoxAlbedo, QComboBox* comboBoxNormal, QHBoxLayout* hLayout) : label(label), comboBoxAlbedo(comboBoxAlbedo), comboBoxNormal(comboBoxNormal), hLayout(hLayout) {}
     void Delete();
     QLabel* label = nullptr;
-    QComboBox* comboBox = nullptr;
+    QComboBox* comboBoxAlbedo = nullptr;
+    QComboBox* comboBoxNormal = nullptr;
     QHBoxLayout* hLayout = nullptr;
 };
 
@@ -41,11 +42,11 @@ public:
     void AddTexturesResourcesToUI();
     void AddMaterialSelectors(Mesh* mesh);
     void AddButton(int submeshnum, SubMesh* submesh);
-    void TestNumTexture(int num,const QString& texture);
 
 public slots:
     void ModifyShapeComponent(const QString&);
-    void ModifyTexture(const QString&);
+    void ModifyTextureAlbedo(const QString&);
+    void ModifyTextureNormal(const QString&);
 
 public:
     Ui::GRenderWidget *ui= nullptr;

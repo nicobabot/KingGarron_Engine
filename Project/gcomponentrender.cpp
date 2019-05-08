@@ -51,17 +51,10 @@ gComponentRender::gComponentRender(gObject *parent, gShape newShape, float newsi
 void gComponentRender::InitializeTextures()
 {
     Mesh* meshTemp = myMesh;
-
     if(meshTemp!=nullptr)
-    {
-      for(int i=0; i<meshTemp->submeshes.count(); i++)
-      {
-          if(meshTemp->submeshes[i]!=nullptr)
-          {
-          meshTemp->submeshes[i]->textureOpenGL = new QOpenGLTexture(QImage().mirrored());
-          }
-      }
-  }
+        for(int i=0; i<meshTemp->submeshes.count(); i++)
+            if(meshTemp->submeshes[i]!=nullptr)
+                meshTemp->submeshes[i]->OGLTexAlbedo = new QOpenGLTexture(QImage().mirrored());
 }
 
 void gComponentRender::Update()
@@ -82,27 +75,15 @@ void gComponentRender::Update()
 
 void gComponentRender::Render()
 {
-  Mesh* meshTemp = myMesh;
-
-  if(meshTemp!=nullptr)
-  {
+    Mesh* meshTemp = myMesh;
+    if(meshTemp!=nullptr)
         for(int i=0; i<meshTemp->submeshes.count(); i++)
-        {
             if(meshTemp->submeshes[i]!=nullptr)
             {
-                if(meshTemp->submeshes[i]->textureOpenGL!=nullptr)
-                {
-                    glBindTexture(GL_TEXTURE_2D, meshTemp->submeshes[i]->textureOpenGL->textureId());
-                }
-
+                if(meshTemp->submeshes[i]->OGLTexAlbedo != nullptr)
+                    glBindTexture(GL_TEXTURE_2D, meshTemp->submeshes[i]->OGLTexAlbedo->textureId());
                 meshTemp->submeshes[i]->draw();
-
-                if(meshTemp->submeshes[i]->textureOpenGL!=nullptr)
-                {
+                if(meshTemp->submeshes[i]->OGLTexAlbedo != nullptr)
                     glBindTexture(GL_TEXTURE_2D, 0);
-                }
-
             }
-        }
-    }
 }

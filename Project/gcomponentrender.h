@@ -28,7 +28,8 @@ public:
 
 public:
     std::string shape;
-    std::string material;
+    std::string matAlbedo;
+    std::string matNormal;
     float size = 50.0f;
     QColor color = QColor(1,1,1,255);
 
