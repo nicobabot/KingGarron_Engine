@@ -66,9 +66,11 @@ SubMesh* Mesh::processMesh(aiMesh *mesh, const aiScene *scene)
         vertices.push_back(mesh->mVertices[i].x);
         vertices.push_back(mesh->mVertices[i].y);
         vertices.push_back(mesh->mVertices[i].z);
+
         vertices.push_back(mesh->mNormals[i].x);
         vertices.push_back(mesh->mNormals[i].y);
         vertices.push_back(mesh->mNormals[i].z);
+
         hasTexCoords = true;
         if(mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
         {

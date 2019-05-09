@@ -11,6 +11,6 @@ layout(location = 0)out vec4 outColor;
 layout(location = 1) out vec4 normals;
 void main(void)
 {
-    //outColor = vec4(FSIn.color,1.0);
     outColor = texture2D(ourTexture, FSIn.textCoord);
+    normals = vec4(FSIn.color, 1.0f);
 }

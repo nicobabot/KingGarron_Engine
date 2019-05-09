@@ -168,7 +168,7 @@ void MyOpenGLWidget::BindTypeOfRender()
         break;
         case RenderType::NORMAL_RENDER:
                //qDebug("Normal texture: %i",deferredRendering->GetNormalTexture());
-               //glBindTexture(GL_TEXTURE_2D, deferredRendering->GetNormalTexture());
+               glBindTexture(GL_TEXTURE_2D, deferredRendering->GetNormalTexture());
         break;
         case RenderType::DEPTH_RENDER:
                glBindTexture(GL_TEXTURE_2D, deferredRendering->GetDepthTexture());
