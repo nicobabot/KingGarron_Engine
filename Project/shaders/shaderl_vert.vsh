@@ -7,7 +7,7 @@ layout(location=2) in vec2 textCoord;
 
 out Data
 {
-    vec3 color;
+    vec4 color;
     vec2 textCoord;
 } VSOut;
 
@@ -19,7 +19,8 @@ mat4 pvm;
 
 void main(void)
 {
-    VSOut.color = color;
+    VSOut.color = model * vec4(color,0.0f);
+    VSOut.color.a = 1.0f;
     VSOut.textCoord = textCoord;
     pvm = projection * view * model ;
     gl_Position = pvm * vec4(position, 1.0f);

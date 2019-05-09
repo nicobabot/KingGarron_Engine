@@ -2,7 +2,7 @@
 
 in Data
 {
-    vec3 color;
+    vec4 color;
     vec2 textCoord;
 } FSIn;
 
@@ -12,5 +12,5 @@ layout(location = 1) out vec4 normals;
 void main(void)
 {
     outColor = texture2D(ourTexture, FSIn.textCoord);
-    normals = vec4(FSIn.color, 1.0f);
+    normals = FSIn.color;
 }
