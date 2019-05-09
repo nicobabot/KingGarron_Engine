@@ -20,22 +20,41 @@ void Mesh::loadModel(const char *filename)
 {
     Assimp::Importer import;
     QFile file(filename);
-    if (!file.open(QIODevice::ReadOnly)){
-    std::cout << "Could not open file for read: " << filename << std::endl;
-    return;
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        std::cout << "Could not open file for read: " << filename << std::endl;
+        return;
     }
 
     QByteArray data = file.readAll();
-    const aiScene *scene = import.ReadFileFromMemory(
-                data.data(), data.size(),
-                aiProcess_Triangulate |
-                aiProcess_FlipUVs |
-    aiProcess_GenSmoothNormals | //aiProcess_RemoveRedundantMaterials aiProcess_OptimizeMeshes I
-    aiProcess_PreTransformVertices | aiProcess_ImproveCacheLocality, ".obj");
+    const aiScene *scene = nullptr;
 
-    if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-    std::cout << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl;
-    return;
+    QFileInfo fileinfo;
+    fileinfo.setFile(filename);
+    QString extension = fileinfo.completeSuffix();
+    if (!extension.compare("obj"))
+    {
+        scene =import.ReadFileFromMemory(
+                    data.data(), data.size(),
+                    aiProcess_Triangulate |
+                    aiProcess_FlipUVs |
+        aiProcess_GenSmoothNormals | //aiProcess_RemoveRedundantMaterials aiProcess_OptimizeMeshes I
+        aiProcess_PreTransformVertices | aiProcess_ImproveCacheLocality, ".obj");
+    }
+    else
+    {
+        scene =import.ReadFileFromMemory(
+                    data.data(), data.size(),
+                    aiProcess_Triangulate |
+                    aiProcess_FlipUVs |
+        aiProcess_GenSmoothNormals | //aiProcess_RemoveRedundantMaterials aiProcess_OptimizeMeshes I
+        aiProcess_PreTransformVertices | aiProcess_ImproveCacheLocality, ".fbx");
+    }
+
+    if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+    {
+        std::cout << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl;
+        return;
     }
 
    processNode(scene->mRootNode, scene);
@@ -58,7 +77,6 @@ void Mesh::processNode(aiNode *node, const aiScene *scene)
 
 SubMesh* Mesh::processMesh(aiMesh *mesh, const aiScene *scene)
 {
-    bool hasTexCoords = false;
     QVector<float> vertices;
     QVector<unsigned int> indices;
     // process vertices
@@ -69,7 +87,6 @@ SubMesh* Mesh::processMesh(aiMesh *mesh, const aiScene *scene)
         vertices.push_back(mesh->mNormals[i].x);
         vertices.push_back(mesh->mNormals[i].y);
         vertices.push_back(mesh->mNormals[i].z);
-        hasTexCoords = true;
         if(mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
         {
             vertices.push_back(mesh->mTextureCoords[0][i].x);
@@ -86,8 +103,46 @@ SubMesh* Mesh::processMesh(aiMesh *mesh, const aiScene *scene)
     }
     VertexFormat vertexFormat;
     vertexFormat.setVertexAttribute(0, 0, 3); vertexFormat.setVertexAttribute(1, 3 * sizeof(float), 3);
-    if (hasTexCoords)
+
+    if (mesh->HasTextureCoords(0))
         vertexFormat.setVertexAttribute(2, 6 * sizeof(float), 2);
+
+    if (mesh->HasNormals())
+    {
+
+    }
+
+    if (scene->HasMaterials())
+    {
+        aiString material_path;
+        scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_NONE, 0, &material_path);
+        qDebug("aiTextureType_NONE: %s", material_path.C_Str());
+        scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_DIFFUSE, 0, &material_path);
+        qDebug("aiTextureType_DIFFUSE: %s", material_path.C_Str());
+        scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_SPECULAR, 0, &material_path);
+        qDebug("aiTextureType_SPECULAR: %s", material_path.C_Str());
+        scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_AMBIENT, 0, &material_path);
+        qDebug("aiTextureType_AMBIENT: %s", material_path.C_Str());
+        scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_EMISSIVE, 0, &material_path);
+        qDebug("aiTextureType_EMISSIVE: %s", material_path.C_Str());
+        scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_HEIGHT, 0, &material_path);
+        qDebug("aiTextureType_HEIGHT: %s", material_path.C_Str());
+        scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_NORMALS, 0, &material_path);
+        qDebug("aiTextureType_NORMALS: %s", material_path.C_Str());
+        scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_SHININESS, 0, &material_path);
+        qDebug("aiTextureType_SHININESS: %s", material_path.C_Str());
+        scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_OPACITY, 0, &material_path);
+        qDebug("aiTextureType_OPACITY: %s", material_path.C_Str());
+        scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_DISPLACEMENT, 0, &material_path);
+        qDebug("aiTextureType_DISPLACEMENT: %s", material_path.C_Str());
+        scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_LIGHTMAP, 0, &material_path);
+        qDebug("aiTextureType_LIGHTMAP: %s", material_path.C_Str());
+        scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_REFLECTION, 0, &material_path);
+        qDebug("aiTextureType_REFLECTION: %s", material_path.C_Str());
+        scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_UNKNOWN, 0, &material_path);
+        qDebug("aiTextureType_UNKNOWN: %s", material_path.C_Str());
+    }
+
     return new SubMesh(QString(mesh->mName.C_Str()), vertexFormat, &vertices[0], vertices.size() * sizeof(float), &indices[0], indices.size());
 }
 
