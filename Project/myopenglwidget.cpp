@@ -143,9 +143,17 @@ void MyOpenGLWidget::paintGL()
 
     if(program.bind())
     {
+        program.setUniformValue("typeOfRender",renderType);
+
         program.setUniformValue(program.uniformLocation("ourTexture"), 0);
+        program.setUniformValue(program.uniformLocation("normalMap"), 1);
+
         glActiveTexture(GL_TEXTURE0);
         BindTypeOfRender();
+
+        glActiveTexture(GL_TEXTURE1);
+        BindTypeOfRender(1);
+
 
         vao.bind();
         glDrawArrays(GL_TRIANGLES, 0,6);
@@ -159,9 +167,13 @@ void MyOpenGLWidget::paintGL()
 
 }
 
-void MyOpenGLWidget::BindTypeOfRender()
+void MyOpenGLWidget::BindTypeOfRender(int forceBind)
 {
-    switch (renderType)
+    RenderType typeToRender;
+    if(forceBind!=-1) typeToRender = (RenderType)forceBind;
+    else typeToRender = renderType;
+
+    switch (typeToRender)
     {
         case RenderType::ALBEDO_RENDER:
                glBindTexture(GL_TEXTURE_2D, deferredRendering->GetColorTexture());

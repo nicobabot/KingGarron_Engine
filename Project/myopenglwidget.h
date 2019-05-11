@@ -61,7 +61,7 @@ private:
     void leaveEvent(QEvent* event) override;
 
 private:
-    void BindTypeOfRender();
+    void BindTypeOfRender(int forceBind = -1);
 
 public:
     QVector<Mesh*> myMeshScene;
