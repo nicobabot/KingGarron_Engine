@@ -32,24 +32,22 @@ void Mesh::loadModel(const char *filename)
     QFileInfo fileinfo;
     fileinfo.setFile(filename);
     QString extension = fileinfo.completeSuffix();
-    if (!extension.compare("obj"))
-    {
-        scene =import.ReadFileFromMemory(
-                    data.data(), data.size(),
-                    aiProcess_Triangulate |
-                    aiProcess_FlipUVs |
-        aiProcess_GenSmoothNormals | //aiProcess_RemoveRedundantMaterials aiProcess_OptimizeMeshes I
-        aiProcess_PreTransformVertices | aiProcess_ImproveCacheLocality, ".obj");
-    }
-    else
-    {
-        scene =import.ReadFileFromMemory(
-                    data.data(), data.size(),
-                    aiProcess_Triangulate |
-                    aiProcess_FlipUVs |
-        aiProcess_GenSmoothNormals | //aiProcess_RemoveRedundantMaterials aiProcess_OptimizeMeshes I
-        aiProcess_PreTransformVertices | aiProcess_ImproveCacheLocality, ".fbx");
-    }
+    QString loaderExtension = "";
+    //if (!extension.compare("obj")) loaderExtension = ".obj";
+    //else loaderExtension = ".fbx";
+    scene =import.ReadFileFromMemory(
+                data.data(), data.size(),
+                aiProcess_Triangulate |
+                aiProcess_GenSmoothNormals |
+                aiProcess_FixInfacingNormals |
+                aiProcess_JoinIdenticalVertices |
+                aiProcess_PreTransformVertices |
+                //aiProcess_RemoveRedundantMaterials |
+                aiProcess_SortByPType |
+                aiProcess_ImproveCacheLocality |
+                aiProcess_FlipUVs |
+                aiProcess_OptimizeMeshes
+                , loaderExtension.toStdString().c_str());
 
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
