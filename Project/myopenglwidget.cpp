@@ -154,7 +154,6 @@ void MyOpenGLWidget::paintGL()
         glActiveTexture(GL_TEXTURE1);
         BindTypeOfRender(1);
 
-
         vao.bind();
         glDrawArrays(GL_TRIANGLES, 0,6);
     }
@@ -185,7 +184,6 @@ void MyOpenGLWidget::BindTypeOfRender(int forceBind)
         case RenderType::DEPTH_RENDER:
                glBindTexture(GL_TEXTURE_2D, deferredRendering->GetDepthTexture());
         break;
-
     }
 }
 
