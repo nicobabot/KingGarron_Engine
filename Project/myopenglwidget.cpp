@@ -144,6 +144,10 @@ void MyOpenGLWidget::paintGL()
     if(program.bind())
     {
         program.setUniformValue("typeOfRender",renderType);
+        program.setUniformValue("viewport_size",QVector2D(width(), height()));
+        program.setUniformValue("viewMat",editorCamera->viewMatrix);
+        program.setUniformValue("projMat",editorCamera->projMatrix);
+        program.setUniformValue("cameraPos",editorCamera->position);
 
         program.setUniformValue(program.uniformLocation("ourTexture"), 0);
         program.setUniformValue(program.uniformLocation("normalMap"), 1);
