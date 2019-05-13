@@ -33,8 +33,8 @@ void Mesh::loadModel(const char *filename)
     fileinfo.setFile(filename);
     QString extension = fileinfo.completeSuffix();
     QString loaderExtension = "";
-    //if (!extension.compare("obj")) loaderExtension = ".obj";
-    //else loaderExtension = ".fbx";
+    if (!extension.compare("obj")) loaderExtension = ".obj";
+    else loaderExtension = ".fbx";
     scene =import.ReadFileFromMemory(
                 data.data(), data.size(),
                 aiProcess_Triangulate |
