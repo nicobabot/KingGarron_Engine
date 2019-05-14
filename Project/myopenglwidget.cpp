@@ -145,18 +145,22 @@ void MyOpenGLWidget::paintGL()
     {
         program.setUniformValue("typeOfRender",renderType);
         program.setUniformValue("viewport_size",QVector2D(width(), height()));
-        program.setUniformValue("viewMat",editorCamera->viewMatrix);
-        program.setUniformValue("projMat",editorCamera->projMatrix);
+        program.setUniformValue("viewMatInv",editorCamera->viewMatrix.inverted());
+        program.setUniformValue("projMatInv",editorCamera->projMatrix.inverted());
         program.setUniformValue("cameraPos",editorCamera->position);
 
         program.setUniformValue(program.uniformLocation("ourTexture"), 0);
         program.setUniformValue(program.uniformLocation("normalMap"), 1);
+        program.setUniformValue(program.uniformLocation("depthMap"), 2);
 
         glActiveTexture(GL_TEXTURE0);
         BindTypeOfRender();
 
         glActiveTexture(GL_TEXTURE1);
         BindTypeOfRender(1);
+
+        glActiveTexture(GL_TEXTURE2);
+        BindTypeOfRender(2);
 
         vao.bind();
         glDrawArrays(GL_TRIANGLES, 0,6);

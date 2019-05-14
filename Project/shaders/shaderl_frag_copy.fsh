@@ -8,10 +8,11 @@ in Data
 
 uniform sampler2D ourTexture;
 uniform sampler2D normalMap;
+uniform sampler2D depthMap;
 uniform int typeOfRender=0;
 uniform vec2 viewport_size;
-uniform mat4 viewMat;
-uniform mat4 projMat;
+uniform mat4 viewMatInv;
+uniform mat4 projMatInv;
 uniform vec3 cameraPos;
 
 out vec4 outColor;
@@ -22,14 +23,18 @@ float specularStrength = 0.5;
 
 vec3 GetPosFragmentWorld()
 {
-    vec4 posFrag;
-    posFrag.xy = ((2.0 * gl_FragCoord.xy) / viewport_size.xy) - 1;
-    posFrag.z = ((2.0 * gl_FragCoord.z) - (zfar - znear)) / (zfar - znear);
-    posFrag.w = 1.0;
-    posFrag /= gl_FragCoord.w;
+    //depthMap
+    float depthValue= texture(depthMap, FSIn.textCoord).z;
+    vec3 fragPos;
+    fragPos.x = (gl_FragCoord.x / viewport_size.x) * 2 - 1;
+    fragPos.y = (gl_FragCoord.y / viewport_size.y) * 2 - 1;
+    fragPos.z = depthValue * 2 - 1;
+    vec4 viewSpacePos = projMatInv * vec4(fragPos.x,fragPos.y,fragPos.z,1);
+    viewSpacePos = viewSpacePos/viewSpacePos.w;
 
-    vec4 WordPosFrag = viewMat * projMat * posFrag;
-    return WordPosFrag.xyz;
+    vec4 worldPos = viewMatInv * viewSpacePos;
+
+    return worldPos.xyz;
 }
 
 void main(void)
@@ -53,8 +58,8 @@ void main(void)
     vec3 normalsInText= texture(normalMap, FSIn.textCoord).xyz;
 
     vec3 viewDir = normalize(cameraPos - GetPosFragmentWorld());
-    vec3 reflectDir = normalize(viewDir + lightDir);
-    float spec = pow(max(dot(normalsInText, reflectDir), 0.0), 32);
+    vec3 halfDir = normalize(viewDir + lightDir);
+    float spec = pow(max(dot(normalsInText, halfDir), 0.0), 32);
     vec3 specular = specularStrength * spec * lightColor;
 
     albedoAmbientLight.rgb = albedoAmbient.rgb + albedo.rgb * dot(lightDir,normalsInText) + specular * lightColor;
