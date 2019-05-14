@@ -141,6 +141,30 @@ void MyOpenGLWidget::paintGL()
                              QVector3D( 0.0f, 0.5f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f)}; //QVector3D(0.0f, 1.0f, 0.0f)};
 */
 
+    std::uniform_real_distribution<float> randomFloats(0.0, 1.0);
+    std::default_random_engine generator;
+    //std::vector<glm::vec3> ssaoKernel;
+    QVector<QVector3D> ssaoKernel;
+
+    for (unsigned int i = 0; i < 64; ++i)
+    {
+     QVector3D sample(
+     randomFloats(generator) * 2.0 - 1.0,
+     randomFloats(generator) * 2.0 - 1.0,
+     randomFloats(generator)
+     );
+     sample.normalize();
+     sample *= randomFloats(generator);
+     float scale = (float)i / 64.0;
+
+     //LERP
+     scale = 0.1f + (scale * scale) * (1.0f - 0.1f);
+
+     sample *= scale;
+     ssaoKernel.push_back(sample);
+    }
+
+
     if(program.bind())
     {
         program.setUniformValue("typeOfRender",renderType);
