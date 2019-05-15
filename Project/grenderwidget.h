@@ -18,6 +18,7 @@ class QLabel;
 class QComboBox;
 class Mesh;
 class SubMesh;
+class QScrollArea;
 
 struct MaterialSelector
 {
@@ -43,6 +44,9 @@ public:
     void AddMaterialSelectors(Mesh* mesh);
     void AddButton(int submeshnum, SubMesh* submesh);
 
+    bool eventFilter(QObject* obj, QEvent* eve);
+    void adjustSize();
+
 public slots:
     void ModifyShapeComponent(const QString&);
     void ModifyTextureAlbedo(const QString&);
@@ -55,6 +59,8 @@ public:
     QMap<QString, QString> modelResources;
     QMap<QString, QString> texturesResources;
 
+    QWidget* contentWidget = nullptr;
+    QScrollArea* scrollArea = nullptr;
     QVBoxLayout* verticalLayout = nullptr;
     QLabel* shapeButton = nullptr;
     QComboBox* shapeComboBox = nullptr;
