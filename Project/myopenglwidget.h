@@ -84,6 +84,7 @@ private:
     QOpenGLBuffer vbo;
     QOpenGLVertexArrayObject vao;
     QOpenGLShaderProgram program;
+    QOpenGLShaderProgram programSSAO;
 };
 
 #endif // MYOPENGLWIDGET_H

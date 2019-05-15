@@ -85,6 +85,10 @@ void MyOpenGLWidget::initializeGL()
     program.addShaderFromSourceFile(QOpenGLShader::Fragment, "shaders/shaderl_frag_copy.fsh");
     program.link();
 
+    programSSAO.create();
+    programSSAO.addShaderFromSourceFile(QOpenGLShader::Vertex, "shaders/ssao_vertexshader.vsh");
+    programSSAO.addShaderFromSourceFile(QOpenGLShader::Fragment, "shaders/ssao_fragmentshader.fsh");
+    programSSAO.link();
 
     deferredRendering = new gDeferredRenderer(width(), height());
     deferredRendering->Initialize();
@@ -144,9 +148,10 @@ void MyOpenGLWidget::paintGL()
     std::uniform_real_distribution<float> randomFloats(0.0, 1.0);
     std::default_random_engine generator;
     //std::vector<glm::vec3> ssaoKernel;
-    QVector<QVector3D> ssaoKernel;
+   // QVector<QVector3D> ssaoKernel;
+    float ssaoKernel[64 * 3];
 
-    for (unsigned int i = 0; i < 64; ++i)
+    for (unsigned int i = 0; i < 192; i+=3)
     {
      QVector3D sample(
      randomFloats(generator) * 2.0 - 1.0,
@@ -158,14 +163,17 @@ void MyOpenGLWidget::paintGL()
      float scale = (float)i / 64.0;
 
      //LERP
+     //scale = lerp(0.1f, 1.0f, scale * scale);
      scale = 0.1f + (scale * scale) * (1.0f - 0.1f);
 
      sample *= scale;
-     ssaoKernel.push_back(sample);
+     ssaoKernel[i]=sample.x();
+     ssaoKernel[i+1]=sample.y();
+     ssaoKernel[i+2]=sample.z();
     }
 
 
-    if(program.bind())
+   /* if(program.bind())
     {
         program.setUniformValue("typeOfRender",renderType);
         program.setUniformValue("viewport_size",QVector2D(width(), height()));
@@ -188,12 +196,41 @@ void MyOpenGLWidget::paintGL()
 
         vao.bind();
         glDrawArrays(GL_TRIANGLES, 0,6);
-    }
+    }*/
+
+     if(programSSAO.bind())
+     {
+         programSSAO.setUniformValue("typeOfRender",renderType);
+         programSSAO.setUniformValue("viewport_size",QVector2D(width(), height()));
+         programSSAO.setUniformValue("viewMatInv",editorCamera->viewMatrix.inverted());
+         programSSAO.setUniformValue("projMatInv",editorCamera->projMatrix.inverted());
+         programSSAO.setUniformValue("cameraPos",editorCamera->position);
+
+
+         programSSAO.setUniformValueArray("samples", ssaoKernel, 192, 3);
+
+         programSSAO.setUniformValue(programSSAO.uniformLocation("ourTexture"), 0);
+         programSSAO.setUniformValue(programSSAO.uniformLocation("normalMap"), 1);
+         programSSAO.setUniformValue(programSSAO.uniformLocation("depthMap"), 2);
+
+         glActiveTexture(GL_TEXTURE0);
+         BindTypeOfRender();
+
+         glActiveTexture(GL_TEXTURE1);
+         BindTypeOfRender(1);
+
+         glActiveTexture(GL_TEXTURE2);
+         BindTypeOfRender(2);
+
+         vao.bind();
+         glDrawArrays(GL_TRIANGLES, 0,6);
+     }
+
 
     // Release
     vao.release();
     vbo.release();
-    program.release();
+    programSSAO.release();
     glBindTexture(GL_TEXTURE_2D, 0);
 
 }

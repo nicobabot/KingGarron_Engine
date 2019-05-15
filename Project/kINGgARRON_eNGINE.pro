@@ -73,7 +73,9 @@ DISTFILES += \
     shaders/shaderl_vert.vsh \
     shaders/shaderl_frag.fsh \
     shaders/shaderl_frag_copy.fsh \
-    shaders/shaderl_vert_copy.vsh
+    shaders/shaderl_vert_copy.vsh \
+    shaders/ssao_vertexshader.vsh \
+    shaders/ssao_fragmentshader.fsh
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/ThirdParty/Assimp/lib -lassimp
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/ThirdParty/Assimp/lib -lassimpd
