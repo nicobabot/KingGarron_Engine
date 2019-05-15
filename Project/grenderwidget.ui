@@ -37,6 +37,7 @@
      <property name="title">
       <string>Render</string>
      </property>
+     <layout class="QHBoxLayout" name="horizontalLayout"/>
     </widget>
    </item>
   </layout>

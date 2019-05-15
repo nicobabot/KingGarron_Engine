@@ -29,7 +29,6 @@ GRenderWidget::GRenderWidget(QWidget *parent) :
     hBoxLayout->addWidget(shapeComboBox);
     verticalLayout->addLayout(hBoxLayout);
     //-----------------------------------------------------------------------------------
-    /*
     contentWidget = new QWidget();
     contentWidget->setLayout(verticalLayout);
     contentWidget->installEventFilter(this);
@@ -41,14 +40,14 @@ GRenderWidget::GRenderWidget(QWidget *parent) :
     scrollArea->setWidget(contentWidget);
     //scrollArea->setFrameStyle(QFrame::NoFrame);
     scrollArea->installEventFilter(this);
-    ui->groupBox->layout()->addWidget(contentWidget);
+    ui->groupBox->layout()->addWidget(scrollArea);
     //------------------------------------------------------------------------------------
-    */
     modelResources.insert(QString("-"), QString("-"));
     texturesResources.insert(QString("-"), QString("-"));
     LoadAllModelsRecursive("Models/");
     AddResourcesToUI();
-    ui->groupBox->setLayout(verticalLayout);
+    adjustSize();
+    //ui->groupBox->setLayout(verticalLayout);
 }
 
 GRenderWidget::~GRenderWidget()
@@ -152,7 +151,6 @@ void GRenderWidget::adjustSize()
     int scrollWidth = scrollArea->width() - scrollArea->verticalScrollBar()->width();
     contentWidget->adjustSize();
     contentWidget->resize(scrollWidth, contentWidget->height());
-    qDebug("adjustSize");
 }
 
 void GRenderWidget::ModifyShapeComponent(const QString& text)
@@ -164,7 +162,6 @@ void GRenderWidget::ModifyShapeComponent(const QString& text)
     renderComponent->myMesh->loadModel(path.toStdString().c_str());
     AddMaterialSelectors(renderComponent->myMesh);
     AddTexturesResourcesToUI();
-    //setLayout(verticalLayout);
 }
 
 void GRenderWidget::ModifyTextureAlbedo(const QString& texture)
