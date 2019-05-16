@@ -19,7 +19,7 @@ mat4 pvm;
 
 void main(void)
 {
-    VSOut.color = model * vec4(color,0.0f);
+    VSOut.color = model * vec4(color * 0.5 + vec3(0.5),0.0f);
     VSOut.color.a = 1.0f;
     VSOut.textCoord = textCoord;
     pvm = projection * view * model ;

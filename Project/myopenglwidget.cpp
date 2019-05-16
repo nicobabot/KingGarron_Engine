@@ -124,6 +124,8 @@ void MyOpenGLWidget::initializeGL()
     glVertexAttribPointer(1, compCount, GL_FLOAT, GL_FALSE, strideBytes, (void*)(offsetBytesl));
     glVertexAttribPointer(2, compCount, GL_FLOAT, GL_FALSE, strideBytes, (void*)(offsetBytes2));
 
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     //glDisable(GL_CULL_FACE);
 
 }
@@ -160,7 +162,7 @@ void MyOpenGLWidget::paintGL()
      );
      sample.normalize();
      sample *= randomFloats(generator);
-     float scale = (float)i / 64.0;
+     float scale = (float)i / 192.0;
 
      //LERP
      //scale = lerp(0.1f, 1.0f, scale * scale);
@@ -200,6 +202,8 @@ void MyOpenGLWidget::paintGL()
 
      if(programSSAO.bind())
      {
+         glClearColor(0.0f, 0.0f, 0.0f,1.0f);
+         glClear(GL_COLOR_BUFFER_BIT);
          programSSAO.setUniformValue("typeOfRender",renderType);
          programSSAO.setUniformValue("viewport_size",QVector2D(width(), height()));
          programSSAO.setUniformValue("viewMatInv",editorCamera->viewMatrix.inverted());
