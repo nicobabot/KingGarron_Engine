@@ -42,13 +42,13 @@ void main(void)
 {
     vec4 albedo = texture2D(ourTexture, FSIn.textCoord);
     vec3 normalsInText = texture(normalMap, FSIn.textCoord).xyz;
-    mat4 viewMat = inverse(viewMatInv);
+    //mat4 viewMat = inverse(viewMatInv);
 
-    vec4 normalView = viewMatInv * vec4(normalsInText.xyz, 1.0f);
+    //vec4 normalView = viewMatInv * vec4(normalsInText.xyz, 1.0f);
 
-    vec3 tangent = cross(normalView.xyz, vec3(0,1,0));
-    vec3 bitangent = cross(normalView.xyz, tangent);
-    mat3 TBN = mat3(tangent, bitangent, normalView.xyz);
+    vec3 tangent = cross(normalsInText.xyz, vec3(0,1,0));
+    vec3 bitangent = cross(normalsInText.xyz, tangent);
+    mat3 TBN = mat3(tangent, bitangent, normalsInText.xyz);
 
     //I don't know WATAFAAA IS GOING ON
     float radius = 1.0f;
@@ -60,13 +60,10 @@ void main(void)
         // convert sample offset from tangent to view space
         vec3 offSetView = TBN * samples[i];
 
-        //Im not sure if fragPosView is this transformation
-        //or just the view mat * the gl_FragCoord
-        vec4 coordFrag = vec4(gl_FragCoord.xyz, 1.0f);
-        vec4 viewCoord = viewMatInv * coordFrag;
-
         // texture look-up on the depthmap and reconstruct the sampled position
-        vec3 samplePosView = viewCoord.xyz  + offSetView * radius;
+        vec3 samplePosView =  GetPosFragmentWorld() + offSetView * radius;
+
+        //vec3 sampledPosView = GetPosFragmentWorld();
         vec3 sampledPosView = GetPosFragmentWorld();
 
         occlussion += (samplePosView.z < sampledPosView.z - 0.02 ? 1.0 : 0.0);
