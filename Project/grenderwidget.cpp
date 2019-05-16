@@ -38,7 +38,7 @@ GRenderWidget::GRenderWidget(QWidget *parent) :
     scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     scrollArea->setSizeAdjustPolicy(QAbstractScrollArea::AdjustIgnored);
     scrollArea->setWidget(contentWidget);
-    //scrollArea->setFrameStyle(QFrame::NoFrame);
+    scrollArea->setFrameStyle(QFrame::NoFrame);
     scrollArea->installEventFilter(this);
     ui->groupBox->layout()->addWidget(scrollArea);
     //------------------------------------------------------------------------------------
