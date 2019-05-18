@@ -210,12 +210,14 @@ void MyOpenGLWidget::paintGL()
          programSSAO.setUniformValue("projMatInv",editorCamera->projMatrix.inverted());
          programSSAO.setUniformValue("cameraPos",editorCamera->position);
 
+         //noiseMap
 
          programSSAO.setUniformValueArray("samples", ssaoKernel, 192, 3);
 
          programSSAO.setUniformValue(programSSAO.uniformLocation("ourTexture"), 0);
          programSSAO.setUniformValue(programSSAO.uniformLocation("normalMap"), 1);
          programSSAO.setUniformValue(programSSAO.uniformLocation("depthMap"), 2);
+         programSSAO.setUniformValue(programSSAO.uniformLocation("noiseMap"), 3);
 
          glActiveTexture(GL_TEXTURE0);
          BindTypeOfRender();
@@ -225,6 +227,9 @@ void MyOpenGLWidget::paintGL()
 
          glActiveTexture(GL_TEXTURE2);
          BindTypeOfRender(2);
+
+         glActiveTexture(GL_TEXTURE3);
+         glBindTexture(GL_TEXTURE_2D, deferredRendering->GetNoiseSSAOTexture());
 
          vao.bind();
          glDrawArrays(GL_TRIANGLES, 0,6);

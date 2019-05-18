@@ -12,6 +12,7 @@
 #include "ui_mainwindow.h"
 #include "geditorcamera.h"
 #include "qopenglextrafunctions.h"
+#include <random>
 
 gDeferredRenderer::gDeferredRenderer(int newWitdth, int newHeight)
 {
@@ -63,6 +64,27 @@ void gDeferredRenderer::Initialize()
     GLenum buffers[] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
     gl_functions->glDrawBuffers(2, buffers);
 
+    QVector<QVector3D> ssaoNoise;
+    std::uniform_real_distribution<float> randomFloats(0.0, 1.0);
+    std::default_random_engine generator;
+
+    // Generation of a 4x4 texture of random vectors QVector<QVector30> ssaoNoise;
+    for (unsigned int i = 0; i < 16; i++)
+    {
+        QVector3D noise(
+        randomFloats(generator) * 2.0 - 1.0,
+        randomFloats(generator) * 2.0 - 1.0,
+        0.0f);
+        ssaoNoise.push_back(noise);
+    }
+
+    gl_functions->glGenTextures(1, &ssaoNoiseTex);
+    gl_functions->glBindTexture(GL_TEXTURE_2D, ssaoNoiseTex);
+    gl_functions->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    gl_functions->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    gl_functions->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    gl_functions->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    gl_functions->glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, 4, 4, 0, GL_RGB, GL_FLOAT, &ssaoNoise[0]);
 
     GLenum status = gl_functions->glCheckFramebufferStatus(GL_FRAMEBUFFER);
      switch(status)

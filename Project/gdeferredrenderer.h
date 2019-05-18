@@ -17,6 +17,7 @@ public:
     GLuint GetColorTexture(){ return colorTexture;};
     GLuint GetDepthTexture(){ return depthTexture;};
     GLuint GetNormalTexture(){ return normalTexture;};
+    GLuint GetNoiseSSAOTexture(){ return ssaoNoiseTex;};
 
 private:
     void PassMesh(gEditorCamera *editorCamera);
@@ -30,6 +31,7 @@ private:
     GLuint colorTexture;
     GLuint depthTexture;
     GLuint normalTexture;
+    GLuint ssaoNoiseTex;
     GLuint fbo;
 
     float width;

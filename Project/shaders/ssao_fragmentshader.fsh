@@ -9,6 +9,8 @@ in Data
 uniform sampler2D ourTexture;
 uniform sampler2D normalMap;
 uniform sampler2D depthMap;
+uniform sampler2D noiseMap;
+
 uniform vec3 samples[64];
 uniform int typeOfRender=0;
 uniform vec2 viewport_size;
@@ -41,17 +43,21 @@ void main(void)
     vec4 albedo = texture2D(ourTexture, FSIn.textCoord);
     vec3 normalsInText = normalize(texture(normalMap, FSIn.textCoord).xyz * 2.0f - 1.0f);
 
+    vec2 noiseScale = viewport_size / textureSize(noiseMap, 0);
+    vec3 randomVec = texture(noiseMap, FSIn.textCoord * noiseScale).xyz;
+
     mat4 viewMat = inverse(viewMatInv);
     mat4 projMat = inverse(projMatInv);
     //vec4 normalView = viewMatInv * vec4(normalsInText.xyz, 1.0f);
 
-    vec3 tangent = normalize(cross(normalsInText.xyz, vec3(0,1,0)));
+    vec3 tangent = normalize(randomVec - normalsInText * dot(randomVec, normalsInText));
+    //vec3 tangent = normalize(cross(normalsInText.xyz, vec3(0,1,0)));
     vec3 bitangent = normalize(cross(normalsInText.xyz, tangent));
     mat3 TBN = mat3(tangent, bitangent, normalsInText.xyz);
 
-    float depthValue= texture(depthMap, FSIn.textCoord).z;
+    float depthValue= texture(depthMap, FSIn.textCoord).r;
 
-    float radius = 0.2f;
+    float radius = 0.1f;
 
     float occlussion = 0.0;
 
@@ -65,14 +71,17 @@ void main(void)
 
         vec4 sampleTextCoord = projMat * vec4(samplePosView.xyz, 1.0f);
         sampleTextCoord.xyz/= sampleTextCoord.w;
-        sampleTextCoord.xyz = sampleTextCoord.xyz + vec3(0.5f) * 0.5f;
+        sampleTextCoord.xyz = sampleTextCoord.xyz * 0.5f + 0.5f;
 
-        float sampledDepth = texture(depthMap, sampleTextCoord.xy).z;
+        float sampledDepth = texture(depthMap, sampleTextCoord.xy).r;
         vec3 sampledPosView = GetPosFragmentView(sampledDepth);
 
         //vec3 sampledPosView = texture(depthMap, FSIn.textCoord).xyz;
 
-        occlussion += (samplePosView.z < sampledPosView.z - 0.02 ? 1.0 : 0.0);
+        float rangeCheck = smoothstep(0.0, 1.0, radius/abs(samplePosView.z - sampledPosView.z));
+        rangeCheck *= rangeCheck;
+
+        occlussion += (samplePosView.z < sampledPosView.z - 0.02 ? 1.0 : 0.0) * rangeCheck;
     }
 
     outColor = vec4(1.0 - occlussion / 64.0);
