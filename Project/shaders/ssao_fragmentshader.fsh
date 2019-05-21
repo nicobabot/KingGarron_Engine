@@ -57,7 +57,7 @@ void main(void)
 
     float depthValue= texture(depthMap, FSIn.textCoord).r;
 
-    float radius = 0.1f;
+    float radius = 1.0f;
 
     float occlussion = 0.0;
 
