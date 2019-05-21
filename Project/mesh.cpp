@@ -114,6 +114,7 @@ SubMesh* Mesh::processMesh(aiMesh *mesh, const aiScene *scene)
 
     if (scene->HasMaterials())
     {
+        /*
         aiString material_path;
         scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_NONE, 0, &material_path);
         qDebug("aiTextureType_NONE: %s", material_path.C_Str());
@@ -141,6 +142,7 @@ SubMesh* Mesh::processMesh(aiMesh *mesh, const aiScene *scene)
         qDebug("aiTextureType_REFLECTION: %s", material_path.C_Str());
         scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_UNKNOWN, 0, &material_path);
         qDebug("aiTextureType_UNKNOWN: %s", material_path.C_Str());
+        */
     }
 
     return new SubMesh(QString(mesh->mName.C_Str()), vertexFormat, &vertices[0], vertices.size() * sizeof(float), &indices[0], indices.size());

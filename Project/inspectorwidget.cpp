@@ -15,8 +15,8 @@ InspectorWidget::InspectorWidget(QWidget *parent) :
     QVBoxLayout *layout_temp = new QVBoxLayout();
     layout_temp->addWidget(transform);
     layout_temp->addWidget(render_widget);
-    QSpacerItem* item = new QSpacerItem(10, 10, QSizePolicy::Expanding, QSizePolicy::Expanding);
-    layout_temp->addItem(item);
+    //QSpacerItem* item = new QSpacerItem(10, 10, QSizePolicy::Expanding, QSizePolicy::Expanding);
+    //layout_temp->addItem(item);
     setLayout(layout_temp);
 }
 

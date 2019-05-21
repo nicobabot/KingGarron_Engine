@@ -12,6 +12,7 @@
 #include <qopengltexture.h>
 #include <qimage.h>
 #include "submesh.h"
+#include <QScrollArea>
 
 GRenderWidget::GRenderWidget(QWidget *parent) :
     QWidget(parent), ui(new Ui::GRenderWidget)
@@ -27,12 +28,26 @@ GRenderWidget::GRenderWidget(QWidget *parent) :
     hBoxLayout->addWidget(shapeButton);
     hBoxLayout->addWidget(shapeComboBox);
     verticalLayout->addLayout(hBoxLayout);
+    //-----------------------------------------------------------------------------------
+    contentWidget = new QWidget();
+    contentWidget->setLayout(verticalLayout);
+    contentWidget->installEventFilter(this);
+    //-----------------------------------------------------------------------------------
+    scrollArea = new QScrollArea();
+    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    scrollArea->setSizeAdjustPolicy(QAbstractScrollArea::AdjustIgnored);
+    scrollArea->setWidget(contentWidget);
+    scrollArea->setFrameStyle(QFrame::NoFrame);
+    scrollArea->installEventFilter(this);
+    ui->groupBox->layout()->addWidget(scrollArea);
     //------------------------------------------------------------------------------------
     modelResources.insert(QString("-"), QString("-"));
     texturesResources.insert(QString("-"), QString("-"));
     LoadAllModelsRecursive("Models/");
     AddResourcesToUI();
-    ui->groupBox->setLayout(verticalLayout);
+    adjustSize();
+    //ui->groupBox->setLayout(verticalLayout);
 }
 
 GRenderWidget::~GRenderWidget()
@@ -123,6 +138,21 @@ void GRenderWidget::AddButton(int submeshnum, SubMesh* submesh)
     materialSelectorList.push_back(selector);
 }
 
+bool GRenderWidget::eventFilter(QObject* obj, QEvent* eve)
+{
+    if (obj == scrollArea && eve->type() == QEvent::Resize)
+        adjustSize();
+    return false;
+}
+
+void GRenderWidget::adjustSize()
+{
+    QSignalBlocker blocker(contentWidget);
+    int scrollWidth = scrollArea->width() - scrollArea->verticalScrollBar()->width();
+    contentWidget->adjustSize();
+    contentWidget->resize(scrollWidth, contentWidget->height());
+}
+
 void GRenderWidget::ModifyShapeComponent(const QString& text)
 {
     if (!renderComponent) return;
@@ -132,7 +162,6 @@ void GRenderWidget::ModifyShapeComponent(const QString& text)
     renderComponent->myMesh->loadModel(path.toStdString().c_str());
     AddMaterialSelectors(renderComponent->myMesh);
     AddTexturesResourcesToUI();
-    setLayout(verticalLayout);
 }
 
 void GRenderWidget::ModifyTextureAlbedo(const QString& texture)
