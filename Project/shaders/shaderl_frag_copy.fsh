@@ -55,7 +55,7 @@ void main(void)
     albedoAmbient = albedo * ambientTerm;
     albedoAmbient.a = 1.0f;
 
-    vec3 normalsInText= texture(normalMap, FSIn.textCoord).xyz;
+    vec3 normalsInText= normalize(texture(normalMap, FSIn.textCoord).xyz * 2.0f - 1.0f);
 
     vec3 viewDir = normalize(cameraPos - GetPosFragmentWorld());
     vec3 halfDir = normalize(viewDir + lightDir);

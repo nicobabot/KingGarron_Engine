@@ -114,4 +114,6 @@ void gEditorCamera::CalcProjMatrix(int width, int height)
 {
     projMatrix.setToIdentity();
     projMatrix.perspective(fovy, static_cast<float>(width) / static_cast<float>(height), znear, zfar);
+    widthViewport = width;
+    heightViewport = height;
 }

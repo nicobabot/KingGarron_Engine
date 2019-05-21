@@ -26,6 +26,9 @@ public:
     float camRotSpeed = 3.0f;
     float camScrollSpeed = 3.0f;
 
+    float widthViewport;
+    float heightViewport;
+
     QMatrix4x4 worldMatrix;
     QMatrix4x4 viewMatrix;
     QMatrix4x4 projMatrix;

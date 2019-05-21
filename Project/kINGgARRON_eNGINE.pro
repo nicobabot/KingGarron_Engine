@@ -39,7 +39,8 @@ SOURCES += \
     mesh.cpp \
     gglinput.cpp \
     geditorcamera.cpp \
-    gdeferredrenderer.cpp
+    gdeferredrenderer.cpp \
+    gsaorender.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -58,7 +59,8 @@ HEADERS += \
     gglinput.h \
     geditorcamera.h \
     grenderer.h \
-    gdeferredrenderer.h
+    gdeferredrenderer.h \
+    gsaorender.h
 
 FORMS += \
     mainwindow.ui \

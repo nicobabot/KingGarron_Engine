@@ -27,7 +27,9 @@ class gDeferredRenderer;
 enum RenderType{
     ALBEDO_RENDER,
     NORMAL_RENDER,
-    DEPTH_RENDER
+    DEPTH_RENDER,
+    LIGHT_RENDER,
+    SSAO_RENDER
 };
 
 class MyOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
