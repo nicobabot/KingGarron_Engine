@@ -29,6 +29,7 @@ void Mesh::loadModel(const char *filename)
     QByteArray data = file.readAll();
     const aiScene *scene = nullptr;
 
+    /*
     QFileInfo fileinfo;
     fileinfo.setFile(filename);
     QString extension = fileinfo.completeSuffix();
@@ -48,7 +49,9 @@ void Mesh::loadModel(const char *filename)
                 aiProcess_FlipUVs |
                 aiProcess_OptimizeMeshes
                 , loaderExtension.toStdString().c_str());
+    */
 
+    scene = import.ReadFile(filename, aiProcessPreset_TargetRealtime_MaxQuality);
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
         std::cout << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl;
