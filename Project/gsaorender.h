@@ -15,6 +15,7 @@ public:
     void Resize(int w, int h);
     void Render(gEditorCamera *editorCamera);
     GLuint GetNoiseSSAOTexture(){ return ssaoNoiseTex;}
+    GLuint GetSSAOTexture(){return ssaoTexture;}
     void SetDeferredRender(gDeferredRenderer* newDeferred){deferred = newDeferred;}
 
 private:

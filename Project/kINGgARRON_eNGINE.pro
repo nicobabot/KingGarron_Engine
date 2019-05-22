@@ -40,7 +40,8 @@ SOURCES += \
     gglinput.cpp \
     geditorcamera.cpp \
     gdeferredrenderer.cpp \
-    gsaorender.cpp
+    gsaorender.cpp \
+    grenderlight.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -60,7 +61,8 @@ HEADERS += \
     geditorcamera.h \
     grenderer.h \
     gdeferredrenderer.h \
-    gsaorender.h
+    gsaorender.h \
+    grenderlight.h
 
 FORMS += \
     mainwindow.ui \

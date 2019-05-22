@@ -9,11 +9,15 @@ in Data
 uniform sampler2D ourTexture;
 uniform sampler2D normalMap;
 uniform sampler2D depthMap;
+uniform sampler2D saoMap;
+
 uniform int typeOfRender=0;
 uniform vec2 viewport_size;
 uniform mat4 viewMatInv;
 uniform mat4 projMatInv;
 uniform vec3 cameraPos;
+
+uniform int typeRenderLight=0;
 
 out vec4 outColor;
 
@@ -41,7 +45,8 @@ void main(void)
 {
     //outColor = vec4(FSIn.color,1.0);
 
-    float ambientTerm = 0.05f;
+    //float ambientTerm = 0.05f;
+    float ambientTerm = 1.0f;
 
     vec4 albedo;
     vec4 albedoAmbient;
@@ -49,11 +54,17 @@ void main(void)
     vec3 lightDir = vec3(0.0f,0.0f,1.0f);
     vec3 lightColor = vec3(1.0f,1.0f,1.0f);
 
-
     albedo = texture2D(ourTexture, FSIn.textCoord);
-     if(typeOfRender==0){
-    albedoAmbient = albedo * ambientTerm;
+
+    float ambientOcc = texture2D(saoMap, FSIn.textCoord).z;
+
+    albedoAmbient = albedo * ambientTerm * ambientOcc;
     albedoAmbient.a = 1.0f;
+
+    if(typeRenderLight == 0){
+       outColor = albedoAmbient;
+    }
+    else if(typeRenderLight == 1){
 
     vec3 normalsInText= normalize(texture(normalMap, FSIn.textCoord).xyz * 2.0f - 1.0f);
 
@@ -67,7 +78,5 @@ void main(void)
 
     outColor = albedoAmbientLight;
     }
-    else{
-        outColor = albedo;
-    }
+
 }

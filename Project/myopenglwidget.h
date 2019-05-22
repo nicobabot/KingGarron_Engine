@@ -23,6 +23,8 @@ class gEditorCamera;
 class gObject;
 class InspectorWidget;
 class gDeferredRenderer;
+class gSaoRender;
+class gRenderLight;
 
 enum RenderType{
     ALBEDO_RENDER,
@@ -79,6 +81,9 @@ private:
     InspectorWidget *inspectorWidget = nullptr;
 
     gDeferredRenderer *deferredRendering = nullptr;
+    gSaoRender *saoRendering = nullptr;
+    gRenderLight *lightRendering = nullptr;
+
     RenderType renderType = RenderType::ALBEDO_RENDER;
 
     QTimer timer;

@@ -12,11 +12,11 @@ public:
     virtual void Resize(int w, int h) = 0;
     virtual void Render(gEditorCamera *editorCamera) = 0;
 protected:
-    virtual void PassMesh(gEditorCamera *editorCamera) = 0;
-    virtual void PassMaterials() = 0;
-    virtual void PassLights() = 0;
-    virtual void PassSelectionOutline() = 0;
-    virtual void PassGrid() = 0;
+    virtual void PassMesh(gEditorCamera *editorCamera){}
+    virtual void PassMaterials(){}
+    virtual void PassLights(){}
+    virtual void PassSelectionOutline(){}
+    virtual void PassGrid(){}
 
 };
 

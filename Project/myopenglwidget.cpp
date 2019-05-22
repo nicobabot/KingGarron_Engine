@@ -18,6 +18,8 @@
 #include "gcomponenttransform.h"
 #include "inspectorwidget.h"
 #include "gdeferredrenderer.h"
+#include "gsaorender.h"
+#include "grenderlight.h"
 
 #pragma comment(lib, "OpenGL32.lib")
 
@@ -79,19 +81,33 @@ void MyOpenGLWidget::initializeGL()
 
     needUpdate = true;*/
 
-    // Program
-    program.create();
-    program.addShaderFromSourceFile(QOpenGLShader::Vertex, "shaders/shaderl_vert_copy.vsh");
-    program.addShaderFromSourceFile(QOpenGLShader::Fragment, "shaders/shaderl_frag_copy.fsh");
-    program.link();
+    static bool onetime = true;
+    if (onetime)
+    {
+        onetime=false;
+        program.create();
+        program.addShaderFromSourceFile(QOpenGLShader::Vertex, "shaders/shaderl_vert_copy.vsh");
+        program.addShaderFromSourceFile(QOpenGLShader::Fragment, "shaders/shaderl_frag_copy.fsh");
+        program.link();
 
-    programSSAO.create();
-    programSSAO.addShaderFromSourceFile(QOpenGLShader::Vertex, "shaders/ssao_vertexshader.vsh");
-    programSSAO.addShaderFromSourceFile(QOpenGLShader::Fragment, "shaders/ssao_fragmentshader.fsh");
-    programSSAO.link();
+        programSSAO.create();
+        programSSAO.addShaderFromSourceFile(QOpenGLShader::Vertex, "shaders/ssao_vertexshader.vsh");
+        programSSAO.addShaderFromSourceFile(QOpenGLShader::Fragment, "shaders/ssao_fragmentshader.fsh");
+        programSSAO.link();
 
-    deferredRendering = new gDeferredRenderer(width(), height());
-    deferredRendering->Initialize();
+        deferredRendering = new gDeferredRenderer(width(), height());
+        deferredRendering->Initialize();
+
+        saoRendering = new gSaoRender(width(), height());
+        saoRendering->Initialize();
+        saoRendering->SetDeferredRender(deferredRendering);
+
+        lightRendering = new gRenderLight(width(), height());
+        lightRendering->Initialize();
+        lightRendering->SetDeferredRender(deferredRendering);
+        lightRendering->SetSSAORender(saoRendering);
+
+    }
 
 
     float verticesQuad[] = {     /*Position*/-1.0f, -1.0f, 0.0f, /*Color*/ 1.0f, 1.0f, 1.0f,  /*TextureCoord*/ 0.0f, 0.0f,
@@ -133,6 +149,7 @@ void MyOpenGLWidget::initializeGL()
 void MyOpenGLWidget::resizeGL(int width, int height)
 {
     deferredRendering->Resize(width, height);
+    saoRendering->Resize(width, height);
 }
 
 void MyOpenGLWidget::paintGL()
@@ -141,13 +158,16 @@ void MyOpenGLWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT);
 
     deferredRendering->Render(editorCamera);
+    saoRendering->Render(editorCamera);
+    lightRendering->Render(editorCamera);
+    //saoRendering
 
   /*  QVector3D vertices[] = { QVector3D(-0.5f, -0.5f, 0.0f), QVector3D(1.0f, 0.0f, 0.0f), //QVector3D(0.0f, 0.0f, 0.0f),
                              QVector3D( 0.5f, -0.5f, 0.0f), QVector3D(0.0f, 1.0f, 0.0f), //QVector3D(1.0f, 0.0f, 0.0f),
                              QVector3D( 0.0f, 0.5f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f)}; //QVector3D(0.0f, 1.0f, 0.0f)};
 */
 
-    std::uniform_real_distribution<float> randomFloats(0.0, 1.0);
+    /*std::uniform_real_distribution<float> randomFloats(0.0, 1.0);
     std::default_random_engine generator;
     //std::vector<glm::vec3> ssaoKernel;
    // QVector<QVector3D> ssaoKernel;
@@ -173,11 +193,11 @@ void MyOpenGLWidget::paintGL()
      ssaoKernel[i+1]=sample.y();
      ssaoKernel[i+2]=sample.z();
     }
+*/
 
-
-   /* if(program.bind())
+    /*if(program.bind())
     {
-        program.setUniformValue("typeOfRender",renderType);
+        program.setUniformValue("typeOfRender",1);
         program.setUniformValue("viewport_size",QVector2D(width(), height()));
         program.setUniformValue("viewMatInv",editorCamera->viewMatrix.inverted());
         program.setUniformValue("projMatInv",editorCamera->projMatrix.inverted());
@@ -188,7 +208,8 @@ void MyOpenGLWidget::paintGL()
         program.setUniformValue(program.uniformLocation("depthMap"), 2);
 
         glActiveTexture(GL_TEXTURE0);
-        BindTypeOfRender();
+        glBindTexture(GL_TEXTURE_2D, deferredRendering->GetNormalTexture());
+        //BindTypeOfRender();
 
         glActiveTexture(GL_TEXTURE1);
         BindTypeOfRender(1);
@@ -198,49 +219,13 @@ void MyOpenGLWidget::paintGL()
 
         vao.bind();
         glDrawArrays(GL_TRIANGLES, 0,6);
-    }*/
-
-     if(programSSAO.bind())
-     {
-         glClearColor(0.0f, 0.0f, 0.0f,1.0f);
-         glClear(GL_COLOR_BUFFER_BIT);
-         programSSAO.setUniformValue("typeOfRender",renderType);
-         programSSAO.setUniformValue("viewport_size",QVector2D(width(), height()));
-         programSSAO.setUniformValue("viewMatInv",editorCamera->viewMatrix.inverted());
-         programSSAO.setUniformValue("projMatInv",editorCamera->projMatrix.inverted());
-         programSSAO.setUniformValue("cameraPos",editorCamera->position);
-
-         //noiseMap
-
-         programSSAO.setUniformValueArray("samples", ssaoKernel, 192, 3);
-
-         programSSAO.setUniformValue(programSSAO.uniformLocation("ourTexture"), 0);
-         programSSAO.setUniformValue(programSSAO.uniformLocation("normalMap"), 1);
-         programSSAO.setUniformValue(programSSAO.uniformLocation("depthMap"), 2);
-         programSSAO.setUniformValue(programSSAO.uniformLocation("noiseMap"), 3);
-
-         glActiveTexture(GL_TEXTURE0);
-         BindTypeOfRender();
-
-         glActiveTexture(GL_TEXTURE1);
-         BindTypeOfRender(1);
-
-         glActiveTexture(GL_TEXTURE2);
-         BindTypeOfRender(2);
-
-         glActiveTexture(GL_TEXTURE3);
-         glBindTexture(GL_TEXTURE_2D, deferredRendering->GetNoiseSSAOTexture());
-
-         vao.bind();
-         glDrawArrays(GL_TRIANGLES, 0,6);
-     }
-
+    }
 
     // Release
     vao.release();
     vbo.release();
-    programSSAO.release();
-    glBindTexture(GL_TEXTURE_2D, 0);
+    program.release();
+    glBindTexture(GL_TEXTURE_2D, 0);*/
 
 }
 

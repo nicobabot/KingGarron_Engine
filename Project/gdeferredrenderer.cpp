@@ -144,26 +144,6 @@ void gDeferredRenderer::Render(gEditorCamera* editorCamera)
 
 }
 
-void gDeferredRenderer::PassMaterials()
-{
-
-}
-
-void gDeferredRenderer::PassLights()
-{
-
-}
-
-void gDeferredRenderer::PassSelectionOutline()
-{
-
-}
-
-void gDeferredRenderer::PassGrid()
-{
-
-}
-
 void gDeferredRenderer::PassMesh(gEditorCamera *editorCamera)
 {
     QOpenGLFunctions* gl_functions = QOpenGLContext::currentContext()->functions();

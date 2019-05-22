@@ -87,10 +87,16 @@ void gSaoRender::Initialize()
      qDebug("Framebuffer ERROR: Unknown ERROR");
      }
 
-     programSSAO.create();
-     programSSAO.addShaderFromSourceFile(QOpenGLShader::Vertex, "shaders/ssao_vertexshader.vsh");
-     programSSAO.addShaderFromSourceFile(QOpenGLShader::Fragment, "shaders/ssao_fragmentshader.fsh");
-     programSSAO.link();
+     static bool oneTime = true;
+
+     if(oneTime)
+     {
+        oneTime = false;
+        programSSAO.create();
+        programSSAO.addShaderFromSourceFile(QOpenGLShader::Vertex, "shaders/ssao_vertexshader.vsh");
+        programSSAO.addShaderFromSourceFile(QOpenGLShader::Fragment, "shaders/ssao_fragmentshader.fsh");
+        programSSAO.link();
+     }
 
 
      float verticesQuad[] = {     /*Position*/-1.0f, -1.0f, 0.0f, /*Color*/ 1.0f, 1.0f, 1.0f,  /*TextureCoord*/ 0.0f, 0.0f,
@@ -155,6 +161,8 @@ void gSaoRender::Render(gEditorCamera* editorCamera)
 void gSaoRender::PassSsao(gEditorCamera* editorCamera)
 {
     QOpenGLFunctions* gl_functions = QOpenGLContext::currentContext()->functions();
+
+    if(deferred == nullptr) return;
 
     if(programSSAO.bind())
     {

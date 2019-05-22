@@ -21,10 +21,6 @@ public:
 
 private:
     void PassMesh(gEditorCamera *editorCamera);
-    void PassMaterials();
-    void PassLights();
-    void PassSelectionOutline();
-    void PassGrid();
     void UpdateMeshsDeferred();
 
 private:
