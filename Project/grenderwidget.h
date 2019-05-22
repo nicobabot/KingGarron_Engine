@@ -23,11 +23,10 @@ class QScrollArea;
 struct MaterialSelector
 {
     MaterialSelector() {}
-    MaterialSelector(QLabel* label, QComboBox* comboBoxAlbedo, QComboBox* comboBoxNormal, QHBoxLayout* hLayout) : label(label), comboBoxAlbedo(comboBoxAlbedo), comboBoxNormal(comboBoxNormal), hLayout(hLayout) {}
+    MaterialSelector(QLabel* label, QComboBox* comboBoxAlbedo, QHBoxLayout* hLayout) : label(label), comboBoxAlbedo(comboBoxAlbedo), hLayout(hLayout) {}
     void Delete();
     QLabel* label = nullptr;
     QComboBox* comboBoxAlbedo = nullptr;
-    QComboBox* comboBoxNormal = nullptr;
     QHBoxLayout* hLayout = nullptr;
 };
 
@@ -50,7 +49,6 @@ public:
 public slots:
     void ModifyShapeComponent(const QString&);
     void ModifyTextureAlbedo(const QString&);
-    void ModifyTextureNormal(const QString&);
 
 public:
     Ui::GRenderWidget *ui= nullptr;

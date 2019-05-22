@@ -18,7 +18,6 @@ public:
 public:
 
     QOpenGLTexture* OGLTexAlbedo = nullptr;
-    QOpenGLTexture* OGLTexNormal = nullptr;
     QString name = "none";
 
 private:

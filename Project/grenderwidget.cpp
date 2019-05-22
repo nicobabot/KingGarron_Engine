@@ -98,10 +98,7 @@ void GRenderWidget::AddTexturesResourcesToUI()
 {
     for (std::pair<QString,QString> resource : texturesResources.toStdMap())
         for (MaterialSelector& item : materialSelectorList)
-        {
             item.comboBoxAlbedo->addItem(resource.first);
-            item.comboBoxNormal->addItem(resource.first);
-        }
 }
 
 void GRenderWidget::AddMaterialSelectors(Mesh* mesh)
@@ -110,7 +107,6 @@ void GRenderWidget::AddMaterialSelectors(Mesh* mesh)
     {
         verticalLayout->removeWidget(item->label);
         verticalLayout->removeWidget(item->comboBoxAlbedo);
-        verticalLayout->removeWidget(item->comboBoxNormal);
         verticalLayout->removeItem(item->hLayout);
         item->Delete();
     }
@@ -127,13 +123,9 @@ void GRenderWidget::AddButton(int submeshnum, SubMesh* submesh)
     selector.comboBoxAlbedo = new QComboBox(this);
     selector.comboBoxAlbedo->setObjectName(QString::fromStdString(std::to_string(submeshnum)));
     connect(selector.comboBoxAlbedo,SIGNAL(currentTextChanged(const QString&)), this, SLOT(ModifyTextureAlbedo(const QString&)));
-    selector.comboBoxNormal = new QComboBox(this);
-    selector.comboBoxNormal->setObjectName(QString::fromStdString(std::to_string(submeshnum)));
-    connect(selector.comboBoxNormal,SIGNAL(currentTextChanged(const QString&)), this, SLOT(ModifyTextureNormal(const QString&)));
     selector.hLayout = new QHBoxLayout();
     selector.hLayout->addWidget(selector.label);
     selector.hLayout->addWidget(selector.comboBoxAlbedo);
-    selector.hLayout->addWidget(selector.comboBoxNormal);
     verticalLayout->addLayout(selector.hLayout);
     materialSelectorList.push_back(selector);
 }
@@ -175,21 +167,9 @@ void GRenderWidget::ModifyTextureAlbedo(const QString& texture)
         }
 }
 
-void GRenderWidget::ModifyTextureNormal(const QString& texture)
-{
-    int index = std::stoi(sender()->objectName().toStdString());
-    if (renderComponent && renderComponent->myMesh)
-        if(index < renderComponent->myMesh->submeshes.count())
-        {
-            renderComponent->matNormal = texturesResources.value(texture).toStdString();
-            renderComponent->myMesh->submeshes[index]->OGLTexNormal = new QOpenGLTexture(QImage(renderComponent->matNormal.c_str()));
-        }
-}
-
 void MaterialSelector::Delete()
 {
     delete label;
     delete comboBoxAlbedo;
-    delete comboBoxNormal;
     delete hLayout;
 }
