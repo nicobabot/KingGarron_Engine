@@ -51,7 +51,16 @@ void Mesh::loadModel(const char *filename)
                 , loaderExtension.toStdString().c_str());
     */
 
-    scene = import.ReadFile(filename, aiProcessPreset_TargetRealtime_MaxQuality);
+    scene = import.ReadFile(filename, aiProcess_Triangulate |
+                            aiProcess_GenSmoothNormals |
+                            aiProcess_FixInfacingNormals |
+                            aiProcess_JoinIdenticalVertices |
+                            aiProcess_PreTransformVertices |
+                            //aiProcess_RemoveRedundantMaterials |
+                            aiProcess_SortByPType |
+                            aiProcess_ImproveCacheLocality |
+                            aiProcess_FlipUVs |
+                            aiProcess_OptimizeMeshes);
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
         std::cout << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl;

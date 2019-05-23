@@ -43,6 +43,7 @@ MyOpenGLWidget::MyOpenGLWidget(QWidget *parent)
     connect(mainWindow->actionAlbedo, &QAction::triggered, this, &MyOpenGLWidget::ChangeRenderToAlbedo);
     connect(mainWindow->actionNormal, &QAction::triggered, this, &MyOpenGLWidget::ChangeRenderToNormal);
     connect(mainWindow->actionDepth, &QAction::triggered, this, &MyOpenGLWidget::ChangeRenderToDepth);
+    //connect(mainWindow->actionSSAO, &QAction::triggered, this, &MyOpenGLWidget::ChangeRenderToDepth);
 
     QObject::connect(&timer, SIGNAL(timeout()), this, SLOT(Update()));
 
@@ -160,108 +161,26 @@ void MyOpenGLWidget::paintGL()
     deferredRendering->Render(editorCamera);
     saoRendering->Render(editorCamera);
     lightRendering->Render(editorCamera);
-    //saoRendering
 
-  /*  QVector3D vertices[] = { QVector3D(-0.5f, -0.5f, 0.0f), QVector3D(1.0f, 0.0f, 0.0f), //QVector3D(0.0f, 0.0f, 0.0f),
-                             QVector3D( 0.5f, -0.5f, 0.0f), QVector3D(0.0f, 1.0f, 0.0f), //QVector3D(1.0f, 0.0f, 0.0f),
-                             QVector3D( 0.0f, 0.5f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f)}; //QVector3D(0.0f, 1.0f, 0.0f)};
-*/
-
-    /*std::uniform_real_distribution<float> randomFloats(0.0, 1.0);
-    std::default_random_engine generator;
-    //std::vector<glm::vec3> ssaoKernel;
-   // QVector<QVector3D> ssaoKernel;
-    float ssaoKernel[64 * 3];
-
-    for (unsigned int i = 0; i < 192; i+=3)
+    if(inputClass->GetKeyIsState(Qt::Key_R, KEY_STATE::KEY_DOWN))
     {
-     QVector3D sample(
-     randomFloats(generator) * 2.0 - 1.0,
-     randomFloats(generator) * 2.0 - 1.0,
-     randomFloats(generator)
-     );
-     sample.normalize();
-     sample *= randomFloats(generator);
-     float scale = (float)i / 192.0;
-
-     //LERP
-     //scale = lerp(0.1f, 1.0f, scale * scale);
-     scale = 0.1f + (scale * scale) * (1.0f - 0.1f);
-
-     sample *= scale;
-     ssaoKernel[i]=sample.x();
-     ssaoKernel[i+1]=sample.y();
-     ssaoKernel[i+2]=sample.z();
-    }
-*/
-
-    /*if(program.bind())
-    {
-        program.setUniformValue("typeOfRender",1);
-        program.setUniformValue("viewport_size",QVector2D(width(), height()));
-        program.setUniformValue("viewMatInv",editorCamera->viewMatrix.inverted());
-        program.setUniformValue("projMatInv",editorCamera->projMatrix.inverted());
-        program.setUniformValue("cameraPos",editorCamera->position);
-
-        program.setUniformValue(program.uniformLocation("ourTexture"), 0);
-        program.setUniformValue(program.uniformLocation("normalMap"), 1);
-        program.setUniformValue(program.uniformLocation("depthMap"), 2);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, deferredRendering->GetNormalTexture());
-        //BindTypeOfRender();
-
-        glActiveTexture(GL_TEXTURE1);
-        BindTypeOfRender(1);
-
-        glActiveTexture(GL_TEXTURE2);
-        BindTypeOfRender(2);
-
-        vao.bind();
-        glDrawArrays(GL_TRIANGLES, 0,6);
+        lightRendering->ReloadShaders();
     }
 
-    // Release
-    vao.release();
-    vbo.release();
-    program.release();
-    glBindTexture(GL_TEXTURE_2D, 0);*/
-
-}
-
-void MyOpenGLWidget::BindTypeOfRender(int forceBind)
-{
-    RenderType typeToRender;
-    if(forceBind!=-1) typeToRender = (RenderType)forceBind;
-    else typeToRender = renderType;
-
-    switch (typeToRender)
-    {
-        case RenderType::ALBEDO_RENDER:
-               glBindTexture(GL_TEXTURE_2D, deferredRendering->GetColorTexture());
-        break;
-        case RenderType::NORMAL_RENDER:
-               //qDebug("Normal texture: %i",deferredRendering->GetNormalTexture());
-               glBindTexture(GL_TEXTURE_2D, deferredRendering->GetNormalTexture());
-        break;
-        case RenderType::DEPTH_RENDER:
-               glBindTexture(GL_TEXTURE_2D, deferredRendering->GetDepthTexture());
-        break;
-    }
 }
 
 void MyOpenGLWidget::ChangeRenderToAlbedo()
 {
-    renderType = RenderType::ALBEDO_RENDER;
+    lightRendering->renderType = RenderType::ALBEDO_RENDER;
 }
 
 void MyOpenGLWidget::ChangeRenderToNormal()
 {
-    renderType = RenderType::NORMAL_RENDER;
+    lightRendering->renderType = RenderType::NORMAL_RENDER;
 }
 void MyOpenGLWidget::ChangeRenderToDepth()
 {
-    renderType = RenderType::DEPTH_RENDER;
+    lightRendering->renderType = RenderType::DEPTH_RENDER;
 }
 
 void MyOpenGLWidget::UpdateMeshs()

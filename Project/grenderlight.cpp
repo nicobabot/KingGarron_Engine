@@ -86,18 +86,39 @@ void gRenderLight::Resize(int w, int h)
 }
 
 void gRenderLight::Render(gEditorCamera* editorCamera)
-{
+{    
     QOpenGLFunctions* gl_functions = QOpenGLContext::currentContext()->functions();
+    gl_functions->glEnable(GL_BLEND);
+    gl_functions->glBlendFunc(GL_ONE, GL_ONE);
 
-    glClearDepth(1.0);
-    gl_functions->glClearColor(0.0f, 0.0f, 0.0f,1.0f);
+    gl_functions->glClearDepthf(1.0);
+    gl_functions->glClearColor(0.0f, 0.0f, 0.0f,0.0f);
     gl_functions->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    gl_functions->glDisable(GL_DEPTH_TEST);
 
     PassLightAmbient(editorCamera);
 
+    if(renderType == RenderType::LIGHT_RENDER)
+    {
     PassLightDir(editorCamera);
+    }
 
+    gl_functions->glEnable(GL_DEPTH_TEST);
+    gl_functions->glDisable(GL_BLEND);
     QOpenGLFramebufferObject::bindDefault();
+}
+
+void gRenderLight::ReloadShaders()
+{
+    if(programLight.isLinked())
+    {
+        programLight.removeAllShaders();
+
+        programLight.create();
+        programLight.addShaderFromSourceFile(QOpenGLShader::Vertex, "shaders/shaderl_vert_copy.vsh");
+        programLight.addShaderFromSourceFile(QOpenGLShader::Fragment, "shaders/shaderl_frag_copy.fsh");
+        programLight.link();
+    }
 }
 
 void gRenderLight::PassLightAmbient(gEditorCamera *editorCamera)
@@ -106,6 +127,7 @@ void gRenderLight::PassLightAmbient(gEditorCamera *editorCamera)
 
     if(programLight.bind())
     {
+        programLight.setUniformValue("typeOfRender", renderType);
         programLight.setUniformValue("typeRenderLight",0);
         programLight.setUniformValue("viewport_size",QVector2D(editorCamera->widthViewport, editorCamera->heightViewport));
         programLight.setUniformValue("viewMatInv",editorCamera->viewMatrix.inverted());
@@ -131,13 +153,13 @@ void gRenderLight::PassLightAmbient(gEditorCamera *editorCamera)
 
         vao.bind();
         glDrawArrays(GL_TRIANGLES, 0,6);
+
+       programLight.release();
     }
 
     // Release
-    vao.release();
-    vbo.release();
-    programLight.release();
-    glBindTexture(GL_TEXTURE_2D, 0);
+    //vao.release();
+    //glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void gRenderLight::PassLightDir(gEditorCamera *editorCamera)
@@ -146,6 +168,8 @@ void gRenderLight::PassLightDir(gEditorCamera *editorCamera)
 
     if(programLight.bind())
     {
+        //qDebug("Holaaaaa");
+
         programLight.setUniformValue("typeRenderLight",1);
         programLight.setUniformValue("viewport_size",QVector2D(editorCamera->widthViewport, editorCamera->heightViewport));
         programLight.setUniformValue("viewMatInv",editorCamera->viewMatrix.inverted());
@@ -171,11 +195,11 @@ void gRenderLight::PassLightDir(gEditorCamera *editorCamera)
 
         vao.bind();
         glDrawArrays(GL_TRIANGLES, 0,6);
+
+        programLight.release();
     }
 
     // Release
-    vao.release();
-    vbo.release();
-    programLight.release();
+    //vao.release();
     glBindTexture(GL_TEXTURE_2D, 0);
 }

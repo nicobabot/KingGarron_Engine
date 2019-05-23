@@ -26,14 +26,6 @@ class gDeferredRenderer;
 class gSaoRender;
 class gRenderLight;
 
-enum RenderType{
-    ALBEDO_RENDER,
-    NORMAL_RENDER,
-    DEPTH_RENDER,
-    LIGHT_RENDER,
-    SSAO_RENDER
-};
-
 class MyOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
 {
     Q_OBJECT
@@ -83,8 +75,6 @@ private:
     gDeferredRenderer *deferredRendering = nullptr;
     gSaoRender *saoRendering = nullptr;
     gRenderLight *lightRendering = nullptr;
-
-    RenderType renderType = RenderType::ALBEDO_RENDER;
 
     QTimer timer;
     //Stuff

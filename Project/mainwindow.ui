@@ -30,6 +30,8 @@
     <addaction name="actionAlbedo"/>
     <addaction name="actionNormal"/>
     <addaction name="actionDepth"/>
+    <addaction name="actionSSAO"/>
+    <addaction name="actionLight"/>
    </widget>
    <addaction name="DeferredType"/>
   </widget>
@@ -171,6 +173,16 @@
   <action name="actionDepth">
    <property name="text">
     <string>Depth</string>
+   </property>
+  </action>
+  <action name="actionSSAO">
+   <property name="text">
+    <string>SSAO</string>
+   </property>
+  </action>
+  <action name="actionLight">
+   <property name="text">
+    <string>Light</string>
    </property>
   </action>
  </widget>
