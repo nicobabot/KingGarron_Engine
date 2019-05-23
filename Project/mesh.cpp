@@ -18,6 +18,7 @@ Mesh::Mesh()
 
 void Mesh::loadModel(const char *filename)
 {
+    this->filename = filename;
     Assimp::Importer import;
     QFile file(filename);
     if (!file.open(QIODevice::ReadOnly))
@@ -51,7 +52,16 @@ void Mesh::loadModel(const char *filename)
                 , loaderExtension.toStdString().c_str());
     */
 
-    scene = import.ReadFile(filename, aiProcessPreset_TargetRealtime_MaxQuality);
+    scene = import.ReadFile(filename, aiProcess_Triangulate |
+                            aiProcess_GenSmoothNormals |
+                            aiProcess_FixInfacingNormals |
+                            aiProcess_JoinIdenticalVertices |
+                            aiProcess_PreTransformVertices |
+                            //aiProcess_RemoveRedundantMaterials |
+                            aiProcess_SortByPType |
+                            aiProcess_ImproveCacheLocality |
+                            aiProcess_FlipUVs |
+                            aiProcess_OptimizeMeshes);
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
         std::cout << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl;
@@ -114,7 +124,7 @@ SubMesh* Mesh::processMesh(aiMesh *mesh, const aiScene *scene)
     {
 
     }
-
+    SubMesh* submesh = new SubMesh(QString(mesh->mName.C_Str()), vertexFormat, &vertices[0], vertices.size() * sizeof(float), &indices[0], indices.size());
     if (scene->HasMaterials())
     {
         /*
@@ -146,9 +156,19 @@ SubMesh* Mesh::processMesh(aiMesh *mesh, const aiScene *scene)
         scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_UNKNOWN, 0, &material_path);
         qDebug("aiTextureType_UNKNOWN: %s", material_path.C_Str());
         */
+        aiString material_path;
+        scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_DIFFUSE, 0, &material_path);
+        std::string str = filename;
+        int pos = str.find_last_of("/");
+        str = str.substr(0, pos + 1);
+        str += material_path.C_Str();
+        qDebug("aiTextureType_DIFFUSE: %s", material_path.C_Str());
+        qDebug("mesh path: %s", str.c_str());
+        QImage image(str.c_str());
+        submesh->OGLTexAlbedo = new QOpenGLTexture(image);
     }
 
-    return new SubMesh(QString(mesh->mName.C_Str()), vertexFormat, &vertices[0], vertices.size() * sizeof(float), &indices[0], indices.size());
+    return submesh;
 }
 
 void Mesh::destroy()

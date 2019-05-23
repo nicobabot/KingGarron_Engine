@@ -98,7 +98,10 @@ void GRenderWidget::AddTexturesResourcesToUI()
 {
     for (std::pair<QString,QString> resource : texturesResources.toStdMap())
         for (MaterialSelector& item : materialSelectorList)
+        {
+            QSignalBlocker block(item.comboBoxAlbedo);
             item.comboBoxAlbedo->addItem(resource.first);
+        }
 }
 
 void GRenderWidget::AddMaterialSelectors(Mesh* mesh)
@@ -162,8 +165,9 @@ void GRenderWidget::ModifyTextureAlbedo(const QString& texture)
     if (renderComponent && renderComponent->myMesh)
         if(index < renderComponent->myMesh->submeshes.count())
         {
-            renderComponent->matAlbedo = texturesResources.value(texture).toStdString();
-            renderComponent->myMesh->submeshes[index]->OGLTexAlbedo = new QOpenGLTexture(QImage(renderComponent->matAlbedo.c_str()));
+            if (renderComponent->myMesh->submeshes[index]->OGLTexAlbedo)
+                delete renderComponent->myMesh->submeshes[index]->OGLTexAlbedo;
+            renderComponent->myMesh->submeshes[index]->OGLTexAlbedo = new QOpenGLTexture(QImage(texturesResources.value(texture).toStdString().c_str()));
         }
 }
 
