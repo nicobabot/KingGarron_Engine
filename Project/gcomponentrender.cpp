@@ -50,11 +50,13 @@ gComponentRender::gComponentRender(gObject *parent, gShape newShape, float newsi
 
 void gComponentRender::InitializeTextures()
 {
+    /*
     Mesh* meshTemp = myMesh;
     if(meshTemp!=nullptr)
         for(int i=0; i<meshTemp->submeshes.count(); i++)
             if(meshTemp->submeshes[i]!=nullptr)
                 meshTemp->submeshes[i]->OGLTexAlbedo = new QOpenGLTexture(QImage().mirrored());
+    */
 }
 
 void gComponentRender::Update()

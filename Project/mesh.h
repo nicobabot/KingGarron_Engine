@@ -25,6 +25,7 @@ private:
 // Assimp stuff
 void processNode(aiNode *node, const aiScene *scene);
 SubMesh * processMesh(aiMesh *mesh, const aiScene *scene);
+const char *filename = nullptr;
 
 };
 
