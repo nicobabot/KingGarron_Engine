@@ -162,10 +162,11 @@ SubMesh* Mesh::processMesh(aiMesh *mesh, const aiScene *scene)
         int pos = str.find_last_of("/");
         str = str.substr(0, pos + 1);
         str += material_path.C_Str();
-        qDebug("aiTextureType_DIFFUSE: %s", material_path.C_Str());
-        qDebug("mesh path: %s", str.c_str());
         QImage image(str.c_str());
         submesh->OGLTexAlbedo = new QOpenGLTexture(image);
+		submesh->texPath = str;
+		int pos1 = submesh->texPath.find_last_of("/");
+		submesh->texPath = submesh->texPath.substr(pos1 + 1);
     }
 
     return submesh;

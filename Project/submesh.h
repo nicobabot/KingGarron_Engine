@@ -18,6 +18,7 @@ public:
 public:
 
     QOpenGLTexture* OGLTexAlbedo = nullptr;
+    QString texPath = "none";
     QString name = "none";
 
 private:
