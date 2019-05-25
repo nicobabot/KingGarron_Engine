@@ -25,6 +25,7 @@ public:
     void Update();
     void Render();
     void InitializeTextures();
+    void ReloadMyShader();
 
 public:
     std::string shape;

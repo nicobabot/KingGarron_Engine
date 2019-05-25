@@ -59,6 +59,19 @@ void gComponentRender::InitializeTextures()
     */
 }
 
+void gComponentRender::ReloadMyShader()
+{
+    if(myProgram.isLinked())
+    {
+        myProgram.removeAllShaders();
+
+        myProgram.create();
+        myProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, "shaders/shaderl_vert.vsh");
+        myProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, "shaders/shaderl_frag.fsh");
+        myProgram.link();
+    }
+}
+
 void gComponentRender::Update()
 {
     Mesh* meshTemp = myMesh;

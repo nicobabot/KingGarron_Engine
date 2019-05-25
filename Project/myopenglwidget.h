@@ -36,6 +36,7 @@ public:
     void resizeGL(int width, int height) override;
     void paintGL() override;
     void UpdateMeshs();
+    void ReloadObjShaders();
 
 public slots:
     void Update();
@@ -45,6 +46,8 @@ public slots:
     void ChangeRenderToAlbedo();
     void ChangeRenderToNormal();
     void ChangeRenderToDepth();
+    void ChangeRenderToSSAO();
+    void ChangeRenderToLightMap();
 
 private:
     void keyPressEvent(QKeyEvent* event) override;

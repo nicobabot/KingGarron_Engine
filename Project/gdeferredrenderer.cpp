@@ -13,6 +13,7 @@
 #include "geditorcamera.h"
 #include "qopenglextrafunctions.h"
 #include <random>
+#include <QOpenGLContext>
 
 gDeferredRenderer::gDeferredRenderer(int newWitdth, int newHeight)
 {
@@ -176,34 +177,37 @@ void gDeferredRenderer::PassMesh(gEditorCamera *editorCamera)
 
         gComponentRender *render = (gComponentRender*)myObject->GetComponent(gComponentType::COMP_RENDER);
 
-        render->myProgram.bind();
-        if(render->myProgram.isLinked())
-        {
-        int projecLoc = gl_functions->glGetUniformLocation(render->myProgram.programId(), "projection");
-        gl_functions->glUniformMatrix4fv(projecLoc, 1, GL_TRUE, editorCamera->projMatrix.transposed().data());
+        QOpenGLContext *myContext = QOpenGLContext::currentContext();
 
-        //qDebug("Proj %i", projecLoc);
+       if(myContext->isValid())
+       {
+            if(render->myProgram.isLinked())
+            {
+                if(render->myProgram.bind())
+                {
+                    int projecLoc = gl_functions->glGetUniformLocation(render->myProgram.programId(), "projection");
+                    gl_functions->glUniformMatrix4fv(projecLoc, 1, GL_TRUE, editorCamera->projMatrix.transposed().data());
 
-        int viewLoc = gl_functions->glGetUniformLocation(render->myProgram.programId(), "view");
-        gl_functions->glUniformMatrix4fv(viewLoc, 1, GL_TRUE, editorCamera->viewMatrix.transposed().data());
+                    int viewLoc = gl_functions->glGetUniformLocation(render->myProgram.programId(), "view");
+                    gl_functions->glUniformMatrix4fv(viewLoc, 1, GL_TRUE, editorCamera->viewMatrix.transposed().data());
 
-        //qDebug("View %i", viewLoc);
+                    int modelLoc = gl_functions->glGetUniformLocation(render->myProgram.programId(), "model");
+                    gl_functions->glUniformMatrix4fv(modelLoc, 1, GL_TRUE, model.transposed().data());
 
-        int modelLoc = gl_functions->glGetUniformLocation(render->myProgram.programId(), "model");
-        gl_functions->glUniformMatrix4fv(modelLoc, 1, GL_TRUE, model.transposed().data());
+                    gl_functions->glActiveTexture(GL_TEXTURE0);
+                    render->Render();
 
-        //qDebug("Model %i", modelLoc);
 
-        }
+                    if(render->myProgram.isLinked())
+                     render->myProgram.release();
 
-        gl_functions->glActiveTexture(GL_TEXTURE0);
+                }
+            }
+            else{
+                render->myProgram.link();
+            }
+       }
 
-        /*if(render->textureOpenGL!=nullptr)
-        {
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, render->textureOpenGL->textureId());
-        }*/
-        render->Render();
     }
 }
 

@@ -88,7 +88,6 @@ void gSaoRender::Initialize()
      }
 
      static bool oneTime = true;
-
      if(oneTime)
      {
         oneTime = false;
@@ -164,70 +163,84 @@ void gSaoRender::PassSsao(gEditorCamera* editorCamera)
 
     if(deferred == nullptr) return;
 
-    if(programSSAO.bind())
-    {
-        glClearColor(0.0f, 0.0f, 0.0f,1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-        //programSSAO.setUniformValue("typeOfRender",renderType);
-        programSSAO.setUniformValue("viewport_size",QVector2D(editorCamera->widthViewport, editorCamera->heightViewport));
-        programSSAO.setUniformValue("viewMatInv",editorCamera->viewMatrix.inverted());
-        programSSAO.setUniformValue("projMatInv",editorCamera->projMatrix.inverted());
-        programSSAO.setUniformValue("cameraPos",editorCamera->position);
+    QOpenGLContext *myContext = QOpenGLContext::currentContext();
 
-        std::uniform_real_distribution<float> randomFloats(0.0, 1.0);
-        std::default_random_engine generator;
-        float ssaoKernel[192];
-
-        for (unsigned int i = 0; i < 192; i+=3)
+   if(myContext->isValid())
+   {
+        if(programSSAO.isLinked())
         {
-         QVector3D sample(
-         randomFloats(generator) * 2.0 - 1.0,
-         randomFloats(generator) * 2.0 - 1.0,
-         randomFloats(generator)
-         );
-         sample.normalize();
-         sample *= randomFloats(generator);
-         float scale = (float)i / 192.0;
+            if(programSSAO.bind())
+            {
+                glClearColor(0.0f, 0.0f, 0.0f,1.0f);
+                glClear(GL_COLOR_BUFFER_BIT);
+                //programSSAO.setUniformValue("typeOfRender",renderType);
+                programSSAO.setUniformValue("viewport_size",QVector2D(editorCamera->widthViewport, editorCamera->heightViewport));
+                programSSAO.setUniformValue("viewMatInv",editorCamera->viewMatrix.inverted());
+                programSSAO.setUniformValue("projMatInv",editorCamera->projMatrix.inverted());
+                programSSAO.setUniformValue("cameraPos",editorCamera->position);
 
-         //LERP
-         //scale = lerp(0.1f, 1.0f, scale * scale);
-         scale = 0.1f + (scale * scale) * (1.0f - 0.1f);
+                std::uniform_real_distribution<float> randomFloats(0.0, 1.0);
+                std::default_random_engine generator;
+                float ssaoKernel[192];
 
-         sample *= scale;
-         ssaoKernel[i]=sample.x();
-         ssaoKernel[i+1]=sample.y();
-         ssaoKernel[i+2]=sample.z();
+                for (unsigned int i = 0; i < 192; i+=3)
+                {
+                 QVector3D sample(
+                 randomFloats(generator) * 2.0 - 1.0,
+                 randomFloats(generator) * 2.0 - 1.0,
+                 randomFloats(generator)
+                 );
+                 sample.normalize();
+                 sample *= randomFloats(generator);
+                 float scale = (float)i / 192.0;
+
+                 //LERP
+                 //scale = lerp(0.1f, 1.0f, scale * scale);
+                 scale = 0.1f + (scale * scale) * (1.0f - 0.1f);
+
+                 sample *= scale;
+                 ssaoKernel[i]=sample.x();
+                 ssaoKernel[i+1]=sample.y();
+                 ssaoKernel[i+2]=sample.z();
+                }
+
+                programSSAO.setUniformValueArray("samples", ssaoKernel, 192, 3);
+
+                programSSAO.setUniformValue(programSSAO.uniformLocation("ourTexture"), 0);
+                programSSAO.setUniformValue(programSSAO.uniformLocation("normalMap"), 1);
+                programSSAO.setUniformValue(programSSAO.uniformLocation("depthMap"), 2);
+                programSSAO.setUniformValue(programSSAO.uniformLocation("noiseMap"), 3);
+
+                //deferred
+
+                gl_functions->glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, deferred->GetColorTexture());
+
+                gl_functions->glActiveTexture(GL_TEXTURE1);
+                glBindTexture(GL_TEXTURE_2D, deferred->GetNormalTexture());
+
+                gl_functions->glActiveTexture(GL_TEXTURE2);
+                glBindTexture(GL_TEXTURE_2D, deferred->GetDepthTexture());
+
+                gl_functions->glActiveTexture(GL_TEXTURE3);
+                glBindTexture(GL_TEXTURE_2D, deferred->GetNoiseSSAOTexture());
+
+                vao.bind();
+                glDrawArrays(GL_TRIANGLES, 0,6);
+            }
         }
-
-        programSSAO.setUniformValueArray("samples", ssaoKernel, 192, 3);
-
-        programSSAO.setUniformValue(programSSAO.uniformLocation("ourTexture"), 0);
-        programSSAO.setUniformValue(programSSAO.uniformLocation("normalMap"), 1);
-        programSSAO.setUniformValue(programSSAO.uniformLocation("depthMap"), 2);
-        programSSAO.setUniformValue(programSSAO.uniformLocation("noiseMap"), 3);
-
-        //deferred
-
-        gl_functions->glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, deferred->GetColorTexture());
-
-        gl_functions->glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, deferred->GetNormalTexture());
-
-        gl_functions->glActiveTexture(GL_TEXTURE2);
-        glBindTexture(GL_TEXTURE_2D, deferred->GetDepthTexture());
-
-        gl_functions->glActiveTexture(GL_TEXTURE3);
-        glBindTexture(GL_TEXTURE_2D, deferred->GetNoiseSSAOTexture());
-
-        vao.bind();
-        glDrawArrays(GL_TRIANGLES, 0,6);
-    }
+   }
 
 
    // Release
-   vao.release();
-   vbo.release();
-   programSSAO.release();
+   if(vao.isCreated())
+    vao.release();
+
+   if(vbo.isCreated())
+       vbo.release();
+
+   if(programSSAO.isLinked())
+    programSSAO.release();
+
    glBindTexture(GL_TEXTURE_2D, 0);
 }

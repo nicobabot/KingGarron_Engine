@@ -43,7 +43,8 @@ MyOpenGLWidget::MyOpenGLWidget(QWidget *parent)
     connect(mainWindow->actionAlbedo, &QAction::triggered, this, &MyOpenGLWidget::ChangeRenderToAlbedo);
     connect(mainWindow->actionNormal, &QAction::triggered, this, &MyOpenGLWidget::ChangeRenderToNormal);
     connect(mainWindow->actionDepth, &QAction::triggered, this, &MyOpenGLWidget::ChangeRenderToDepth);
-    //connect(mainWindow->actionSSAO, &QAction::triggered, this, &MyOpenGLWidget::ChangeRenderToDepth);
+    connect(mainWindow->actionSSAO, &QAction::triggered, this, &MyOpenGLWidget::ChangeRenderToSSAO);
+    connect(mainWindow->actionLight, &QAction::triggered, this, &MyOpenGLWidget::ChangeRenderToLightMap);
 
     QObject::connect(&timer, SIGNAL(timeout()), this, SLOT(Update()));
 
@@ -169,6 +170,21 @@ void MyOpenGLWidget::paintGL()
 
 }
 
+void MyOpenGLWidget::ReloadObjShaders()
+{
+    for(gObject* myObject : myObjectsScene)
+    {
+        if(myObject==nullptr)
+            continue;
+
+        gComponentRender *render = (gComponentRender*)myObject->GetComponent(gComponentType::COMP_RENDER);
+
+        if(render!=nullptr)
+                render->ReloadMyShader();
+
+    }
+}
+
 void MyOpenGLWidget::ChangeRenderToAlbedo()
 {
     lightRendering->renderType = RenderType::ALBEDO_RENDER;
@@ -181,6 +197,15 @@ void MyOpenGLWidget::ChangeRenderToNormal()
 void MyOpenGLWidget::ChangeRenderToDepth()
 {
     lightRendering->renderType = RenderType::DEPTH_RENDER;
+}
+void MyOpenGLWidget::ChangeRenderToSSAO()
+{
+    lightRendering->renderType = RenderType::SSAO_RENDER;
+}
+
+void MyOpenGLWidget::ChangeRenderToLightMap()
+{
+    lightRendering->renderType = RenderType::LIGHT_RENDER;
 }
 
 void MyOpenGLWidget::UpdateMeshs()
@@ -245,6 +270,7 @@ void MyOpenGLWidget::Update()
     editorCamera->CalcWorldViewMatrices();
     editorCamera->CalcProjMatrix(width(), height());
     inputClass->Update(); //keep input at the bottom
+    //ReloadObjShaders();
     this->update();
     //this->repaint();
 }

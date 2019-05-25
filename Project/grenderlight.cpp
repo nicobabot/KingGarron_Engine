@@ -125,40 +125,54 @@ void gRenderLight::PassLightAmbient(gEditorCamera *editorCamera)
 {
     QOpenGLFunctions* gl_functions = QOpenGLContext::currentContext()->functions();
 
-    if(programLight.bind())
+
+    QOpenGLContext *myContext = QOpenGLContext::currentContext();
+
+   if(myContext->isValid())
+   {
+
+    if(programLight.isLinked())
     {
-        programLight.setUniformValue("typeOfRender", renderType);
-        programLight.setUniformValue("typeRenderLight",0);
-        programLight.setUniformValue("viewport_size",QVector2D(editorCamera->widthViewport, editorCamera->heightViewport));
-        programLight.setUniformValue("viewMatInv",editorCamera->viewMatrix.inverted());
-        programLight.setUniformValue("projMatInv",editorCamera->projMatrix.inverted());
-        programLight.setUniformValue("cameraPos",editorCamera->position);
+        if(programLight.bind())
+        {
+            programLight.setUniformValue("typeOfRender", renderType);
+            programLight.setUniformValue("typeRenderLight",0);
+            programLight.setUniformValue("viewport_size",QVector2D(editorCamera->widthViewport, editorCamera->heightViewport));
+            programLight.setUniformValue("viewMatInv",editorCamera->viewMatrix.inverted());
+            programLight.setUniformValue("projMatInv",editorCamera->projMatrix.inverted());
+            programLight.setUniformValue("cameraPos",editorCamera->position);
 
-        programLight.setUniformValue(programLight.uniformLocation("ourTexture"), 0);
-        programLight.setUniformValue(programLight.uniformLocation("normalMap"), 1);
-        programLight.setUniformValue(programLight.uniformLocation("depthMap"), 2);
-        programLight.setUniformValue(programLight.uniformLocation("saoMap"), 3);
+            programLight.setUniformValue(programLight.uniformLocation("ourTexture"), 0);
+            programLight.setUniformValue(programLight.uniformLocation("normalMap"), 1);
+            programLight.setUniformValue(programLight.uniformLocation("depthMap"), 2);
+            programLight.setUniformValue(programLight.uniformLocation("saoMap"), 3);
 
-        gl_functions->glActiveTexture(GL_TEXTURE0);
-        gl_functions->glBindTexture(GL_TEXTURE_2D, deferred->GetColorTexture());
+            gl_functions->glActiveTexture(GL_TEXTURE0);
+            gl_functions->glBindTexture(GL_TEXTURE_2D, deferred->GetColorTexture());
 
-        gl_functions->glActiveTexture(GL_TEXTURE1);
-        gl_functions->glBindTexture(GL_TEXTURE_2D, deferred->GetNormalTexture());
+            gl_functions->glActiveTexture(GL_TEXTURE1);
+            gl_functions->glBindTexture(GL_TEXTURE_2D, deferred->GetNormalTexture());
 
-        gl_functions->glActiveTexture(GL_TEXTURE2);
-        gl_functions->glBindTexture(GL_TEXTURE_2D, deferred->GetDepthTexture());
+            gl_functions->glActiveTexture(GL_TEXTURE2);
+            gl_functions->glBindTexture(GL_TEXTURE_2D, deferred->GetDepthTexture());
 
-        gl_functions->glActiveTexture(GL_TEXTURE3);
-        gl_functions->glBindTexture(GL_TEXTURE_2D, saoRender->GetSSAOTexture());
+            gl_functions->glActiveTexture(GL_TEXTURE3);
+            gl_functions->glBindTexture(GL_TEXTURE_2D, saoRender->GetSSAOTexture());
 
-        vao.bind();
-        glDrawArrays(GL_TRIANGLES, 0,6);
+            vao.bind();
+            glDrawArrays(GL_TRIANGLES, 0,6);
 
-       programLight.release();
+           programLight.release();
+        }
     }
+   }
 
     // Release
-    //vao.release();
+    if(vao.isCreated())
+     vao.release();
+
+    if(vbo.isCreated())
+        vbo.release();
     //glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -166,40 +180,55 @@ void gRenderLight::PassLightDir(gEditorCamera *editorCamera)
 {
     QOpenGLFunctions* gl_functions = QOpenGLContext::currentContext()->functions();
 
-    if(programLight.bind())
+
+    QOpenGLContext *myContext = QOpenGLContext::currentContext();
+
+   if(myContext->isValid())
+   {
+
+    if(programLight.isLinked())
     {
-        //qDebug("Holaaaaa");
+        if(programLight.bind())
+        {
+            //qDebug("Holaaaaa");
 
-        programLight.setUniformValue("typeRenderLight",1);
-        programLight.setUniformValue("viewport_size",QVector2D(editorCamera->widthViewport, editorCamera->heightViewport));
-        programLight.setUniformValue("viewMatInv",editorCamera->viewMatrix.inverted());
-        programLight.setUniformValue("projMatInv",editorCamera->projMatrix.inverted());
-        programLight.setUniformValue("cameraPos",editorCamera->position);
+            programLight.setUniformValue("typeRenderLight",1);
+            programLight.setUniformValue("viewport_size",QVector2D(editorCamera->widthViewport, editorCamera->heightViewport));
+            programLight.setUniformValue("viewMatInv",editorCamera->viewMatrix.inverted());
+            programLight.setUniformValue("projMatInv",editorCamera->projMatrix.inverted());
+            programLight.setUniformValue("cameraPos",editorCamera->position);
 
-        programLight.setUniformValue(programLight.uniformLocation("ourTexture"), 0);
-        programLight.setUniformValue(programLight.uniformLocation("normalMap"), 1);
-        programLight.setUniformValue(programLight.uniformLocation("depthMap"), 2);
-        programLight.setUniformValue(programLight.uniformLocation("saoMap"), 3);
+            programLight.setUniformValue(programLight.uniformLocation("ourTexture"), 0);
+            programLight.setUniformValue(programLight.uniformLocation("normalMap"), 1);
+            programLight.setUniformValue(programLight.uniformLocation("depthMap"), 2);
+            programLight.setUniformValue(programLight.uniformLocation("saoMap"), 3);
 
-        gl_functions->glActiveTexture(GL_TEXTURE0);
-        gl_functions->glBindTexture(GL_TEXTURE_2D, deferred->GetColorTexture());
+            gl_functions->glActiveTexture(GL_TEXTURE0);
+            gl_functions->glBindTexture(GL_TEXTURE_2D, deferred->GetColorTexture());
 
-        gl_functions->glActiveTexture(GL_TEXTURE1);
-        gl_functions->glBindTexture(GL_TEXTURE_2D, deferred->GetNormalTexture());
+            gl_functions->glActiveTexture(GL_TEXTURE1);
+            gl_functions->glBindTexture(GL_TEXTURE_2D, deferred->GetNormalTexture());
 
-        gl_functions->glActiveTexture(GL_TEXTURE2);
-        gl_functions->glBindTexture(GL_TEXTURE_2D, deferred->GetDepthTexture());
+            gl_functions->glActiveTexture(GL_TEXTURE2);
+            gl_functions->glBindTexture(GL_TEXTURE_2D, deferred->GetDepthTexture());
 
-        gl_functions->glActiveTexture(GL_TEXTURE3);
-        gl_functions->glBindTexture(GL_TEXTURE_2D, saoRender->GetSSAOTexture());
+            gl_functions->glActiveTexture(GL_TEXTURE3);
+            gl_functions->glBindTexture(GL_TEXTURE_2D, saoRender->GetSSAOTexture());
 
-        vao.bind();
-        glDrawArrays(GL_TRIANGLES, 0,6);
+            vao.bind();
+            glDrawArrays(GL_TRIANGLES, 0,6);
 
-        programLight.release();
+            programLight.release();
+        }
     }
+   }
 
     // Release
-    //vao.release();
+    if(vao.isCreated())
+     vao.release();
+
+    if(vbo.isCreated())
+        vbo.release();
+
     glBindTexture(GL_TEXTURE_2D, 0);
 }
