@@ -164,9 +164,8 @@ SubMesh* Mesh::processMesh(aiMesh *mesh, const aiScene *scene)
         str += material_path.C_Str();
         QImage image(str.c_str());
         submesh->OGLTexAlbedo = new QOpenGLTexture(image);
-		submesh->texPath = str;
-		int pos1 = submesh->texPath.find_last_of("/");
-		submesh->texPath = submesh->texPath.substr(pos1 + 1);
+        int pos1 = str.find_last_of("/");
+        submesh->texPath.fromStdString(str.substr(pos1 + 1));
     }
 
     return submesh;
