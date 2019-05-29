@@ -102,6 +102,19 @@ void GRenderWidget::AddTexturesResourcesToUI()
             QSignalBlocker block(item.comboBoxAlbedo);
             item.comboBoxAlbedo->addItem(resource.first);
         }
+    for (MaterialSelector& item : materialSelectorList)
+    {
+        int i = 0;
+         for (std::pair<QString,QString> resource : texturesResources.toStdMap())
+         {
+             if (item.mesh->texPath == resource.first)
+             {
+                 item.comboBoxAlbedo->setCurrentIndex(i);
+                 break;
+             }
+             i++;
+         }
+    }
 }
 
 void GRenderWidget::AddMaterialSelectors(Mesh* mesh)
@@ -129,6 +142,7 @@ void GRenderWidget::AddButton(int submeshnum, SubMesh* submesh)
     selector.hLayout = new QHBoxLayout();
     selector.hLayout->addWidget(selector.label);
     selector.hLayout->addWidget(selector.comboBoxAlbedo);
+    selector.mesh = submesh;
     verticalLayout->addLayout(selector.hLayout);
     materialSelectorList.push_back(selector);
 }

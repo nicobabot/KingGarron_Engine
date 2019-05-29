@@ -28,6 +28,7 @@ struct MaterialSelector
     QLabel* label = nullptr;
     QComboBox* comboBoxAlbedo = nullptr;
     QHBoxLayout* hLayout = nullptr;
+    SubMesh* mesh = nullptr;
 };
 
 class GRenderWidget : public QWidget
