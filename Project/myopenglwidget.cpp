@@ -54,7 +54,6 @@ MyOpenGLWidget::MyOpenGLWidget(QWidget *parent)
         timer.setInterval(0);
     timer.start();
 
-
     this->setUpdatesEnabled(true);
     this->setMouseTracking(true);
 }
@@ -158,6 +157,7 @@ void MyOpenGLWidget::paintGL()
 {
     glClearColor(0.0f, 0.0f, 0.0f,1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+
 
     deferredRendering->Render(editorCamera);
     saoRendering->Render(editorCamera);
@@ -271,6 +271,7 @@ void MyOpenGLWidget::Update()
     editorCamera->CalcProjMatrix(width(), height());
     inputClass->Update(); //keep input at the bottom
     //ReloadObjShaders();
+    //mainWindow->Scene_2->setFloating(false);
     this->update();
     //this->repaint();
 }

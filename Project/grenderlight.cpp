@@ -128,9 +128,8 @@ void gRenderLight::PassLightAmbient(gEditorCamera *editorCamera)
 
     QOpenGLContext *myContext = QOpenGLContext::currentContext();
 
-   if(myContext->isValid())
+   if(myContext && myContext->isValid())
    {
-
     if(programLight.isLinked())
     {
         if(programLight.bind())
