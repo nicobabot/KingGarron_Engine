@@ -58,7 +58,10 @@ void InspectorWidget::UpdateInspectorValues(gObject *object)
                 int combIndex = render_widget->shapeComboBox->findText(*strShape);
                 if ( combIndex != -1 ) // -1 for not found
                 {
+                   QSignalBlocker render_widget_blocker(render_widget);
                    render_widget->shapeComboBox->setCurrentIndex(combIndex);
+                   render_widget->AddMaterialSelectors(static_cast<gComponentRender*>(comp)->myMesh);
+                   render_widget->AddTexturesResourcesToUI();
                    //render_widget->ui->SizeValue->setValue(static_cast<double>(static_cast<gComponentRender*>(comp)->size));
                    //render_widget->ui->ColorButton->setStyleSheet(QString("Background-Color: %0;").arg(static_cast<gComponentRender*>(comp)->color.name()));
                 }
