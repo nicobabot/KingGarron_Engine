@@ -3,7 +3,7 @@
 Nicolas Babot Altisen
 Xavier Olivenza Busquets
 
-https://github.com/nicobabot/KingGarron_Engine/releases/tag/v0.2
+ReadMe: https://docs.google.com/document/d/1aubzv5Q1Koqaktb8uF9M-L2p4rh7k3U2oPXEA5g70_s/edit?usp=sharing
 
 Honor to the name of the engine:
 
